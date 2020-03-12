@@ -128,6 +128,10 @@ void Circular_attemptAudioProcessor::prepareToPlay (double sampleRate, int sampl
 	lowPassFilter.prepare(spec);
 	lowPassFilter.reset();
 
+	
+	*lowPassFilter.state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate_, 800.0f, 1.0f);
+
+
 	//noiseCoeffsArray = noiseCoeffs.getNoiseCoefficients(samplesPerBlock);
 	//delayTimesArray.clear();
 	//int firstRefTime = 600;
@@ -182,99 +186,92 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
 
+	dsp::AudioBlock<float> block(buffer);
+
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
 	const int bufferLength = buffer.getNumSamples();
 	const int delayBufferLength = delayBuffer.getNumSamples();
 	
+	const float* bufferDataL = buffer.getReadPointer(0);
+	const float* bufferDataR = buffer.getReadPointer(1);
+	const float* delayBufferDataL = delayBuffer.getReadPointer(0);
+	const float* delayBufferDataR = delayBuffer.getReadPointer(1);
+
+	float* dryBufferL = buffer.getWritePointer(0);
+	float* dryBufferR = buffer.getWritePointer(1);
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
 		const float* bufferData = buffer.getReadPointer(channel);
 		const float* delayBufferData = delayBuffer.getReadPointer(channel);
-		float* delayBufferDataWrite = delayBuffer.getWritePointer(channel);
-		
-		float* dryBuffer = buffer.getWritePointer(channel);
-
-		//musimy kopiowaæ nasz buffer i wklejaæ go do delay buffera
-		//czytanie z naszego bufora:
 		copyBufferToDelayBuffer(channel, bufferData, delayBufferData, bufferLength, delayBufferLength);
 
-		////w tym miejscu powinny być chyba operacje w celu uzyskania pierwszych odbić - jakieś opóźnienie tego co występi dalej,
-		////dodanie zer czy cokolwiek, jakieś poczekanie na to co jest dalej
-		auto* channelData = buffer.getWritePointer(channel, 0);
+		//for (int i = 0; i < delayTimesArray.size(); ++i)
+		//{
+		//	copyBackToCurrentBuffer(buffer, channel, bufferData, delayBufferData, bufferLength, delayBufferLength, firstRefTime + delayTimesArray[i]);
+		//	//może w tym momencie filtrować - dzięki temu będę mogł filtrować odbicie od konkretnej ściany 
+		//	//czyli nawet lepiej że mam tą pętle zamiast losowania w processBlocku - bo z każdym buforem odbicie 
+		//	//czyli w tym miejscu filtrować zależnie od wartości wylosowanego czasu opóźnienia
+		//	//tak, chyba dokładnie w tym miejscu - przed dodaniem do sygnału czystego
+		//	//ps. co jeżeli w tym miejscu modyfikować amplitudę? 
+		//	//!!! może w zależności od tego który obrót pętli - ustawiać amplitudę?? wtedy możnaby to zrobić faktycznie w sposób 
+		//	//wykładniczy!!!
+		//	addDelayWithCurrentBuffer(channel, bufferLength, delayBufferLength, dryBuffer, delayTimesNumber);
 
+		//	dodawanie szumu:
+		//	/*if (i > delayTimesArray.size() - delayTimesArray.size()/2)
+		//		for (int smp = 0; smp < bufferLength; ++smp)
+		//			channelData[smp] += (50 * noiseCoeffsArray[smp]);*/
 
-		for (int i = 0; i < delayTimesArray.size(); ++i)
-		{
-			copyBackToCurrentBuffer(buffer, channel, bufferData, delayBufferData, bufferLength, delayBufferLength, firstRefTime + delayTimesArray[i]);
-			//może w tym momencie filtrować - dzięki temu będę mogł filtrować odbicie od konkretnej ściany 
-			//czyli nawet lepiej że mam tą pętle zamiast losowania w processBlocku - bo z każdym buforem odbicie 
-			//czyli w tym miejscu filtrować zależnie od wartości wylosowanego czasu opóźnienia
-			//tak, chyba dokładnie w tym miejscu - przed dodaniem do sygnału czystego
-			//ps. co jeżeli w tym miejscu modyfikować amplitudę? 
-			//!!! może w zależności od tego który obrót pętli - ustawiać amplitudę?? wtedy możnaby to zrobić faktycznie w sposób 
-			//wykładniczy!!!
-			addDelayWithCurrentBuffer(channel, bufferLength, delayBufferLength, dryBuffer, delayTimesNumber);
+		//}
 
-			
-			/*if (i > delayTimesArray.size() - delayTimesArray.size()/2)
-				for (int smp = 0; smp < bufferLength; ++smp)
-					channelData[smp] += (50 * noiseCoeffsArray[smp]);*/
-		}
-
-
-		copyBackToCurrentBuffer(buffer, channel, bufferData, delayBufferData, bufferLength, delayBufferLength, firstRefTime);
-		addDelayWithCurrentBuffer(channel, bufferLength, delayBufferLength, dryBuffer, delayTimesNumber);
-		/*for (int smp = 0; smp < bufferLength; ++smp)
-		{
-			channelData[smp] += (50 * noiseCoeffsArray[smp]);
-		}*/
-		copyBackToCurrentBuffer(buffer, channel, bufferData, delayBufferData, bufferLength, delayBufferLength, 10);
-		addDelayWithCurrentBuffer(channel, bufferLength, delayBufferLength, dryBuffer, delayTimesNumber);
-		//lowPassFilter.process(dsp::ProcessContextReplacing<float>(block));
-
-		
-		//updateFilter();
-		
-		
-		
-
-
-		
-		//normalizacja amplitudy
-		/*for (int smp = 0; smp < bufferLength; ++smp)
-		{
-			channelData[smp] *= 10.0;
-		}*/
-		
-		/*for (auto i = 0; i < 3; i++)
-		{
-			auto reflectionTime = Random::getSystemRandom().nextInt(Range<int>(40, 300));
-			copyBackToCurrentBuffer(buffer, channel, bufferData, delayBufferData, bufferLength, delayBufferLength, reflectionTime);
-			addDelayWithCurrentBuffer(channel, bufferLength, delayBufferLength, dryBuffer);
-		}*/
-		/*copyBackToCurrentBuffer(buffer, channel, bufferData, delayBufferData, bufferLength, delayBufferLength, 30);
-		addDelayWithCurrentBuffer(channel, bufferLength, delayBufferLength, dryBuffer);
-
-		copyBackToCurrentBuffer(buffer, channel, bufferData, delayBufferData, bufferLength, delayBufferLength, 400);
-		addDelayWithCurrentBuffer(channel, bufferLength, delayBufferLength, dryBuffer);
-
-
-		copyBackToCurrentBuffer(buffer, channel, bufferData, delayBufferData, bufferLength, delayBufferLength, 50);
-		addDelayWithCurrentBuffer(channel, bufferLength, delayBufferLength, dryBuffer);
-
-
-		copyBackToCurrentBuffer(buffer, channel, bufferData, delayBufferData, bufferLength, delayBufferLength, 340);
-		addDelayWithCurrentBuffer(channel, bufferLength, delayBufferLength, dryBuffer);
-
-		copyBackToCurrentBuffer(buffer, channel, bufferData, delayBufferData, bufferLength, delayBufferLength, 98);
-		addDelayWithCurrentBuffer(channel, bufferLength, delayBufferLength, dryBuffer);*/
+		copyBackToCurrentBuffer(buffer, channel, bufferData, delayBufferData, bufferLength, delayBufferLength, 1000);
     }
-
 	
+	//lowPassFilter.process(dsp::ProcessContextReplacing<float>(block));
 
+	/*for (int channel = 0; channel < totalNumInputChannels; ++channel)
+	{*/
+		//if (channel == 0)
+			addDelayWithCurrentBuffer(0, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
+			lowPassFilter.process(dsp::ProcessContextReplacing<float>(block));
+		//else if (channel == 1)
+			addDelayWithCurrentBuffer(1, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
+
+		/*copyBackToCurrentBuffer(buffer, 0, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 0);
+		copyBackToCurrentBuffer(buffer, 1, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 0);*/
+	//}
+			
+	/*addDelayWithCurrentBuffer(0, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
+	addDelayWithCurrentBuffer(1, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);*/
+
+
+	/////////////
+	/*copyBackToCurrentBuffer(buffer, 0, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 1520);
+	copyBackToCurrentBuffer(buffer, 1, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 1530);*/
+
+
+	//lowPassFilter.reset();
+	//*lowPassFilter.state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate_, 800.0f, 1.0f);
+	//lowPassFilter.process(dsp::ProcessContextReplacing<float>(block));
+	//lowPassFilter.process(dsp::ProcessContextReplacing<float>(block));
+
+	/*for (int channel = 0; channel < totalNumInputChannels; ++channel)
+	{
+		if (channel == 0)
+			addDelayWithCurrentBuffer(channel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
+		else if (channel == 1)
+			addDelayWithCurrentBuffer(channel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
+	}*/
+	copyBackToCurrentBuffer(buffer, 0, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 0);
+	copyBackToCurrentBuffer(buffer, 1, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 0);
+
+	addDelayWithCurrentBuffer(0, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
+	addDelayWithCurrentBuffer(1, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
+
+	/////////////
 
 	bufferWritePosition += bufferLength; //przesuwamy pozycjê czyli miejsce do którego wklejamy nasz buffer
 									//czyli je¿eli bufor ma 512 próbek to kolejmy wklejamy w miejsce od indeksu 513
@@ -283,10 +280,6 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 															//pocz¹tek czyli na 0, potem 1
 															//mWritePosition to pole klasy - bêdziemy tego indeksu u¿ywaæ te¿ przy czytaniu z bufora
 
-
-	dsp::AudioBlock<float> block(buffer);
-	*lowPassFilter.state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate_, 500.0f, 1.0f);
-	lowPassFilter.process(dsp::ProcessContextReplacing<float>(block));
 
 }
 
@@ -382,8 +375,8 @@ void Circular_attemptAudioProcessor::addDelayWithCurrentBuffer(int channel,const
 {
 
 	//const float* dryRead = dryBuffer.getReadPointer()
-	float amplitudeMultiplier = 0.7 / (delayTimesNumber + 1) * reverbLength;
-	//float amplitudeMultiplier = 0.042;
+	//float amplitudeMultiplier = 0.7 / (delayTimesNumber + 1) * reverbLength;
+	float amplitudeMultiplier = 0.2;
 	if (delayBufferLength > bufferLength + bufferWritePosition)																
 	{
 
