@@ -112,7 +112,7 @@ void Circular_attemptAudioProcessor::prepareToPlay (double sampleRate, int sampl
 	delayBuffer.setSize(getNumInputChannels(), delayBufferSize);
 	delayBuffer.clear();
 
-	delayTimesNumber = 12;
+	delayTimesNumber = 20;
 	delayTimesArray = delayTimes.getDelayTimes(delayTimesNumber);
 	//delayTimesNumber += 1;
 
@@ -122,8 +122,8 @@ void Circular_attemptAudioProcessor::prepareToPlay (double sampleRate, int sampl
 	spec.numChannels = getTotalNumOutputChannels();
 
 	filtersNumber = delayTimesNumber;
-	lowBorderFilterFrequency = 300;
-	highBorderFilterFrequency = 1000;
+	lowBorderFilterFrequency = 500;
+	highBorderFilterFrequency = 2000;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		if (filtersNumber <= 20)
@@ -145,7 +145,7 @@ void Circular_attemptAudioProcessor::prepareToPlay (double sampleRate, int sampl
 
 int Circular_attemptAudioProcessor::getITDTime()
 {
-	return Random::getSystemRandom().nextInt(Range<int>(-20, 20));
+	return Random::getSystemRandom().nextInt(Range<int>(-8, 8));
 }
 
 void Circular_attemptAudioProcessor::releaseResources()
@@ -338,7 +338,7 @@ void Circular_attemptAudioProcessor::addDelayWithCurrentBuffer(int channel,const
 {
 
 	//const float* dryRead = dryBuffer.getReadPointer()
-	float amplitudeMultiplier = 0.9 / (delayTimesNumber);
+	float amplitudeMultiplier = 0.95 / (delayTimesNumber);
 	//float amplitudeMultiplier = 0.15;
 	if (delayBufferLength > bufferLength + bufferWritePosition)																
 	{
