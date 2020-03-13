@@ -1,0 +1,41 @@
+Celem pracy jest stworzenie algorytmu realizującego pogłos, na podstawie stosowanych rozwiązań problemu implementacji 
+pogłosu (...) i jego implementacja w celu uzyskania finalnego pogłosu w formacie VST.
+
+(...) - oraz na podstawie świadomości istnienia różnych rodzajów pogłosów, takich jak pogłos splotowy, pogłos sprężynowy.
+
+Praca obejmie:
+- przegląd stosowanych rozwiązań implementacji każdego z elementów składowych pogłosu
+- 
+- opis stosowanych i implementowanych przeze mnie metod
+- kombinacje fragmentów implementacji takich jak: sposób filtracji poszczególnych linii opóźniających,
+sposób generowania późnego ogona pogłosowego, dobór stosunków czasów opóźnienia w różnych liniach opóźniających 
+i sposób ich tłumienia, a także próba modyfikacji metody Feedback Delay Network.
+- w planie jest implementacja pogłosu splotowego i połączenie go z implementowanym pogłosem.
+- analiza każdej z kombinacji 
+- wybór najlepszego na podstawie obiektywnej i subiektywnej oceny
+- wnioski
+
+
+
+
+
+
+
+//////////////
+Praca zawierać będzie przegląd stosowanych rozwiązań problemu implementacji pogłosu, ​
+
+​
+
+Czyli między innymi:​
+
+- sposób filtracji poszczególnych linii opóźniających w czasie​
+
+- rodzaj losowości czasów odbić​
+
+- sposób generowania późnego ogona pogłosowego​
+
+- sposób tłumienia poszczególnych składowych​
+
+- kolejność ww. Operacji​
+
+- modyfikacja różnych metod, m. in. FDN​

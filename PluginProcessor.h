@@ -12,6 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "DelayTimesGenerator.h"
+#include "FilterGenerator.h"
 
 //==============================================================================
 /**
@@ -73,20 +74,26 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 	
-	AudioProcessorValueTreeState tree;
+	//AudioProcessorValueTreeState tree;
 
+	int getITDTime();
+	int reflectionsNumber;
+	std::vector<int>ITDCoefficients;
 private:
 	AudioBuffer<float> delayBuffer, secondBuffer, fadeBuffer;
 	int bufferWritePosition{ 0 };
 	int sampleRate_ = 0;
 	DelayTimesGenerator delayTimes;
-	DelayTimesGenerator noiseCoeffs;
 	std::vector<int> delayTimesArray;
-	std::vector<float> noiseCoeffsArray;
 	int delayTimesNumber;
 
-	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> lowPassFilter[10];
+	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> lowPassFilter[20];
+	std::vector<int>filterCutoffFrequencies;
+	FilterGenerator filterGenerator;
 
+	int lowBorderFilterFrequency, highBorderFilterFrequency;
+	const bool leftChannel{ 0 }, rightChannel{ 1 };
+	int filtersNumber;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Circular_attemptAudioProcessor)
 };

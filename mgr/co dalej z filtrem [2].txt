@@ -1,0 +1,6 @@
+w tutorialu nie ma opóźnienia - sygnał oryginalny jest poprawnie dodawany do sygnału.
+
+u mnie jest źle - wniosek jest taki że nie dodaje mi się ten sygnał oryginalny i słyszę tylko to przetworzone.
+Muszę więc sprawdzić czym różni się mój kod od tego w tutorialu.
+Wtedy będę mógł też pewnie filtrować tylko to, co jest przetworzone i dodawany będzie sygnał czysty. W tym momencie
+tak nie jest, jw. 

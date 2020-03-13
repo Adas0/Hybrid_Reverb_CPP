@@ -12,7 +12,7 @@
 
 int DelayTimesGenerator::generateRandomNumber()
 {
-	auto randomNumber = Random::getSystemRandom().nextInt(Range<int>(30, 300));
+	auto randomNumber = Random::getSystemRandom().nextInt(Range<int>(50, 300));
 	return randomNumber;
 }
 
@@ -28,20 +28,3 @@ std::vector<int> DelayTimesGenerator::getDelayTimes(int & delayTimesNumber)
 	//std::sort(delayTimes.begin(), delayTimes.end());
 	return delayTimes;
 }
-
-std::vector<float> DelayTimesGenerator::getNoiseCoefficients(int & numCoefficients)
-{
-	std::vector<float>noiseCoefficnets;
-	noiseCoefficnets.clear();
-	for (int i = 0; i < numCoefficients; ++i)
-	{
-		noiseCoefficnets.push_back(Random::getSystemRandom().nextFloat());
-		//noiseCoefficnets[i] /= 10.0;
-	}
-	
-	//std::sort(delayTimes.begin(), delayTimes.end());
-	return noiseCoefficnets;
-}
-
-
-

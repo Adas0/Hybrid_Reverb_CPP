@@ -36,8 +36,8 @@ private:
 
 	Slider filterCutOffDial;
 	Slider filteResDial;
-	ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> filterCutoffValue;
-	ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> filterResValue;
+	/*ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> filterCutoffValue;
+	ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> filterResValue;*/
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Circular_attemptAudioProcessorEditor)
 };
