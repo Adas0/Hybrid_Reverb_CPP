@@ -21,7 +21,7 @@ Circular_attemptAudioProcessor::Circular_attemptAudioProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       ),tree(*this, nullptr), lowPassFilter(dsp::IIR::Coefficients<float>::makeLowPass(44100, 20000.0f, 0.1))
+                       ),tree(*this, nullptr)
 #endif
 {
 	NormalisableRange<float> cutoffRange(20.0f, 20000.0f);
@@ -125,11 +125,22 @@ void Circular_attemptAudioProcessor::prepareToPlay (double sampleRate, int sampl
 	spec.maximumBlockSize = samplesPerBlock;
 	spec.numChannels = getTotalNumOutputChannels();
 
-	lowPassFilter.prepare(spec);
-	lowPassFilter.reset();
+	lowPassFilter[0].prepare(spec);
+	lowPassFilter[0].reset();
 
-	
-	*lowPassFilter.state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate_, 800.0f, 1.0f);
+
+	*(lowPassFilter[0]).state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, 400.0f, 1.0f);
+
+	//dsp::ProcessSpec spec2;
+	//spec2.sampleRate = sampleRate;
+	//spec2.maximumBlockSize = samplesPerBlock;
+	//spec2.numChannels = getTotalNumOutputChannels();
+
+	lowPassFilter[1].prepare(spec);
+	lowPassFilter[1].reset();
+
+
+	*(lowPassFilter[1]).state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, 200.0f, 1.0f);
 
 
 	//noiseCoeffsArray = noiseCoeffs.getNoiseCoefficients(samplesPerBlock);
@@ -235,19 +246,22 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 	/*for (int channel = 0; channel < totalNumInputChannels; ++channel)
 	{*/
 		//if (channel == 0)
+			lowPassFilter[0].process(dsp::ProcessContextReplacing<float>(block));
 			addDelayWithCurrentBuffer(0, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
-			lowPassFilter.process(dsp::ProcessContextReplacing<float>(block));
+			
 		//else if (channel == 1)
 			addDelayWithCurrentBuffer(1, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
-
-		/*copyBackToCurrentBuffer(buffer, 0, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 0);
-		copyBackToCurrentBuffer(buffer, 1, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 0);*/
-	//}
 			
-	/*addDelayWithCurrentBuffer(0, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
-	addDelayWithCurrentBuffer(1, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);*/
 
 
+		copyBackToCurrentBuffer(buffer, 0, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 730);
+		copyBackToCurrentBuffer(buffer, 1, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 730);
+	//}
+			lowPassFilter[1].process(dsp::ProcessContextReplacing<float>(block));
+	addDelayWithCurrentBuffer(0, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
+	addDelayWithCurrentBuffer(1, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
+	
+	
 	/////////////
 	/*copyBackToCurrentBuffer(buffer, 0, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 1520);
 	copyBackToCurrentBuffer(buffer, 1, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 1530);*/
@@ -268,6 +282,7 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 	copyBackToCurrentBuffer(buffer, 0, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 0);
 	copyBackToCurrentBuffer(buffer, 1, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 0);
 
+	
 	addDelayWithCurrentBuffer(0, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
 	addDelayWithCurrentBuffer(1, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
 
@@ -288,7 +303,7 @@ void Circular_attemptAudioProcessor::updateFilter()
 	float freq = *tree.getRawParameterValue("cutoff");
 	float res = *tree.getRawParameterValue("resonance");
 
-	*lowPassFilter.state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate_, 8000.0f, 2.0f);
+	//*lowPassFilter.state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate_, 8000.0f, 2.0f);
 }
 
 void Circular_attemptAudioProcessor::copyBufferToDelayBuffer(int channel, const float* bufferData, const float* delayBufferData,
@@ -376,7 +391,7 @@ void Circular_attemptAudioProcessor::addDelayWithCurrentBuffer(int channel,const
 
 	//const float* dryRead = dryBuffer.getReadPointer()
 	//float amplitudeMultiplier = 0.7 / (delayTimesNumber + 1) * reverbLength;
-	float amplitudeMultiplier = 0.2;
+	float amplitudeMultiplier = 0.3;
 	if (delayBufferLength > bufferLength + bufferWritePosition)																
 	{
 
