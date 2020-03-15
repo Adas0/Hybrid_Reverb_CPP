@@ -91,6 +91,9 @@ private:
 	std::vector<int>filterCutoffFrequencies;
 	FilterGenerator filterGenerator;
 
+	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> allPassFilter;
+
+
 	int lowBorderFilterFrequency, highBorderFilterFrequency;
 	const bool leftChannel{ 0 }, rightChannel{ 1 };
 	int filtersNumber;

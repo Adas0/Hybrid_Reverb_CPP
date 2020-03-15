@@ -121,6 +121,10 @@ void Circular_attemptAudioProcessor::prepareToPlay (double sampleRate, int sampl
 	spec.maximumBlockSize = samplesPerBlock;
 	spec.numChannels = getTotalNumOutputChannels();
 
+	allPassFilter.prepare(spec);
+	allPassFilter.reset();
+	*(allPassFilter).state = *dsp::IIR::Coefficients<float>::makeAllPass(sampleRate, 15000.0f);
+
 	filtersNumber = delayTimesNumber;
 	lowBorderFilterFrequency = 500;
 	highBorderFilterFrequency = 2000;
@@ -210,8 +214,10 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[filter]);
-		copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[filter] + ITDCoefficients[filter]);
+		copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[filter] /*+ ITDCoefficients[filter]*/);
 
+		
+		
 		lowPassFilter[filter].process(dsp::ProcessContextReplacing<float>(block));
 		addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
 		addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
@@ -234,7 +240,7 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 	addDelayWithCurrentBuffer(0, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
 	addDelayWithCurrentBuffer(1, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
 */
-
+	allPassFilter.process(dsp::ProcessContextReplacing<float>(block));
 
 	copyBackToCurrentBuffer(buffer, 0, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 0);
 	copyBackToCurrentBuffer(buffer, 1, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 0);
