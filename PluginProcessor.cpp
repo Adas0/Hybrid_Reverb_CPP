@@ -242,11 +242,11 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 */
 	allPassFilter.process(dsp::ProcessContextReplacing<float>(block));
 
-	copyBackToCurrentBuffer(buffer, 0, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 0);
-	copyBackToCurrentBuffer(buffer, 1, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 0);
-
-	addDelayWithCurrentBuffer(0, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
-	addDelayWithCurrentBuffer(1, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
+	copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 0);
+	copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 0);
+	
+	addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
+	addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
 
 	/////////////
 
@@ -280,27 +280,6 @@ void Circular_attemptAudioProcessor::copyBufferToDelayBuffer(int channel, const 
 		delayBuffer.copyFromWithRamp(channel, 0, bufferData, bufferLength - bufferRemaning, 1, 1);	//to co zosta³o wklejamy na pocz¹tek. 
 																										//czyli to co zosta³o odciête (ca³y bufor to 
 																										//bufferRemaining + ta reszta któr¹ tu doklejamy
-	}
-}
-
-void Circular_attemptAudioProcessor::getFirstReflection(AudioBuffer<float>& buffer, int channel, const float* bufferData, const float* delayBufferData,
-	const int bufferLength, const int delayBufferLength, int delayTime)
-{
-	//int delayTime = 500;
-	const int readPosition = static_cast<int>(delayBufferLength + bufferWritePosition - (sampleRate_ * delayTime / 1000)) % delayBufferLength;
-
-	if (delayBufferLength > bufferLength + readPosition)				
-																		
-																		
-	{
-		buffer.copyFromWithRamp(channel, 0, delayBufferData + readPosition, bufferLength, 1, 1);
-	}
-	else																
-																		
-	{
-		const int bufferRemaining = delayBufferLength - readPosition;	
-		buffer.copyFromWithRamp(channel, 0, delayBufferData + readPosition, bufferRemaining, 1, 1);
-		buffer.copyFromWithRamp(channel, bufferRemaining, delayBufferData, bufferLength - bufferRemaining, 1, 1);
 	}
 }
 
@@ -342,7 +321,6 @@ void Circular_attemptAudioProcessor::copyBackToCurrentBuffer(AudioBuffer<float>&
 void Circular_attemptAudioProcessor::addDelayWithCurrentBuffer(int channel,const int bufferLength, 
 																	const int delayBufferLength,  float* bufferData, int delayTimesNumber)
 {
-
 	//const float* dryRead = dryBuffer.getReadPointer()
 	float amplitudeMultiplier = 0.95 / (delayTimesNumber);
 	//float amplitudeMultiplier = 0.15;

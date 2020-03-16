@@ -15,6 +15,7 @@ muszę? Mogę też spróbować, żeby sprawdzić jaka będzie różnica. Ale chy
 9. Jak coś nie wyjdzie i potem się zorientuję dlaczego to czy też o tym pisać w pracy. - że tak mówił prof. Kleczkowski?
 10. Jak istotne są parametry do modyfikacji w stosunku do samego pogłosu? 
 
+
 Co chciałbym zrobić:
 1. Różnica pomiędzy oboma kanałami
 2. Losowanie różnych czasów dla obu kanałów.

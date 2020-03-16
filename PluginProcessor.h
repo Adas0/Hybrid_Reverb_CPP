@@ -43,9 +43,6 @@ public:
 
 	void addDelayWithCurrentBuffer(int channel, const int bufferLength, const int delayBufferLength,  float* dry, int delayTimesNumber);
 
-	void getFirstReflection(AudioBuffer<float>& buffer, int channel, const float* bufferData, const float* delayBufferData,
-																				const int bufferLength, const int delayBufferLength, int delayTime);
-
 	float reverbLength = 0.5;
 	int reverbSize = 0;
 	int firstRefTime = 0;
