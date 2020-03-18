@@ -83,8 +83,8 @@ private:
 	DelayTimesGenerator delayTimes;
 	std::vector<int> delayTimesArray;
 	int delayTimesNumber;
-
-	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> lowPassFilter[20];
+	static const int numberDelayLines = 20;
+	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> lowPassFilter[numberDelayLines];
 	std::vector<int>filterCutoffFrequencies;
 	FilterGenerator filterGenerator;
 

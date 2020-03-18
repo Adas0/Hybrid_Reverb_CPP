@@ -1,7 +1,7 @@
 późny ogon pogłosowy:
 - velvet noise
 - white noise
-- orthogonal feedback matrix
+
 
 pierwsze odbicia:
 - skoro pierwsze odbicie ma być inaczej filtrowane, niż inne, to mogę zrobić tak:

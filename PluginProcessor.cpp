@@ -107,12 +107,12 @@ void Circular_attemptAudioProcessor::prepareToPlay (double sampleRate, int sampl
 	sampleRate_ = sampleRate;
 
 	const int numInputChannels = getNumInputChannels();
-	const int delayBufferSize = 5 * (sampleRate); // 'widzimy' dwie sekundy sygna³u w ty³ + troszkê wiêcej (+ 2* iloœæ próbek w buforze)
+	const int delayBufferSize = 10 * (sampleRate); // 'widzimy' dwie sekundy sygna³u w ty³ + troszkê wiêcej (+ 2* iloœæ próbek w buforze)
 
 	delayBuffer.setSize(getNumInputChannels(), delayBufferSize);
 	delayBuffer.clear();
 
-	delayTimesNumber = 20;
+	delayTimesNumber = numberDelayLines;
 	delayTimesArray = delayTimes.getDelayTimes(delayTimesNumber);
 	//delayTimesNumber += 1;
 
@@ -125,12 +125,12 @@ void Circular_attemptAudioProcessor::prepareToPlay (double sampleRate, int sampl
 	allPassFilter.reset();
 	*(allPassFilter).state = *dsp::IIR::Coefficients<float>::makeAllPass(sampleRate, 15000.0f);
 
-	filtersNumber = delayTimesNumber;
+	filtersNumber = numberDelayLines;
 	lowBorderFilterFrequency = 500;
 	highBorderFilterFrequency = 2000;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
-		if (filtersNumber <= 20)
+		if (filtersNumber <= numberDelayLines)
 			filterCutoffFrequencies.push_back(filterGenerator.getFilterCutoffFrequency(lowBorderFilterFrequency, highBorderFilterFrequency));
 	}
 
@@ -149,7 +149,7 @@ void Circular_attemptAudioProcessor::prepareToPlay (double sampleRate, int sampl
 
 int Circular_attemptAudioProcessor::getITDTime()
 {
-	return Random::getSystemRandom().nextInt(Range<int>(-8, 8));
+	return Random::getSystemRandom().nextInt(Range<int>(-2, 2));
 }
 
 void Circular_attemptAudioProcessor::releaseResources()
@@ -211,10 +211,20 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 		copyBufferToDelayBuffer(channel, bufferData, delayBufferData, bufferLength, delayBufferLength);
     }
 
+
+	AudioBuffer<float>noiseBuffer;
+	noiseBuffer.setSize(2, bufferLength);
+	noiseBuffer.clear();
+	for (int sample = 0; sample < bufferLength; ++sample)
+	{
+		noiseBuffer.addSample(0, sample, Random::getSystemRandom().nextFloat() / 1000.0f);
+	}
+		
+
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[filter]);
-		copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[filter] /*+ ITDCoefficients[filter]*/);
+		copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[filter] + ITDCoefficients[filter]);
 
 		
 		
@@ -222,24 +232,13 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 		addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
 		addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
 	}
+
+
+	///
 	
-	
-	/*copyBackToCurrentBuffer(buffer, 0, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 150);
-	copyBackToCurrentBuffer(buffer, 1, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 150.5);
-
-	lowPassFilter[1].process(dsp::ProcessContextReplacing<float>(block));
-	addDelayWithCurrentBuffer(0, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
-	addDelayWithCurrentBuffer(1, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
+	///
 
 
-
-	copyBackToCurrentBuffer(buffer, 0, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 320);
-	copyBackToCurrentBuffer(buffer, 1, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 319.5);
-
-	lowPassFilter[2].process(dsp::ProcessContextReplacing<float>(block));
-	addDelayWithCurrentBuffer(0, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
-	addDelayWithCurrentBuffer(1, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
-*/
 	allPassFilter.process(dsp::ProcessContextReplacing<float>(block));
 
 	copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 0);
@@ -249,6 +248,9 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 	addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
 
 	/////////////
+
+	const float* noiseBufferData = noiseBuffer.getReadPointer(0);
+	buffer.addFrom(0, 0, noiseBufferData, bufferLength);
 
 	bufferWritePosition += bufferLength; //przesuwamy pozycjê czyli miejsce do którego wklejamy nasz buffer
 									//czyli je¿eli bufor ma 512 próbek to kolejmy wklejamy w miejsce od indeksu 513
