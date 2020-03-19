@@ -28,6 +28,14 @@ B\'ead\'ea musia\'b3 napisa\'e6 jakich dok\'b3adnie filtr\f1\lang1033\'f3\f0\lan
 \par
 Do testowania rozwi\'b9za\'f1 inne parametry przyjmowa\'e6 losowe (ale zawsze takie same)? np. testuj\'ea jak\'b9\'9c konkretn\'b9 filtracj\'ea - \'bfeby mie\'e6 odniesienie to przyj\'b9\'e6 jakie\'9c konkretne warto\'9cci czas\f1\lang1033\'f3\f0\lang1045 w op\f1\lang1033\'f3\f0\lang1045\'9fnie\'f1, \'bfeby mie\'e6 zawsze takie samo odniesienie. \par
 \par
-Musz\'ea splata\'e6 z szumem, a nie go dodawa\'e6 - przy dodawaniu - gdy nie ma sygna\'b3u s\'b3ycha\'e6 sam szum, bo s\'b3ycha\'e6 0 + szum.\line Splot ma sens, bo je\'bfeli b\'eadzie 0 to na wyj\'9cciu te\'bf b\'eadzie 0. Bo splot 0 z czymkolwiek to 0.\f1\lang21\par
+Musz\'ea splata\'e6 z szumem, a nie go dodawa\'e6 - przy dodawaniu - gdy nie ma sygna\'b3u s\'b3ycha\'e6 sam szum, bo s\'b3ycha\'e6 0 + szum.\line Splot ma sens, bo je\'bfeli b\'eadzie 0 to na wyj\'9cciu te\'bf b\'eadzie 0. Bo splot 0 z czymkolwiek to 0.\par
+\par
+W ka\'bfdym podrozdziale, w kt\f1\lang1033\'f3\f0\lang1045 rym zmieniam jak\'b9\'9c metod\'ea (robi\'ea po swojemu ale najlepiej jak napisz\'ea \'bfe co\'9c tam zmieniam w jakiej\'9c wybranej metodzie), napisa\'e6: "Zamiast czego\'9ctam zosta\'b3 u\'bfyty co\'9c tam".\par
+\par
+Bez sensu, bo \'bfeby po filtracji bufor mia\'b3 tak\'b9 sam\'b9 d\'b3ugo\'9c\'e6 (przez splot zmienia si\'ea d\'b3ugo\'9c\'e6 tablicy), to filtr musia\'b3by mie\'e6 1 wsp\f1\lang1033\'f3\f0\lang1045\'b3czynnik... (wtedy bufor zostaje takiej samej d\'b3ugo\'9cci), je\'bfeli splatany sygna\'b3 to [1] to sygna\'b3 zostaje taki sam. \line Aczkolwiek jako\'9c m\f1\lang1033\'f3\f0\lang1045 j sygna\'b3 jest filtrowany za pomoc\'b9 filtr\f1\lang1033\'f3\f0\lang1045 w JUCE'a i jest dobrze? Hmm\par
+Je\'9cli uda si\'ea splata\'e6 ten p\f1\lang1033\'f3\f0\lang1045\'9fny ogon z szumem to mog\'ea w tym te\'bf zrobi\'e6 r\f1\lang1033\'f3\f0\lang1045\'bfnic\'ea dla obu kana\'b3\f1\lang1033\'f3\f0\lang1045 w\par
+Chyba pierwsze odbicia powinny mie\'e6 troch\'ea wi\'eaksz\'b9 amplitud\'ea ni\'bf dalsza cz\'ea\'9c\'e6? Do zrobienia \'b3atwo - ka\'bfde wyw\'b3owanie funkcji add co\'9c tam z inn\'b9 aplitud\'b9. - CHYBA JEDNAK NIE. Bo ju\'bf jedno wywo\'b3anie ten funkcji powoduje wiele odbi\'e6. \par
+Wi\'eac mog\'ea ustawi\'e6 czasy op\f1\lang1033\'f3\f0\lang1045\'9fnie\'f1 i ich t\'b3umie\'f1 w taki spos\f1\lang1033\'f3\f0\lang1045 b, \'bfeby wynikowy sygna\'b3 (suma w danym momencie czasu) odpowiada\'b3a funkcji wyk\'b3adniczej. \par
+Mo\'bfe jedna z opcji filtrowania (jako sprawdzenie sposobu w implementacjach testowych) to r\f1\lang1033\'f3\f0\lang1045\'bfna filtracja, np. niekt\f1\lang1033\'f3\f0\lang1045 re linie op\f1\lang1033\'f3\f0\lang1045\'9fniaj\'b9ce filtrowane g\f1\lang1033\'f3\f0\lang1045 rnoprzepustowo). \f1\lang21\par
 }
  

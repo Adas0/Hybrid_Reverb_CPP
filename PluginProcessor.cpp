@@ -200,7 +200,7 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 	const float* bufferDataR = buffer.getReadPointer(rightChannel);
 	const float* delayBufferDataL = delayBuffer.getReadPointer(leftChannel);
 	const float* delayBufferDataR = delayBuffer.getReadPointer(rightChannel);
-
+	
 	float* dryBufferL = buffer.getWritePointer(leftChannel);
 	float* dryBufferR = buffer.getWritePointer(rightChannel);
 
@@ -212,14 +212,11 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
     }
 
 
-	AudioBuffer<float>noiseBuffer;
-	noiseBuffer.setSize(2, bufferLength);
-	noiseBuffer.clear();
-	for (int sample = 0; sample < bufferLength; ++sample)
-	{
-		noiseBuffer.addSample(0, sample, Random::getSystemRandom().nextFloat() / 1000.0f);
-	}
-		
+	
+	//////////reflections with noise////////////
+	
+	////////////////////////////////////////////
+
 
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
@@ -233,13 +230,35 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 		addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
 	}
 
-
-	///
 	
-	///
+	for (int time = 408; time < 408 + 500; time += 20)
+	{
+		float* bufferWrite = buffer.getWritePointer(0);
+		copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, time);
+		copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, time);
+		
+		AudioBuffer<float>noiseBuffer;
+		noiseBuffer.setSize(2, bufferLength);
+		noiseBuffer.clear();
+		for (int sample = 0; sample < bufferLength; ++sample)
+		{
+			noiseBuffer.addSample(0, sample, Random::getSystemRandom().nextFloat() / 5.0f);
+		}
+		float* noiseBufferData = noiseBuffer.getWritePointer(0);
+		//buffer.addFrom(0, 0, noiseBufferData, bufferLength);
+		
+		for (int sample = 0; sample < bufferLength; ++sample)
+		{
+			//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
+			bufferWrite[sample] *= noiseBufferData[sample];
+		}
+		addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
+		addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
 
-
-	allPassFilter.process(dsp::ProcessContextReplacing<float>(block));
+	}
+	
+	
+	//allPassFilter.process(dsp::ProcessContextReplacing<float>(block));
 
 	copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 0);
 	copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 0);
@@ -248,9 +267,39 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 	addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
 
 	/////////////
+	//AudioBuffer<float>noiseBuffer;
+	//noiseBuffer.setSize(2, bufferLength);
+	//noiseBuffer.clear();
+	//for (int sample = 0; sample < bufferLength; ++sample)
+	//{
+	//	noiseBuffer.addSample(0, sample, Random::getSystemRandom().nextFloat() / 10.0f);
+	//}
+	//float* noiseBufferData = noiseBuffer.getWritePointer(0);
+	////buffer.addFrom(0, 0, noiseBufferData, bufferLength);
+	//float* bufferWrite = buffer.getWritePointer(0);
+	//for (int sample = 0; sample < bufferLength; ++sample)
+	//{
+	//	//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
+	//	bufferWrite[sample] *= noiseBufferData[sample];
+	//}
+	
 
-	const float* noiseBufferData = noiseBuffer.getReadPointer(0);
-	buffer.addFrom(0, 0, noiseBufferData, bufferLength);
+	//////////////////////tutaj jest sposób dodawania/mnożenia każdej próbki przez szum//////////////////////
+	//AudioBuffer<float>noiseBuffer;
+	//noiseBuffer.setSize(2, bufferLength);
+	//noiseBuffer.clear();
+	//for (int sample = 0; sample < bufferLength; ++sample)
+	//{
+	//	noiseBuffer.addSample(0, sample, Random::getSystemRandom().nextFloat() / 10.0f);
+	//}
+	//float* noiseBufferData = noiseBuffer.getWritePointer(0);
+	////buffer.addFrom(0, 0, noiseBufferData, bufferLength);
+	//float* bufferWrite = buffer.getWritePointer(0);
+	//for (int sample = 0; sample < bufferLength; ++sample)
+	//{
+	//	//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
+	//	bufferWrite[sample] *= noiseBufferData[sample];
+	//}
 
 	bufferWritePosition += bufferLength; //przesuwamy pozycjê czyli miejsce do którego wklejamy nasz buffer
 									//czyli je¿eli bufor ma 512 próbek to kolejmy wklejamy w miejsce od indeksu 513
@@ -324,7 +373,7 @@ void Circular_attemptAudioProcessor::addDelayWithCurrentBuffer(int channel,const
 																	const int delayBufferLength,  float* bufferData, int delayTimesNumber)
 {
 	//const float* dryRead = dryBuffer.getReadPointer()
-	float amplitudeMultiplier = 0.95 / (delayTimesNumber);
+	float amplitudeMultiplier = 0.4 / (delayTimesNumber);
 	//float amplitudeMultiplier = 0.15;
 	if (delayBufferLength > bufferLength + bufferWritePosition)																
 	{
