@@ -107,7 +107,7 @@ void Circular_attemptAudioProcessor::prepareToPlay (double sampleRate, int sampl
 	sampleRate_ = sampleRate;
 
 	const int numInputChannels = getNumInputChannels();
-	const int delayBufferSize = 10 * (sampleRate); // 'widzimy' dwie sekundy sygna³u w ty³ + troszkê wiêcej (+ 2* iloœæ próbek w buforze)
+	const int delayBufferSize = 3 * (sampleRate); // 'widzimy' dwie sekundy sygna³u w ty³ + troszkê wiêcej (+ 2* iloœæ próbek w buforze)
 
 	delayBuffer.setSize(getNumInputChannels(), delayBufferSize);
 	delayBuffer.clear();
@@ -126,8 +126,8 @@ void Circular_attemptAudioProcessor::prepareToPlay (double sampleRate, int sampl
 	*(allPassFilter).state = *dsp::IIR::Coefficients<float>::makeAllPass(sampleRate, 15000.0f);
 
 	filtersNumber = numberDelayLines;
-	lowBorderFilterFrequency = 500;
-	highBorderFilterFrequency = 2000;
+	lowBorderFilterFrequency = 100;
+	highBorderFilterFrequency = 6000;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		if (filtersNumber <= numberDelayLines)
@@ -231,31 +231,35 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 	}
 
 	
-	for (int time = 408; time < 408 + 500; time += 20)
-	{
-		float* bufferWrite = buffer.getWritePointer(0);
-		copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, time);
-		copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, time);
-		
-		AudioBuffer<float>noiseBuffer;
-		noiseBuffer.setSize(2, bufferLength);
-		noiseBuffer.clear();
-		for (int sample = 0; sample < bufferLength; ++sample)
-		{
-			noiseBuffer.addSample(0, sample, Random::getSystemRandom().nextFloat() / 5.0f);
-		}
-		float* noiseBufferData = noiseBuffer.getWritePointer(0);
-		//buffer.addFrom(0, 0, noiseBufferData, bufferLength);
-		
-		for (int sample = 0; sample < bufferLength; ++sample)
-		{
-			//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
-			bufferWrite[sample] *= noiseBufferData[sample];
-		}
-		addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
-		addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
+	//for (int time = 408; time < 408 + 500; time += 20)
+	//{
+	//	float* bufferWriteL = buffer.getWritePointer(leftChannel);
+	//	float* bufferWriteR = buffer.getWritePointer(rightChannel);
+	//	
+	//	copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, time);
+	//	copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, time);
+	//	
+	//	AudioBuffer<float>noiseBuffer;
+	//	noiseBuffer.setSize(2, bufferLength);
+	//	noiseBuffer.clear();
+	//	for (int sample = 0; sample < bufferLength; ++sample)
+	//	{
+	//		noiseBuffer.addSample(0, sample, Random::getSystemRandom().nextFloat() / 1.5f);
+	//	}
+	//	float* noiseBufferData = noiseBuffer.getWritePointer(0);
+	//	//buffer.addFrom(0, 0, noiseBufferData, bufferLength);
 
-	}
+	//	for (int sample = 0; sample < bufferLength; ++sample)
+	//	{
+	//		//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
+	//		bufferWriteL[sample] *= noiseBufferData[sample];
+	//		bufferWriteR[sample] *= noiseBufferData[sample];
+	//	}
+
+	//	addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
+	//	addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
+	//	
+	//}
 	
 	
 	//allPassFilter.process(dsp::ProcessContextReplacing<float>(block));
@@ -373,7 +377,9 @@ void Circular_attemptAudioProcessor::addDelayWithCurrentBuffer(int channel,const
 																	const int delayBufferLength,  float* bufferData, int delayTimesNumber)
 {
 	//const float* dryRead = dryBuffer.getReadPointer()
-	float amplitudeMultiplier = 0.4 / (delayTimesNumber);
+	float amplitudeMultiplier = 0.85 / (delayTimesNumber);
+	//int amplitudeMultiplier_ = Random::getSystemRandom().nextInt(Range<int>(1, 12));
+	//float amplitudeMultiplier = (float)amplitudeMultiplier_ / 10;
 	//float amplitudeMultiplier = 0.15;
 	if (delayBufferLength > bufferLength + bufferWritePosition)																
 	{
