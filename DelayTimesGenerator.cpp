@@ -12,7 +12,7 @@
 
 int DelayTimesGenerator::generateRandomNumber()
 {
-	auto randomNumber = Random::getSystemRandom().nextInt(Range<int>(7, 602));
+	auto randomNumber = Random::getSystemRandom().nextInt(Range<int>(15, 400));
 	return randomNumber;
 }
 
