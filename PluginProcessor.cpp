@@ -214,13 +214,6 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 		copyBufferToDelayBuffer(channel, bufferData, delayBufferData, bufferLength, delayBufferLength);
     }
 
-
-	
-	//////////reflections with noise////////////
-	
-	////////////////////////////////////////////
-
-
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[filter]);
