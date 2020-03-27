@@ -34,7 +34,7 @@ public:
 
     void processBlock (AudioBuffer<float>&, MidiBuffer&) override;
 
-	void updateFilter();
+
 
 	void copyBufferToDelayBuffer(int channel, const float * bufferData, const float * delayBufferData, const int bufferLength, const int delayBufferLength);
 
@@ -73,7 +73,6 @@ public:
 	
 	//AudioProcessorValueTreeState tree;
 
-	int getITDTime();
 	int reflectionsNumber;
 	std::vector<int>ITDCoefficients;
 private:
@@ -83,16 +82,12 @@ private:
 	DelayTimesGenerator delayTimes;
 	std::vector<int> delayTimesArray;
 	int delayTimesNumber;
-	static const int numberDelayLines = 40;
-	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> lowPassFilter[numberDelayLines];
-	std::vector<int>filterCutoffFrequencies;
 	FilterGenerator filterGenerator;
-
-	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> allPassFilter;
+	
 
 	int lowBorderFilterFrequency, highBorderFilterFrequency;
 	const bool leftChannel{ 0 }, rightChannel{ 1 };
-	int filtersNumber;
+	
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Circular_attemptAudioProcessor)
 };

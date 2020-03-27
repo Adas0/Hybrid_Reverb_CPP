@@ -107,12 +107,12 @@ void Circular_attemptAudioProcessor::prepareToPlay (double sampleRate, int sampl
 	sampleRate_ = sampleRate;
 
 	const int numInputChannels = getNumInputChannels();
-	const int delayBufferSize = 3 * (sampleRate); // 'widzimy' dwie sekundy sygna³u w ty³ + troszkê wiêcej (+ 2* iloœæ próbek w buforze)
+	const int delayBufferSize = 6 * (sampleRate); // 'widzimy' dwie sekundy sygna³u w ty³ + troszkê wiêcej (+ 2* iloœæ próbek w buforze)
 
 	delayBuffer.setSize(getNumInputChannels(), delayBufferSize);
 	delayBuffer.clear();
 
-	delayTimesNumber = numberDelayLines;
+	delayTimesNumber = filterGenerator.numberDelayLines;
 	delayTimesArray = delayTimes.getDelayTimes(delayTimesNumber);
 	delayTimesArray[0] = 80;
 	delayTimesArray[1] = 120;
@@ -120,39 +120,6 @@ void Circular_attemptAudioProcessor::prepareToPlay (double sampleRate, int sampl
 	//delayTimesNumber += 1;
 
 	dsp::ProcessSpec spec; 
-	spec.sampleRate = sampleRate;
-	spec.maximumBlockSize = samplesPerBlock;
-	spec.numChannels = getTotalNumOutputChannels();
-
-	allPassFilter.prepare(spec);
-	allPassFilter.reset();
-	*(allPassFilter).state = *dsp::IIR::Coefficients<float>::makeAllPass(sampleRate, 15000.0f);
-
-	filtersNumber = numberDelayLines;
-	lowBorderFilterFrequency = 100;
-	highBorderFilterFrequency = 6000;
-	for (int filter = 0; filter < filtersNumber; ++filter)
-	{
-		if (filtersNumber <= numberDelayLines)
-			filterCutoffFrequencies.push_back(filterGenerator.getFilterCutoffFrequency(lowBorderFilterFrequency, highBorderFilterFrequency));
-	}
-
-	for (int filter = 0; filter < filtersNumber; ++filter)
-	{
-		lowPassFilter[filter].prepare(spec);
-		lowPassFilter[filter].reset();
-		*(lowPassFilter[filter]).state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, filterCutoffFrequencies[filter], 1.0f);
-	}
-	
-	for (int filter = 0; filter < filtersNumber; ++filter)
-	{
-		ITDCoefficients.push_back(getITDTime());
-	}
-}
-
-int Circular_attemptAudioProcessor::getITDTime()
-{
-	return Random::getSystemRandom().nextInt(Range<int>(-15, 15));
 }
 
 void Circular_attemptAudioProcessor::releaseResources()
@@ -187,6 +154,9 @@ bool Circular_attemptAudioProcessor::isBusesLayoutSupported (const BusesLayout& 
 
 void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
+
+	
+
     ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
@@ -225,7 +195,7 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 		addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber);
 		addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber);
 	}
-
+	
 	//szum:
 	//for (int time = 408; time < 408 + 40; time += 20)
 	//{
@@ -256,7 +226,7 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 		//addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, 3);	
 	//}
 	
-	//allPassFilter.process(dsp::ProcessContextReplacing<float>(block));
+	allPassFilter.process(dsp::ProcessContextReplacing<float>(block));
 
 	copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 0);
 	copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 0);
@@ -298,14 +268,13 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
 	//	//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
 	//	bufferWrite[sample] *= noiseBufferData[sample];
 	//}
-
+	
 	bufferWritePosition += bufferLength; //przesuwamy pozycjê czyli miejsce do którego wklejamy nasz buffer
 									//czyli je¿eli bufor ma 512 próbek to kolejmy wklejamy w miejsce od indeksu 513
 	bufferWritePosition = bufferWritePosition % delayBufferLength;	//je¿eli pozycja wpisania wykracza poza d³ugoœæ bufora to znowu idzie na pocz¹tek:
 															//np. bufor opóŸniaj¹cy to 2048. pozycja wpisania to 2048, dziêki modulo pozycja idzie znów na 
 															//pocz¹tek czyli na 0, potem 1
 															//mWritePosition to pole klasy - bêdziemy tego indeksu u¿ywaæ te¿ przy czytaniu z bufora
-
 
 }
 
@@ -371,7 +340,8 @@ void Circular_attemptAudioProcessor::addDelayWithCurrentBuffer(int channel,const
 																	const int delayBufferLength,  float* bufferData, int delayTimesNumber)
 {
 	//const float* dryRead = dryBuffer.getReadPointer()
-	float amplitudeMultiplier = 0.68 / (delayTimesNumber);
+	//float amplitudeMultiplier = 0.68 / (delayTimesNumber);
+	float amplitudeMultiplier = 0.65 / (delayTimesNumber);
 	//int amplitudeMultiplier_ = Random::getSystemRandom().nextInt(Range<int>(1, 12));
 	//float amplitudeMultiplier = (float)amplitudeMultiplier_ / 10;
 	//float amplitudeMultiplier = 0.15;
