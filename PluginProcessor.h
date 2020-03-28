@@ -11,8 +11,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "DelayTimesGenerator.h"
-#include "FilterGenerator.h"
+#include "ReverbEngine.h"
 
 //==============================================================================
 /**
@@ -34,18 +33,9 @@ public:
 
     void processBlock (AudioBuffer<float>&, MidiBuffer&) override;
 
-
-
-	void copyBufferToDelayBuffer(int channel, const float * bufferData, const float * delayBufferData, const int bufferLength, const int delayBufferLength);
-
-	void copyBackToCurrentBuffer(AudioBuffer<float>& buffer, int channel, const float * bufferData, const float * delayBufferData,
-																				const int bufferLength, const int delayBufferLength, int delayTime);
-
-	void addDelayWithCurrentBuffer(int channel, const int bufferLength, const int delayBufferLength,  float* dry, int delayTimesNumber);
-
-	float reverbLength = 0.5;
+	/*float reverbLength = 0.5;
 	int reverbSize = 0;
-	int firstRefTime = 0;
+	int firstRefTime = 0;*/
 
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
@@ -70,24 +60,12 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-	
 	//AudioProcessorValueTreeState tree;
 
-	int reflectionsNumber;
-	std::vector<int>ITDCoefficients;
+	//int reflectionsNumber;
+	//std::vector<int>ITDCoefficients;
 private:
-	AudioBuffer<float> delayBuffer, secondBuffer, fadeBuffer;
-	int bufferWritePosition{ 0 };
-	int sampleRate_ = 0;
-	DelayTimesGenerator delayTimes;
-	std::vector<int> delayTimesArray;
-	int delayTimesNumber;
-	FilterGenerator filterGenerator;
-	
-
-	int lowBorderFilterFrequency, highBorderFilterFrequency;
-	const bool leftChannel{ 0 }, rightChannel{ 1 };
-	
+	ReverbEngine reverbEngine;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Circular_attemptAudioProcessor)
 };

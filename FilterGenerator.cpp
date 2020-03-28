@@ -17,12 +17,12 @@ int FilterGenerator::getFilterCutoffFrequency(int& lowBorder, int& highBorder)
 	return Random::getSystemRandom().nextInt(Range<int>(lowBorder, highBorder));
 }
 
-void FilterGenerator::prepare(double sampleRate, int samplesPerBlock)
+void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numChannels)
 {
 	dsp::ProcessSpec spec;
 	spec.sampleRate = sampleRate;
 	spec.maximumBlockSize = samplesPerBlock;
-	spec.numChannels = getTotalNumOutputChannels();
+	spec.numChannels = numChannels;
 
 	allPassFilter.prepare(spec);
 	allPassFilter.reset();
@@ -33,7 +33,7 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock)
 	highBorderFilterFrequency = 6000;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
-		if (filtersNumber <= numberDelayLines)
+		//if (filtersNumber <= numberDelayLines)
 			filterCutoffFrequencies.push_back(getFilterCutoffFrequency(lowBorderFilterFrequency, highBorderFilterFrequency));
 	}
 

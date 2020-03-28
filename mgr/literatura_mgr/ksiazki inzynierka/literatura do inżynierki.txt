@@ -1,0 +1,21 @@
+- DAFX Digital Audio Effects
+literatura z tej ksi¹¿ki
+artyku³y mo¿na wpisaæ do literatury 
+
+Benade Fletcher
+
+analiza widma przed i z efektem 
+
+mirtoolbox  - matlab i python 
+
+zniekszta³cenie ataku po na³o¿eniu efektu
+
+
+do bibliografii:
+https://puredata.info/docs/manuals/pd
+http://write.flossmanuals.net/pure-data/using-midi/
+
+
+
+ju¿ u¿yte:
+https://ccrma.stanford.edu/~dattorro/EffectDesignPart2.pdf

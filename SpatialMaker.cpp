@@ -8,6 +8,7 @@
   ==============================================================================
 */
 
+#include "../JuceLibraryCode/JuceHeader.h"
 #include "SpatialMaker.h"
 
 
@@ -16,10 +17,15 @@ int SpatialMaker::getITDTime()
 	return Random::getSystemRandom().nextInt(Range<int>(-15, 15));
 }
 
-void SpatialMaker::addITD()
+void SpatialMaker::createITDarray()
 {
-	for (int filter = 0; filter < filtersNumber; ++filter)
+	for (int line = 0; line < numberDelayLines; ++line)
 	{
 		ITDCoefficients.push_back(getITDTime());
 	}
+}
+
+void SpatialMaker::prepare()
+{
+	createITDarray();
 }

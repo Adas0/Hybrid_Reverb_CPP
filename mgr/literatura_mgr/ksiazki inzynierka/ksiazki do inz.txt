@@ -1,0 +1,66 @@
+I:
+V. Verfaille. Content-based transformations
+J. B. Allen. Short term spectral analysis, synthesis and modification by discrete fourier transform.
+ANSI. USA Standard Acoustic Terminology
+d J. Wright. Higher-level composition control in lusic sketcher
+D. Arfib. Visual representations for digital audio effects and their control
+J. Dattoro. Effect design, part 2: Delay-line modulation and chorus -> !!!chyba dobre
+H. Honing. The vibrato problem, comparing two solutions
+S.J. Orfanidis. Introduction to Signal Processing
+C. E. Seashore. Psychology of the vibrato in voice and speech
+U. Z ¨ olzer. ¨ Digital Audio Signal Processing
+
+
+II:
+C. Anderton. Multieffects for Musicians
+History of electronic sound modification. J. Audio Eng. Soc
+Effect design, part 1: Reverberator and other filters. J. Audio Eng. Soc
+P. Dutilleux. Simple to operate digital time-varying filters
+P. Dutilleux. Spinning the sounds in real-time. In Proc. Int. Comp. Music Conf
+P. Fern´andez-Cid and F.J. Casaj´us-Quir´os. Enhanced quality and variety of chorus/flange units
+W.G. Gardner. Efficient convolution without input-output delay. J. Audio Eng. Soc
+C. M¨uller-Tomfelde. Low-latency convolution for real-time applications
+D. Rochesso. Fractionally-adressed delay lines
+
+III:
+
+
+
+ciekawe:
+J.-C. Risset and D. L. Wessel. Exploration of Timbre by Analysis and Synthesis
+J. O. Smith. An allpass approach to digital phasing and flanging
+
+U¯YTE:
+http://www.roletech.net/books/HandbookAcoustics.pdf
+https://learningon.theloop.school.nz/moodle/pluginfile.php/107699/mod_page/content/3/Effects%20Units.pdf
+http://write.flossmanuals.net/pure-data/using-midi/
+https://ccrma.stanford.edu/~dattorro/EffectDesignPart1.pdf
+https://github.com/ccrma/chugins/blob/master/PitchTrack/fft_mayer.c
+
+
+napisac o przetwarzaniu sygnalu analogowego na cyfrowy, o czestotliwosci próbkowania
+adc~ - analog-to-digical converter, moze wrzucic jakis wzór i wykres,
+twierdzenie Shannona - dlatego ze sygnal ze struny moze posiadac kilkanascie kHz, 
+równiez dlatego ze 44.1 kHz to standard
+
+Chord - fft - Transformata Fouriera
+dafx - wzor na dft, str 24
+
+obejrzec filmik na yt - jak pisac prace inz. - szczególnie do kogo ma byc skierowana praca
+- np. czy dla laika (czy tlumaczyc wszystko) - engineering theorem?
+
+spectrogram - opisany na stronie 30
+system cyfrowy - str 33
+delay - 34
+dodawanie sygnalów - 34
+
+filtry - 37
+
+
+mo¿e bêdê wrzuca³ pod ka¿dym efektem jak powinien wygl¹daæ w teorii: np. tremolo - przebieg czasowy,
+vibrato to samo.
+
+przejrzeæ wszystkie ksi¹¿ki które wydaj¹ siê ciekawe (z literatury dafx), 
+z nich mo¿e jakieœ obrazki, definicje i ciekawe ueagi, np. wzory dsp, filtracje itp
+
+

@@ -10,15 +10,13 @@
 
 #pragma once
 #include <vector>
+#include "ReverbElement.h"
 
-class SpatialMaker
+class SpatialMaker: public ReverbElement
 {
 public:
 	int getITDTime();
+	void prepare();
 	std::vector<int>ITDCoefficients;
-	int filtersNumber;
-	void addITD()
-	{
-
-	}
+	void createITDarray();
 };

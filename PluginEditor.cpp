@@ -67,7 +67,7 @@ void Circular_attemptAudioProcessorEditor::resized()
 
 void Circular_attemptAudioProcessorEditor::sliderValueChanged(Slider* slider)
 {
-	processor.reverbLength = reverbLengthSlider.getValue();
-	//processor.reverbSize = reverbSizeSlider.getValue();
-	processor.firstRefTime = reverbSizeSlider.getValue();
+	//processor.reverbLength = reverbLengthSlider.getValue();
+	////processor.reverbSize = reverbSizeSlider.getValue();
+	//processor.firstRefTime = reverbSizeSlider.getValue();
 }

@@ -16,3 +16,4 @@ po prostu będzie coś w stylu klasa.funkcja(buffer)). Czyli np. ReverbEngine.pr
 A w funkcji prepare w processorze też będzie tylko np. ReverbEngine.prepare(sampleRate, samplesPerBlock)
 Więc w przypadku tworzenia edytora to będzie : np. processor.ReverbEngine.FilterGenerator.lowPass =
 = filterSlider.getValue();
+9. Może jeszcze klasa FirstReflectionsProcessor np. 
