@@ -17,7 +17,8 @@ class DelayTimesGenerator
 public:
 	DelayTimesGenerator() {}
 
-	int generateRandomNumber();
-	std::vector<int> getDelayTimes(int & delayTimesNumber);
-	std::vector<float> getNoiseCoefficients(int & numCoefficients);
+	int highDelayTime, lowDelayTime;
+	std::vector<int> getDelayTimes(int & delayTimesNumber, int& lowTime, int& highTime);
+	int generateRandomNumber(int& lowTime, int& highTime);
+
 };

@@ -10,20 +10,20 @@
 
 #include "DelayTimesGenerator.h"
 
-int DelayTimesGenerator::generateRandomNumber()
+int DelayTimesGenerator::generateRandomNumber(int & lowTime, int& highTime)
 {
-	auto randomNumber = Random::getSystemRandom().nextInt(Range<int>(15, 800));
+	auto randomNumber = Random::getSystemRandom().nextInt(Range<int>(lowTime, highTime));
 	return randomNumber;
 }
 
 
-std::vector<int> DelayTimesGenerator::getDelayTimes(int & delayTimesNumber)
+std::vector<int> DelayTimesGenerator::getDelayTimes(int & delayTimesNumber, int& lowTime, int& highTime)
 {
 	std::vector<int>delayTimes;
 	delayTimes.clear();
 	for (int i = 0; i < delayTimesNumber; ++i)
 	{
-		delayTimes.push_back(generateRandomNumber());
+		delayTimes.push_back(generateRandomNumber(lowTime, highTime));
 	}
 	//std::sort(delayTimes.begin(), delayTimes.end());
 	return delayTimes;

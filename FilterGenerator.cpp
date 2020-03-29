@@ -30,7 +30,7 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 
 	filtersNumber = numberDelayLines;
 	lowBorderFilterFrequency = 100;
-	highBorderFilterFrequency = 6000;
+	highBorderFilterFrequency = 1500;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		//if (filtersNumber <= numberDelayLines)
@@ -44,3 +44,5 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 		*(lowPassFilter[filter]).state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, filterCutoffFrequencies[filter], 1.0f);
 	}
 }
+//hmm, przy takim układzie wszystkie obiekty klasy FilterGenerator będą miały taką samą tą tablicę lowPassFilter? Bo chyba
+//jak przypisuję w funkcji prepare wartości do tej tablicy, to ta tablica jest przypisana tak jakby do klasy?

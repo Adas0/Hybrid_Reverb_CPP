@@ -13,14 +13,16 @@
 #include "DelayTimesGenerator.h"
 #include "FilterGenerator.h"
 #include "SpatialMaker.h"
+#include "LateReverb.h"
 
-class ReverbEngine
+class ReverbEngine: public ReverbElement
 {
 public:
 	ReverbEngine() {}
 	FilterGenerator filterGenerator;
 	SpatialMaker spatialMaker;
 	DelayTimesGenerator delayTimes;
+	LateReverb lateReverb;
 	std::vector<int> delayTimesArray;
 	int delayTimesNumber;
 	void process(AudioBuffer<float>&buffer);

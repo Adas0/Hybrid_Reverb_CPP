@@ -14,9 +14,11 @@
 
 int SpatialMaker::getITDTime()
 {
-	return Random::getSystemRandom().nextInt(Range<int>(-15, 15));
+	return Random::getSystemRandom().nextInt(Range<int>(-3, 3));
 }
 
+//prawdopodobnie ta funkcja powinna zwracać wektor, i w ogóle być wywoływana w klasie ReverbEngine. Bo wtedy mam możliwość
+//stworzenia kilku obiektów klasy SpatialMaker 
 void SpatialMaker::createITDarray()
 {
 	for (int line = 0; line < numberDelayLines; ++line)
