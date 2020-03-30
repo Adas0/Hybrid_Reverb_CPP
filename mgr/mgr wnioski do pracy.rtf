@@ -19661,9 +19661,20 @@ Jednak musz\'ea losowa\'e6 liczby, a nie dodawa\'e6 pierwsze. Bo mam ograniczon\
 \b Amplituda ostatniej cz\'easci tablicy z czasami op\f1\lang1033\'f3\f0\lang1045\'9fnienia (p\f1\lang1033\'f3\f0\lang1045\'9fny pog\'b3os) musz\'b9 mie\'e6 wi\'eaksz\'b9 warto\'9c\'e6. Czasem wydaje mi si\'ea \'bfe to jest bez sensu, ale jednak tak musi by\'e6. Bo te p\f1\lang1033\'f3\f0\lang1045\'9fne odbicia (mocno od siebie oddalone) bardzo szybko zanikaj\'b9 (!!!).\line Czyli musz\'ea zmniejszy\'e6 amplitud\'ea wcze\'9cniejszych odbi\'e6, BARDZO mo\'bfe te\'bf pom\f1\lang1033\'f3\f0\lang1045 c zmniejszenie amplitudy d\'9fwi\'eaku bezpo\'9credniego (gdzie\'9c wy\'bfej jest opisany pomys\'b3 jak mo\'bfnaby to zrobi\'e6). \par
 \b0 Sytuacja znacznie poprawi\'b3a si\'ea przy mocniejszej filtracji (100, 1kHz) i wy\'bfym mno\'bfniku amplitudy (0.85) - pog\'b3os brzmi o wiele bardziej naturalnie, zanika wolniej przy braku przesteru i nie s\'b3ycha\'e6 dyskretnych odbi\'e6. (przy stosunku p\f1\lang1033\'f3\f0\lang1045\'9fnego pog\'b3osu do wczesnego: 5:1)\par
 Musz\'ea por\f1\lang1033\'f3\f0\lang1045 wna\'e6 dwie sytuacje: linie 10-800ms vs 10-400ms i 400-800 (tych kilka razy wi\'eacej)\line Chyba nie ma r\f1\lang1033\'f3\f0\lang1045\'bfnicy, ech.... \par
-\par
-\par
 
-\pard\sa200\sl276\slmult1\f1\lang21\par
+\pard\sa200\sl276\slmult1\b Albo w\'b3a\'9cnie CISZEJ powinny by\'e6 p\f1\lang1033\'f3\f0\lang1045\'9fne linie???? \par
+\b0 W\'b3a\'9cciwie to siedz\'ea na tym tyle, a.... przecie\'bf... skoro mam opisa\'e6 to w spos\f1\lang1033\'f3\f0\lang1045 b obiektywny, to przecie\'bf nie musi by\'e6 tego s\'b3ycha\'e6 \'bfeby to por\f1\lang1033\'f3\f0\lang1045 wna\'e6... (nie musi by\'e6 s\'b3ycha\'e6 r\f1\lang1033\'f3\f0\lang1045\'bfnicy). \par
+Zamiast kompilowa\'e6 ca\'b3y czas to mo\'bfe po prostu zrobi\'ea te pokr\'eat\'b3a.... nawet je\'9cli ma klika\'e6 ruszaj\'b9c pokr\'eat\'b3em... b\'ead\'ea mog\'b3 testowa\'e6 20 rzeczy na raz...\line Poza tym i tak b\'ead\'ea musia\'b3 p\f1\lang1033\'f3\f0\lang1045\'9fniej zrobi\'e6 ten interfejs wi\'eac najlepiej od razu. Najwy\'bfej jak stwierdz\'ea, \'bfe kt\f1\lang1033\'f3\f0\lang1045 rego\'9c parametru nie chc\'ea dawa\'e6 u\'bfytkownikowi do modifykacji to go wywal\'ea. \line\line Mog\'ea spr\f1\lang1033\'f3\f0\lang1045 bowa\'e6 doda\'e6 kilka linii gdzie op\f1\lang1033\'f3\f0\lang1045\'9fnia o 1ms. Mo\'bfe to spowoduje jak\'b9\'9c korzystn\'b9 zmian\'ea barwy\par
+Teoretycznie jak przyjm\'ea czasy np. 80-300 (80 bo wi\'eaksze ni\'bf 1 odbicie) i zrobi\'ea odpowiednio du\'bfo linii op\f1\lang1033\'f3\f0\lang1045\'9fniaj\'b9cych, to wyjdzie na to samo, jak posiadanie mniejszej ilo\'9cci, a np. w zakresie 15-300 (bo odbicia b\'ead\'b9 bardzo blisko siebie). \line A tre\'9cci pracy nie t\'b3umaczy\'e6 si\'ea, tylko napisa\'e6 np. \'bfe spos\f1\lang1033\'f3\f0\lang1045 b jest nast\'eapuj\'b9cy: przyjmujemy odbicia o wy\'bfszym czasie ni\'bf pierwsze odbicie i odpowiednio du\'bfo linii, zaskutkuje to du\'bf\'b9 g\'easto\'9cci\'b9. A nawet lepiej, bo linie nie b\'ead\'b9 tak szybko zanika\'e6. \par
+W przypadku mojej aplikacji, jedno odbicie NIE wpada do innej linii op\f1\lang1033\'f3\f0\lang1045\'9fniaj\'b9cej. Cho\'e6, hmm... \line POMYS\'a3: Mog\'ea np. zlicza\'e6 bufory, i co jaki\'9c czas dodawa\'e6 do obecnego bufora bufor, kt\f1\lang1033\'f3\f0\lang1045 ry by\'b3 np. jeden bufor wcze\'9cniej. Dzi\'eaki temu mo\'bfe zwi\'eakszy\'e6 si\'ea znacznie g\'easto\'9c\'e6 odbi\'e6. \par
+No i: nie musi by\'e6 tak, jak napisa\'b3em wy\'bfej. To co zrobi\'b3em to m\f1\lang1033\'f3\f0\lang1045 j pomys\'b3, i tak mo\'bfe by\'e6. \par
+Ja po prostu dodaj\'ea op\f1\lang1033\'f3\f0\lang1045\'9fniony sygna\'b3 ze zmniejszon\'b9 amplitud\'b9 i filtrem. Oni jako\'9c miksuj\'b9 r\f1\lang1033\'f3\f0\lang1045\'bfne linie w tej macierzy? \par
+Pierwsze odbicia - mog\'ea doda\'e6 bez sprz\'ea\'bfenia. Ale w sumie nie musz\'ea. Cho\'e6 wtedy mog\'ea ich nie filtrowa\'e6 jakbym to zrobi\'b3. \par
+W konkluzjach: zamodelowanie faktycznej sytuacji rozprzestrzeniania si\'ea fali w pomieszczeniu jest znacznie bardziej skomplikowane, further investigation is needed.. co\'9c tam. \par
+Mo\'bfe przy odbiciu zmiana fazy czyli all pass filter? \par
+\par
+\par
+\par
+\f1\lang21\par
 }
  

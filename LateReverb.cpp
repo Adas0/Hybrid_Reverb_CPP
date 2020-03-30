@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "LateReverb.h"
+#include "LateReverb.h" 
 
 
 void LateReverb::addLateReverb(std::vector<int>& delayTimes)
@@ -18,6 +18,7 @@ void LateReverb::addLateReverb(std::vector<int>& delayTimes)
 
 		//delayTimes [line + (numberDelayLines - this->lateReverbNumLines) - 1] = this->highDelayTime + primeNumbers[Random::getSystemRandom().nextInt(Range<int>(0, primeNumbers.size()-5))] * line;
 																		//liczba pierwsza, żeby nie było interferencji
-		delayTimes [line + (numberDelayLines - this->lateReverbNumLines) - 1] = this->highDelayTime + Random::getSystemRandom().nextInt(Range<int>(0, 300));  //czyli np. 310, 320, 330
+		delayTimes [line + (numberDelayLines - this->lateReverbNumLines) - 1] = this->highDelayTime 
+																				+ Random::getSystemRandom().nextInt(Range<int>(-50, 340));  //czyli np. 310, 320, 330
 	}
 }

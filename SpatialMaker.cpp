@@ -14,7 +14,7 @@
 
 int SpatialMaker::getITDTime()
 {
-	return Random::getSystemRandom().nextInt(Range<int>(-3, 3));
+	return Random::getSystemRandom().nextInt(Range<int>(-9, 9));
 }
 
 //prawdopodobnie ta funkcja powinna zwracać wektor, i w ogóle być wywoływana w klasie ReverbEngine. Bo wtedy mam możliwość
