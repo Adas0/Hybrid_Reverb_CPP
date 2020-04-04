@@ -61,11 +61,11 @@ public:
     void setStateInformation (const void* data, int sizeInBytes) override;
 
 	//AudioProcessorValueTreeState tree;
-
+	ReverbEngine reverbEngine;
 	//int reflectionsNumber;
 	//std::vector<int>ITDCoefficients;
 private:
-	ReverbEngine reverbEngine;
+	
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Circular_attemptAudioProcessor)
 };

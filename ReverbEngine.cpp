@@ -21,23 +21,23 @@ void ReverbEngine::prepare(double sampleRate, int samplesPerBlock, int numChanne
 	delayBuffer.clear();
 
 
-	delayTimes.lowDelayTime = 200;
-	delayTimes.highDelayTime = 400;
+	delayTimes.lowDelayTime = 10;
+	delayTimes.highDelayTime = 450;
 	delayTimesNumber = numberDelayLines;
 	delayTimesArray = delayTimes.getDelayTimes(delayTimesNumber, delayTimes.lowDelayTime, delayTimes.highDelayTime);
 	//int lateTailArrayIndex = 2 * delayTimesNumber / 3;	
 
 	
-	lateReverb.lateReverbNumLines = 9 * delayTimesNumber / 10; //biorę ostatnią 1/3 elementów tablicy zawierającej czasy opóźnienia
+	//lateReverb.lateReverbNumLines =  delayTimesNumber / 2; //biorę ostatnią 1/3 elementów tablicy zawierającej czasy opóźnienia
 														  //i bede podmieniał je na odbicia większe niż zakres czasów opóźnienia zwykłych odbić
-	lateReverb.addLateReverb(delayTimesArray);
+	//lateReverb.addLateReverb(delayTimesArray);
 	//first reflections
-	delayTimesArray[0] = 200;
-	delayTimesArray[1] = 220;
-	delayTimesArray[2] = 240;
+	delayTimesArray[delayTimesArray.size()-1] = 0;
+	//delayTimesArray[1] = 220;
+	//delayTimesArray[2] = 240;
 
-	amplitudeEarly = 0.85f / delayTimesNumber;
-	amplitudeLate = 0.5f / delayTimesNumber;
+	//amplitudeEarly = 0.98f / delayTimesNumber;
+	//amplitudeLate = 0.5f / delayTimesNumber;
 
 	/*filterGenerator.lowPassFilter[0 = ]*/
 }
@@ -67,43 +67,64 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 	}
 	
 	//kilka 1 ms linii
-	for (int i = 0; i < 5; i++)
-	{
-		copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, i);
-		copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, i);
+	//for (int i = 0; i < 5; i++)
+	//{
+	//	copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, i);
+	//	copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, i);
 
 
 
-		//filterGenerator.lowPassFilter[filter].process(dsp::ProcessContextReplacing<float>(block));
-		addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, amplitudeEarly);
-		addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, amplitudeEarly);
-	}
-
+	//	//filterGenerator.lowPassFilter[filter].process(dsp::ProcessContextReplacing<float>(block));
+	//	addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, amplitudeEarly);
+	//	addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, amplitudeEarly);
+	//}
+	
 	for (int filter = 0; filter < filterGenerator.filtersNumber; ++filter)
 	{
-		if (filter < delayTimesNumber - lateReverb.lateReverbNumLines)
+		/*if (filter < delayTimesNumber - lateReverb.lateReverbNumLines)
+		{*/ 
+		float delayTimeDependantAmp = (1 - (delayTimesArray[filter] / delayTimes.highDelayTime)* 0.85);
+		float wet = 1 - wetDry;
+		if (filter == filterGenerator.filtersNumber - 1)	//first reflection
 		{
+			//wetDry
 			copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[filter]);
-			copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[filter] + spatialMaker.ITDCoefficients[filter]);
+			copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[filter] /*+ spatialMaker.ITDCoefficients[filter]*/);
 
 
 
 			filterGenerator.lowPassFilter[filter].process(dsp::ProcessContextReplacing<float>(block));
-			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, amplitudeEarly);
-			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, amplitudeEarly);
+			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, wetDry);
+			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, wetDry);
+			//buffer.applyGain(wetDry);
+
+			//to jest dobrze, tylko trzeba zamienić ten dźwięk bezpośredni na bez sprzężenia. ok chyba jest
+			
+
 		}
 		else
-		{
+		{ 
 			copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[filter]);
 			copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[filter] + spatialMaker.ITDCoefficients[filter]);
 
-
-			
 			filterGenerator.lowPassFilter[filter].process(dsp::ProcessContextReplacing<float>(block));
-			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, amplitudeLate * 0.9 );
-			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, amplitudeLate * 0.9);
-		}
+			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, delayTimeDependantAmp * wet / numberDelayLines);
+			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, delayTimeDependantAmp * wet / numberDelayLines);
+			/*}
+}
 
+else
+{
+	copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[filter]);
+	copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[filter] + spatialMaker.ITDCoefficients[filter]);
+
+
+
+	filterGenerator.lowPassFilter[filter].process(dsp::ProcessContextReplacing<float>(block));
+	addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, amplitudeLate * 0.9 );
+	addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, amplitudeLate * 0.9);
+}*/
+		}
 		
 	}
 
@@ -111,11 +132,11 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 
 	//filterGenerator.allPassFilter.process(dsp::ProcessContextReplacing<float>(block));
 
-	copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 0);
+	/*copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, 0);
 	copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, 0);
 
-	addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, amplitudeEarly);
-	addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, amplitudeEarly);
+	addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, 0.0002);
+	addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, 0.0002);*/
 
 
 	bufferWritePosition += bufferLength; //przesuwamy pozycjê czyli miejsce do którego wklejamy nasz buffer

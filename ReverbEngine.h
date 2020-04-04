@@ -38,4 +38,6 @@ public:
 	int numInputChannels;
 	int numOutputChannels;
 	float amplitudeEarly, amplitudeLate;
+	float wetDry = 0;
+	float reflectionAmplitude = 0.5;
 };

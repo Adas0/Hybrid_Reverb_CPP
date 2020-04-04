@@ -19,14 +19,14 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circ
     // editor's size to whatever you need it to be.
     setSize (200, 100);
 
-	reverbLengthSlider.setSliderStyle(Slider::Rotary);
-	reverbLengthSlider.setRange(0.0, 1.0, 0.01);
-	reverbLengthSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
-	reverbLengthSlider.setPopupDisplayEnabled(true, false, this);
-	reverbLengthSlider.setTextValueSuffix(" ");
-	reverbLengthSlider.setValue(0.9);
-	addAndMakeVisible(&reverbLengthSlider);
-	reverbLengthSlider.addListener(this);
+	wetDrySlider.setSliderStyle(Slider::Rotary);
+	wetDrySlider.setRange(0.0, 1, 0.01);
+	wetDrySlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
+	wetDrySlider.setPopupDisplayEnabled(true, false, this);
+	wetDrySlider.setTextValueSuffix(" ");
+	wetDrySlider.setValue(0.5);
+	addAndMakeVisible(&wetDrySlider);
+	wetDrySlider.addListener(this);
 
 	reverbSizeSlider.setSliderStyle(Slider::Rotary);
 	reverbSizeSlider.setRange(30.0, 1000.0, 1.0);
@@ -36,6 +36,8 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circ
 	reverbSizeSlider.setValue(100.0);
 	addAndMakeVisible(&reverbSizeSlider);
 	reverbSizeSlider.addListener(this);
+
+	//wetDrySlider
 
 }
 
@@ -61,7 +63,7 @@ void Circular_attemptAudioProcessorEditor::resized()
 	//processor.reverbLength = reverbLengthSlider.getValue();
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-	reverbLengthSlider.setBounds(0, 0, 100, 100);
+	wetDrySlider.setBounds(0, 0, 100, 100);
 	reverbSizeSlider.setBounds(100, 0, 100, 100);
 }
 
@@ -70,4 +72,6 @@ void Circular_attemptAudioProcessorEditor::sliderValueChanged(Slider* slider)
 	//processor.reverbLength = reverbLengthSlider.getValue();
 	////processor.reverbSize = reverbSizeSlider.getValue();
 	//processor.firstRefTime = reverbSizeSlider.getValue();
+	processor.reverbEngine.wetDry = wetDrySlider.getValue();
+	processor.reverbEngine.reflectionAmplitude = 1 - wetDrySlider.getValue();
 }

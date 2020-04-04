@@ -30,16 +30,16 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 
 	filtersNumber = numberDelayLines;
 	lowBorderFilterFrequency = 100;
-	highBorderFilterFrequency = 6000;
+	highBorderFilterFrequency = 3000;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		//if (filtersNumber <= numberDelayLines)
 			filterCutoffFrequencies.push_back(getFilterCutoffFrequency(lowBorderFilterFrequency, highBorderFilterFrequency));
 	}
 
-	filterCutoffFrequencies[0] = 20000;
-	filterCutoffFrequencies[1] = 20000;
-	filterCutoffFrequencies[2] = 20000;
+	filterCutoffFrequencies[filterCutoffFrequencies.size()-1] = 20000;
+	/*filterCutoffFrequencies[1] = 20000;
+	filterCutoffFrequencies[2] = 20000;*/
 
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{

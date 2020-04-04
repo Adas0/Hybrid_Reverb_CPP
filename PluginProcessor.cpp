@@ -148,76 +148,8 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-	
+
 	reverbEngine.process(buffer);
-
-	
-	//szum:
-	//for (int time = 408; time < 408 + 40; time += 20)
-	//{
-	//	float* bufferWriteL = buffer.getWritePointer(leftChannel);
-	//	float* bufferWriteR = buffer.getWritePointer(rightChannel);
-	//	
-	//	copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, time);
-	//	copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, time);
-	//	
-	//	AudioBuffer<float>noiseBuffer;
-	//	noiseBuffer.setSize(2, bufferLength);
-	//	noiseBuffer.clear();
-	//	for (int sample = 0; sample < bufferLength; ++sample)
-	//	{
-	//		noiseBuffer.addSample(0, sample, Random::getSystemRandom().nextFloat() / 5.0f);
-	//	}
-	//	float* noiseBufferData = noiseBuffer.getWritePointer(0);
-	//	//buffer.addFrom(0, 0, noiseBufferData, bufferLength);
-	//	for (int sample = 0; sample < bufferLength; ++sample)
-	//	{
-	//		//noiseBufferData[sample] *= std::pow(0.5, sample);
-	//		//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
-	//		bufferWriteL[sample] *= noiseBufferData[sample];
-	//		bufferWriteR[sample] *= noiseBufferData[sample];
-	//	}
-	///////////////////////////
-		//addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, 3);
-		//addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, 3);	
-	//}
-	
-
-	/////////////
-	//AudioBuffer<float>noiseBuffer;
-	//noiseBuffer.setSize(2, bufferLength);
-	//noiseBuffer.clear();
-	//for (int sample = 0; sample < bufferLength; ++sample)
-	//{
-	//	noiseBuffer.addSample(0, sample, Random::getSystemRandom().nextFloat() / 10.0f);
-	//}
-	//float* noiseBufferData = noiseBuffer.getWritePointer(0);
-	////buffer.addFrom(0, 0, noiseBufferData, bufferLength);
-	//float* bufferWrite = buffer.getWritePointer(0);
-	//for (int sample = 0; sample < bufferLength; ++sample)
-	//{
-	//	//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
-	//	bufferWrite[sample] *= noiseBufferData[sample];
-	//}
-	
-
-	//////////////////////tutaj jest sposób dodawania/mnożenia każdej próbki przez szum//////////////////////
-	//AudioBuffer<float>noiseBuffer;
-	//noiseBuffer.setSize(2, bufferLength);
-	//noiseBuffer.clear();
-	//for (int sample = 0; sample < bufferLength; ++sample)
-	//{
-	//	noiseBuffer.addSample(0, sample, Random::getSystemRandom().nextFloat() / 10.0f);
-	//}
-	//float* noiseBufferData = noiseBuffer.getWritePointer(0);
-	////buffer.addFrom(0, 0, noiseBufferData, bufferLength);
-	//float* bufferWrite = buffer.getWritePointer(0);
-	//for (int sample = 0; sample < bufferLength; ++sample)
-	//{
-	//	//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
-	//	bufferWrite[sample] *= noiseBufferData[sample];
-	//}
-	
 
 }
 
