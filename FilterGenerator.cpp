@@ -30,7 +30,7 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 
 	filtersNumber = numberDelayLines;
 	lowBorderFilterFrequency = 100;
-	highBorderFilterFrequency = 3000;
+	highBorderFilterFrequency = 6000;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		//if (filtersNumber <= numberDelayLines)

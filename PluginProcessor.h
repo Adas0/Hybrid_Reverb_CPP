@@ -65,7 +65,7 @@ public:
 	//int reflectionsNumber;
 	//std::vector<int>ITDCoefficients;
 private:
-	
+	int asd = 0;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Circular_attemptAudioProcessor)
 };

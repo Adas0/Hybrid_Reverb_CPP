@@ -24,7 +24,7 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circ
 	wetDrySlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
 	wetDrySlider.setPopupDisplayEnabled(true, false, this);
 	wetDrySlider.setTextValueSuffix(" ");
-	wetDrySlider.setValue(0.5);
+	wetDrySlider.setValue(0.05);
 	addAndMakeVisible(&wetDrySlider);
 	wetDrySlider.addListener(this);
 

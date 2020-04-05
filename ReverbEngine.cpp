@@ -16,13 +16,13 @@ void ReverbEngine::prepare(double sampleRate, int samplesPerBlock, int numChanne
 	filterGenerator.prepare(sampleRate, samplesPerBlock, numChannels);
 	spatialMaker.prepare();
 
-	const int delayBufferSize = 6 * (sampleRate);
+	const int delayBufferSize = 4 * (sampleRate);
 	delayBuffer.setSize(numChannels, delayBufferSize);
 	delayBuffer.clear();
 
 
 	delayTimes.lowDelayTime = 10;
-	delayTimes.highDelayTime = 450;
+	delayTimes.highDelayTime = 800;
 	delayTimesNumber = numberDelayLines;
 	delayTimesArray = delayTimes.getDelayTimes(delayTimesNumber, delayTimes.lowDelayTime, delayTimes.highDelayTime);
 	//int lateTailArrayIndex = 2 * delayTimesNumber / 3;	
@@ -59,19 +59,29 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 	float* dryBufferL = buffer.getWritePointer(leftChannel);
 	float* dryBufferR = buffer.getWritePointer(rightChannel);
 
+	//buffer.applyGain(0.9);
 	for (int channel = 0; channel < numInputChannels; ++channel)
 	{
 		const float* bufferData = buffer.getReadPointer(channel);
 		const float* delayBufferData = delayBuffer.getReadPointer(channel);
+		
 		copyBufferToDelayBuffer(channel, bufferData, delayBufferData, bufferLength, delayBufferLength);
 	}
-	
+	//buffer.applyGain(0.5);
+	//delayBuffer.applyGain(0.9);
+	//buffer.applyGain(0.1);
+	//delayBuffer.applyGain(0.1);
 	//kilka 1 ms linii
 	//for (int i = 0; i < 5; i++)
 	//{
 	//	copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, i);
 	//	copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, i);
 
+	/*++asd;
+	if (asd > 100) asd = 0;
+
+	if (asd % 10 == 0)
+		delayBuffer.clear();*/
 
 
 	//	//filterGenerator.lowPassFilter[filter].process(dsp::ProcessContextReplacing<float>(block));
@@ -82,9 +92,11 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 	for (int filter = 0; filter < filterGenerator.filtersNumber; ++filter)
 	{
 		/*if (filter < delayTimesNumber - lateReverb.lateReverbNumLines)
-		{*/ 
-		float delayTimeDependantAmp = (1 - (delayTimesArray[filter] / delayTimes.highDelayTime)* 0.85);
+		{*/  
+		float delayTimeDependantAmp = (1 - (delayTimesArray[filter] /*/ delayTimes.highDelayTime) *//  delayTimes.delayTimesPrime[numberDelayLines + 13]) * 0.999999);
+		
 		float wet = 1 - wetDry;
+		//float delayTimeDependantAmp = 0.99f;
 		if (filter == filterGenerator.filtersNumber - 1)	//first reflection
 		{
 			//wetDry
@@ -93,7 +105,12 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 
 
 
+
 			filterGenerator.lowPassFilter[filter].process(dsp::ProcessContextReplacing<float>(block));
+			//tu będzie jeszcze delayTimeDepentantFilter
+
+
+			
 			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, wetDry);
 			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, wetDry);
 			//buffer.applyGain(wetDry);
@@ -153,20 +170,19 @@ void ReverbEngine::copyBufferToDelayBuffer(int channel, const float* bufferData,
 	const int bufferLength, const int delayBufferLength)
 {
 	//kopiujemy dane z naszego buffera do delay buffera
-
 	//sprawdzenie, czy dlugosc bufora opozniajacego jest wieksza niz d³ugoœæ bufora + pozycja. czyli 
 	if (delayBufferLength > bufferLength + bufferWritePosition)	//mo¿e byc taka sytuacja - np bufor ma dlugosc 512, bufor delay 2048, pozycja to 1537 (3* 512)
 															//czyli 1537 + 512 > 2038 (jest równe 2049)? cos takiego, nie rozumiem do koñca
 															//wiêc musimy w tej sytuacji przesuwamy na dlugosc bufora opozniajacego minus pozycja 
 	{
-		delayBuffer.copyFromWithRamp(channel, bufferWritePosition, bufferData, bufferLength, 1, 1);
+		delayBuffer.copyFromWithRamp(channel, bufferWritePosition, bufferData, bufferLength, 0.9, 0.9);
 	}
 	else
 	{
 		const int bufferRemaning = delayBufferLength - bufferWritePosition; //index 
-		delayBuffer.copyFromWithRamp(channel, bufferWritePosition, bufferData, bufferRemaning, 1, 1);
+		delayBuffer.copyFromWithRamp(channel, bufferWritePosition, bufferData, bufferRemaning, 0.9, 0.9);
 
-		delayBuffer.copyFromWithRamp(channel, 0, bufferData, bufferLength - bufferRemaning, 1, 1);	//to co zosta³o wklejamy na pocz¹tek. 
+		delayBuffer.copyFromWithRamp(channel, 0, bufferData, bufferLength - bufferRemaning, 0.9, 0.9);	//to co zosta³o wklejamy na pocz¹tek. 
 																										//czyli to co zosta³o odciête (ca³y bufor to 
 																										//bufferRemaining + ta reszta któr¹ tu doklejamy
 	}
@@ -195,14 +211,14 @@ void ReverbEngine::copyBackToCurrentBuffer(AudioBuffer<float>& buffer, int chann
 																		//w buforze opóŸniaj¹cym ¿eby wzi¹æ stamt¹d iloœæ próbek równ¹ d³ugoœci naszego bufora,
 																		//to dodajemy kawa³ek o d³ugoœci naszego bufora (z przesz³oœci) do naszego bufora
 	{
-		buffer.copyFromWithRamp(channel, 0, delayBufferData + bufferReadPosition, bufferLength, 1, 1);
+		buffer.copyFromWithRamp(channel, 0, delayBufferData + bufferReadPosition, bufferLength, 0.9, 0.9);
 	}
 	else																//je¿eli nie mamy tyle próbek (bufor opóŸniaj¹cy siê 'koñczy') to bierzemy kawa³ek z koñca
 																		//i resztê z pocz¹tku 
 	{
 		const int bufferRemaining = delayBufferLength - bufferReadPosition;		//ile wartoœci zosta³o w delay bufferze
-		buffer.copyFromWithRamp(channel, 0, delayBufferData + bufferReadPosition, bufferRemaining, 1, 1);
-		buffer.copyFromWithRamp(channel, bufferRemaining, delayBufferData, bufferLength - bufferRemaining, 1, 1);
+		buffer.copyFromWithRamp(channel, 0, delayBufferData + bufferReadPosition, bufferRemaining, 0.9, 0.9);
+		buffer.copyFromWithRamp(channel, bufferRemaining, delayBufferData, bufferLength - bufferRemaining, 0.9, 0.9);
 	}
 	//buffer.applyGain(0.9);
 }
