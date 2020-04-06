@@ -21,25 +21,29 @@ void ReverbEngine::prepare(double sampleRate, int samplesPerBlock, int numChanne
 	delayBuffer.clear();
 
 
-	delayTimes.lowDelayTime = 10;
-	delayTimes.highDelayTime = 800;
+	//delayTimes.lowDelayTime = 10;
+	//delayTimes.highDelayTime = 800;
 	delayTimesNumber = numberDelayLines;
 	delayTimesArray = delayTimes.getDelayTimes(delayTimesNumber, delayTimes.lowDelayTime, delayTimes.highDelayTime);
 	//int lateTailArrayIndex = 2 * delayTimesNumber / 3;	
 
-	
 	//lateReverb.lateReverbNumLines =  delayTimesNumber / 2; //biorę ostatnią 1/3 elementów tablicy zawierającej czasy opóźnienia
 														  //i bede podmieniał je na odbicia większe niż zakres czasów opóźnienia zwykłych odbić
 	//lateReverb.addLateReverb(delayTimesArray);
-	//first reflections
-	delayTimesArray[delayTimesArray.size()-1] = 0;
+
+
+	delayTimesArray[delayTimesArray.size() - 1] = 0;
+
+	//delayTimesArray[0] = 600;
+	//spatialMaker.ITDCoefficients[0] = 5; // or -5
+	//delayTimesArray[0] = 700;
+	//spatialMaker.ITDCoefficients[0] = 30;
 	//delayTimesArray[1] = 220;
 	//delayTimesArray[2] = 240;
 
 	//amplitudeEarly = 0.98f / delayTimesNumber;
 	//amplitudeLate = 0.5f / delayTimesNumber;
 
-	/*filterGenerator.lowPassFilter[0 = ]*/
 }
 
 
@@ -93,10 +97,10 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 	{
 		/*if (filter < delayTimesNumber - lateReverb.lateReverbNumLines)
 		{*/  
-		float delayTimeDependantAmp = (1 - (delayTimesArray[filter] /*/ delayTimes.highDelayTime) *//  delayTimes.delayTimesPrime[numberDelayLines + 13]) * 0.999999);
+		float delayTimeDependantAmp = (1 - (delayTimesArray[filter] /*/ delayTimes.highDelayTime) *//  delayTimes.delayTimesPrime[numberDelayLines + 23]) * 0.7 );
 		
 		float wet = 1 - wetDry;
-		//float delayTimeDependantAmp = 0.99f;
+		//float delayTimeDependantAmp = 0.4f;
 		if (filter == filterGenerator.filtersNumber - 1)	//first reflection
 		{
 			//wetDry
@@ -125,8 +129,8 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 			copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[filter] + spatialMaker.ITDCoefficients[filter]);
 
 			filterGenerator.lowPassFilter[filter].process(dsp::ProcessContextReplacing<float>(block));
-			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, delayTimeDependantAmp * wet / numberDelayLines);
-			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, delayTimeDependantAmp * wet / numberDelayLines);
+			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, delayTimeDependantAmp * wet / (numberDelayLines - 1));
+			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, (delayTimeDependantAmp + spatialMaker.ILDCoefficients[filter]) * wet / (numberDelayLines - 1));
 			/*}
 }
 
@@ -141,7 +145,7 @@ else
 	addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, amplitudeLate * 0.9 );
 	addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, amplitudeLate * 0.9);
 }*/
-		}
+		} 
 		
 	}
 
