@@ -24,18 +24,18 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circ
 	wetDrySlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
 	wetDrySlider.setPopupDisplayEnabled(true, false, this);
 	wetDrySlider.setTextValueSuffix(" ");
-	wetDrySlider.setValue(0.05);
+	wetDrySlider.setValue(0.0);
 	addAndMakeVisible(&wetDrySlider);
 	wetDrySlider.addListener(this);
 
-	reverbSizeSlider.setSliderStyle(Slider::Rotary);
-	reverbSizeSlider.setRange(30.0, 1000.0, 1.0);
-	reverbSizeSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
-	reverbSizeSlider.setPopupDisplayEnabled(true, false, this);
-	reverbSizeSlider.setTextValueSuffix(" ");
-	reverbSizeSlider.setValue(100.0);
-	addAndMakeVisible(&reverbSizeSlider);
-	reverbSizeSlider.addListener(this);
+	ILDwetSlider.setSliderStyle(Slider::Rotary);
+	ILDwetSlider.setRange(0.0, 1.0, 0.01);
+	ILDwetSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
+	ILDwetSlider.setPopupDisplayEnabled(true, false, this);
+	ILDwetSlider.setTextValueSuffix(" ");
+	ILDwetSlider.setValue(1.0);
+	addAndMakeVisible(&ILDwetSlider);
+	ILDwetSlider.addListener(this);
 
 	//wetDrySlider
 
@@ -64,7 +64,7 @@ void Circular_attemptAudioProcessorEditor::resized()
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
 	wetDrySlider.setBounds(0, 0, 100, 100);
-	reverbSizeSlider.setBounds(100, 0, 100, 100);
+	ILDwetSlider.setBounds(100, 0, 100, 100);
 }
 
 void Circular_attemptAudioProcessorEditor::sliderValueChanged(Slider* slider)
@@ -74,4 +74,6 @@ void Circular_attemptAudioProcessorEditor::sliderValueChanged(Slider* slider)
 	//processor.firstRefTime = reverbSizeSlider.getValue();
 	processor.reverbEngine.wetDry = wetDrySlider.getValue();
 	processor.reverbEngine.reflectionAmplitude = 1 - wetDrySlider.getValue();
+
+	processor.reverbEngine.ILDwet = ILDwetSlider.getValue();
 }

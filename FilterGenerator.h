@@ -18,9 +18,13 @@ public:
 	void prepare(double sampleRate, int samplesPerBlock, int numChannels);
 	int getFilterCutoffFrequency(int& lowBorder, int& highBorder);
 	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> allPassFilter;
-	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> lowPassFilter[numberDelayLines];
+	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> lowPassFilterLeft[numberDelayLines];
+
+	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> lowPassFilterRight[numberDelayLines];
+
 //private:
-	std::vector<int>filterCutoffFrequencies;
+	std::vector<int>lowPassCutoffFrequenciesLeft;
+	std::vector<int>lowPassCutoffFrequenciesRight;
 	int filtersNumber;
 	int lowBorderFilterFrequency, highBorderFilterFrequency;
 	

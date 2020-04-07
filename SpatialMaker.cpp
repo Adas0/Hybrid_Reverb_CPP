@@ -14,7 +14,7 @@
 
 int SpatialMaker::getITD()
 {
-	return Random::getSystemRandom().nextInt(Range<int>(-3, 3));
+	return Random::getSystemRandom().nextInt(Range<int>(-10, 10));
 }
 
 float SpatialMaker::getILD()
@@ -63,4 +63,7 @@ void SpatialMaker::prepare()
 	//createITDarray();
 	//createILDarray();
 	createILD_test();
+
 }
+
+

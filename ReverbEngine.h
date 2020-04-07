@@ -40,5 +40,6 @@ public:
 	float amplitudeEarly, amplitudeLate;
 	float wetDry = 0;
 	float reflectionAmplitude = 0.9;
-	int asd = 0;
+	//int asd = 0;
+	float ILDwet = 0;
 };

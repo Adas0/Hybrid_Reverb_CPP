@@ -98,10 +98,10 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 	{
 		/*if (filter < delayTimesNumber - lateReverb.lateReverbNumLines)
 		{*/  
-		//float delayTimeDependantAmp = (1 - (delayTimesArray[line] /*/ delayTimes.highDelayTime) *//  delayTimes.delayTimesPrime[delayTimesNumber + 23]) * 0.7 );
+		float delayTimeDependantAmp = (1 - (delayTimesArray[line] /*/ delayTimes.highDelayTime) *//  delayTimes.delayTimesPrime[delayTimesNumber + 23]) * 0.65 );
 		
 		float wet = 1 - wetDry;
-		float delayTimeDependantAmp = 0.4f;
+		//float delayTimeDependantAmp = 0.4f;
 		if (line == delayTimesNumber - 1)	//first reflection
 		{
 			//wetDry
@@ -127,13 +127,13 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 		else
 		{
 			copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line]);
-			filterGenerator.lowPassFilter[line + 1].process(dsp::ProcessContextReplacing<float>(block));
+			filterGenerator.lowPassFilterLeft[line].process(dsp::ProcessContextReplacing<float>(block));
 			copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line] /*+ spatialMaker.ITDCoefficients[line]*/);
 
 			dsp::AudioBlock<float> block(buffer);
-			filterGenerator.lowPassFilter[line].process(dsp::ProcessContextReplacing<float>(block));
-			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, delayTimeDependantAmp * wet / (numberDelayLines - 1));
-			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, (delayTimeDependantAmp /*+ spatialMaker.ILDCoefficients[line]*/) * wet / (numberDelayLines - 1));
+			filterGenerator.lowPassFilterRight[line].process(dsp::ProcessContextReplacing<float>(block));
+			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, delayTimeDependantAmp * wet / (delayTimesNumber - 1));
+			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, (delayTimeDependantAmp + spatialMaker.ILDCoefficients[line] * ILDwet) * wet / (delayTimesNumber - 1));
 		} 
 		
 	}
