@@ -49,8 +49,8 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	}
 
 
-	int asd = 2000;
-	int sdf = 5000;
+	int asd = 500;
+	int sdf = 2000;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		//if (filtersNumber <= numberDelayLines)

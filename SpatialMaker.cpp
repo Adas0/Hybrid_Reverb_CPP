@@ -14,7 +14,7 @@
 
 int SpatialMaker::getITD()
 {
-	return Random::getSystemRandom().nextInt(Range<int>(-10, 10));
+	return Random::getSystemRandom().nextInt(Range<int>(-15, 15));
 }
 
 float SpatialMaker::getILD()
