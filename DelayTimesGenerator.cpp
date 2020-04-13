@@ -23,8 +23,10 @@ std::vector<int> DelayTimesGenerator::getDelayTimes(int & delayTimesNumber, int&
 	delayTimes.clear();
 	for (int i = 0; i < delayTimesNumber; ++i)
 	{ 
-		delayTimes.push_back(this->delayTimesPrime [i + 23]/*generateRandomNumber(lowTime, highTime)*/);
+		delayTimes.push_back(this->delayTimesPrime [i + 50]/*generateRandomNumber(lowTime, highTime)*/);
 	}
-	//std::sort(delayTimes.begin(), delayTimes.end());
+	std::sort(delayTimes.begin(), delayTimes.end());
+	std::reverse(delayTimes.begin(), delayTimes.end());
 	return delayTimes; 
 } 
+ 
