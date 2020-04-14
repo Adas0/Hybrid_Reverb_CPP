@@ -13,5 +13,5 @@
 struct ReverbElement
 {
 public:
-	static const int numberDelayLines = 100;
+	static const int numberDelayLines = 63;
 }; 
