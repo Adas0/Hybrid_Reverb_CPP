@@ -112,8 +112,8 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 		/*if (filter < delayTimesNumber - lateReverb.lateReverbNumLines)
 		{*/  
 		//float delayTimeDependantAmp = (1 - (delayTimesArray[line] /*/ delayTimes.highDelayTime) *//  delayTimes.delayTimesPrime[delayTimesNumber + 60]) * 0.7 );
-		float delayTimeDependantAmp = (1 - ((line * 4) * 0.85 / 100)) * 1.009; 
-		//float delayTimeDependantAmp = 0.4;
+		//float delayTimeDependantAmp = (1 - ((line * 4) * 0.85 / 100)) * 1.009; 
+		float delayTimeDependantAmp = 0.55;
 		/*delayTimesArray[0] = 500;
 		delayTimesArray[1] = 50;*/
 		//float asd = std::pow(0.05 / (float)delayTimesArray[line], 1 / (float)delayTimesArray[line]);
@@ -124,7 +124,7 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 		float wet = 1 - wetDry;
 		//float delayTimeDependantAmp = 0.4f; 
 		if (line == delayTimesNumber - 1)	//first reflection 
-		{ 
+		{  
 			//wetDry
 			copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line]);
 			copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line]);

@@ -33,9 +33,11 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	highBorderFilterFrequency = 8000;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
-		//if (filtersNumber <= numberDelayLines)
+		//if (filtersNumber <= numberDelayLines) 
 			lowPassCutoffFrequenciesLeft.push_back(getFilterCutoffFrequency(lowBorderFilterFrequency, highBorderFilterFrequency));
 	}
+
+	std::sort(lowPassCutoffFrequenciesLeft.begin(), lowPassCutoffFrequenciesLeft.end());
 
 	//filterCutoffFrequencies[filterCutoffFrequencies.size()-1] = 20000;
 	/*filterCutoffFrequencies[1] = 20000;
