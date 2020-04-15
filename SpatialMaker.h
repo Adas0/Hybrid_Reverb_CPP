@@ -15,7 +15,7 @@
 class SpatialMaker: public ReverbElement
 {
 public:
-	int getITD();
+	int getITD(int minus, int plus);
 	float getILD();
 	void prepare();
 	std::vector<int>ITDCoefficients;

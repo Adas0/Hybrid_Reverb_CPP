@@ -12,9 +12,9 @@
 #include "SpatialMaker.h"
 
 
-int SpatialMaker::getITD()
+int SpatialMaker::getITD(int minus, int plus)
 {
-	return Random::getSystemRandom().nextInt(Range<int>(-15, 15));
+	return Random::getSystemRandom().nextInt(Range<int>(minus, plus));
 }
 
 float SpatialMaker::getILD()
@@ -29,7 +29,10 @@ void SpatialMaker::createITDarray()
 {
 	for (int line = 0; line < numberDelayLines; ++line)
 	{
-		ITDCoefficients.push_back(getITD());
+		if (line > 6)
+			ITDCoefficients.push_back(getITD(-15, 15));
+		else
+			ITDCoefficients.push_back(getITD(-2, 2));
 	}
 }
 

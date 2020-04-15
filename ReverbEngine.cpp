@@ -113,7 +113,7 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 		{*/  
 		//float delayTimeDependantAmp = (1 - (delayTimesArray[line] /*/ delayTimes.highDelayTime) *//  delayTimes.delayTimesPrime[delayTimesNumber + 60]) * 0.7 );
 		//float delayTimeDependantAmp = (1 - ((line * 4) * 0.85 / 100)) * 1.009; 
-		float delayTimeDependantAmp = 0.55;
+		float delayTimeDependantAmp = 0.3;
 		/*delayTimesArray[0] = 500;
 		delayTimesArray[1] = 50;*/
 		//float asd = std::pow(0.05 / (float)delayTimesArray[line], 1 / (float)delayTimesArray[line]);
