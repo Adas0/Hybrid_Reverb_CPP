@@ -57,7 +57,7 @@ void ReverbEngine::prepare(double sampleRate, int samplesPerBlock, int numChanne
 void ReverbEngine::process(AudioBuffer<float>&buffer)
 {
 	dsp::AudioBlock<float> block(buffer);
-
+	
 	const int bufferLength = buffer.getNumSamples();
 	const int delayBufferLength = delayBuffer.getNumSamples();
 
@@ -80,9 +80,12 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 		
 		copyBufferToDelayBuffer(channel, bufferData, delayBufferData, bufferLength, delayBufferLength);
 
-		buffer.applyGainRamp(channel, 0, bufferLength, 1.0 - (mWetDry * numberDelayLines), 1.0 - (mWetDry * numberDelayLines));
+
+		buffer.applyGainRamp(channel, 0, bufferLength, 1.0 - (mWetDry /** numberDelayLines*/), 1.0 - (mWetDry /** numberDelayLines*/));
 	}
 	
+	
+
 	//buffer.applyGain(0.5);
 	//delayBuffer.applyGain(0.9);
 	//buffer.applyGain(0.1);
@@ -134,26 +137,25 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 		if (line == delayTimesNumber - 1)	//direct sound
 		{  
 			//wetDry
-			copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line],/* mWetDry*/ /*1 - */1 - (mWetDry /*/ (float)numberDelayLines*/) /** numberDelayLines*/);
-			copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line],/* mWetDry*/ /*1 -*/ 1 - (mWetDry /*/ (float)numberDelayLines*/) /** numberDelayLines*/);
+			copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line],/* mWetDry*/ /*1 - */(1 - mWetDry)/* / (float)numberDelayLines*/) /** numberDelayLines*/;
+			copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line],/* mWetDry*/ /*1 -*/ (1 - mWetDry) /*/ (float)numberDelayLines*/) /** numberDelayLines*/;
 
 			//filterGenerator.lowPassFilter[0].process(dsp::ProcessContextReplacing<float>(block));
 			//tu będzie jeszcze delayTimeDepentantFilter
 			
 			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, delayTimeDependantAmp / (float)delayTimesNumber);
 			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, delayTimeDependantAmp / (float)delayTimesNumber);
-		}
+		} 
 		else
 		{
 
 			copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line],  /*0.15 **/ mWetDry / (float)numberDelayLines);
-			filterGenerator.lowPassFilterLeft[line].process(dsp::ProcessContextReplacing<float>(block));
+			//filterGenerator.lowPassFilterLeft[line].process(dsp::ProcessContextReplacing<float>(block));
 			copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line] + spatialMaker.ITDCoefficients[line], /*0.15 **/ mWetDry / (float)numberDelayLines);
 			
 			
-			
-			dsp::AudioBlock<float> block(buffer);
-			filterGenerator.lowPassFilterRight[line].process(dsp::ProcessContextReplacing<float>(block));
+			//dsp::AudioBlock<float> block(buffer);
+			//filterGenerator.lowPassFilterRight[line].process(dsp::ProcessContextReplacing<float>(block));
 			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, delayTimeDependantAmp/** wet*/ / ((float)(delayTimesNumber)));
 			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, (delayTimeDependantAmp /*+ (float)spatialMaker.ILDCoefficients[line] * ILDwet*/) /** wet*/ / ((float)(delayTimesNumber)));
 			/*addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, delayTimeDependantAmp);
@@ -169,7 +171,7 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 															//pocz¹tek czyli na 0, potem 1
 															//mWritePosition to pole klasy - bêdziemy tego indeksu u¿ywaæ te¿ przy czytaniu z bufora
 
-	//buffer.applyGain(3);
+	//buffer.applyGain(2);
 }
 
 

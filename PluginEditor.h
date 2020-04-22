@@ -31,7 +31,7 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     Circular_attemptAudioProcessor& processor;
-	Slider wetDrySlider, ILDwetSlider;
+	Slider wetDrySlider, ILDwetSlider, trueWetDry;
 	//Slider firstRelectionTimeSlider;
 
 	Slider filterCutOffDial;
@@ -39,6 +39,7 @@ private:
 	//Slider wetDrySlider;
 	/*ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> filterCutoffValue;
 	ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> filterResValue;*/
+	//Slider ;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Circular_attemptAudioProcessorEditor)
 };
