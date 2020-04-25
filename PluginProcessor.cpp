@@ -148,15 +148,13 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-
 	/*++asd;
 	if (asd > 100) asd = 0;
 
 	if (asd % 10 == 0)
 		buffer.clear();*/
 	
-
-	reverbEngine.process(buffer); 
+	reverbEngine.process(buffer);
 
 }
 

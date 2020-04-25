@@ -33,19 +33,16 @@ void ReverbEngine::prepare(double sampleRate, int samplesPerBlock, int numChanne
 	//lateReverb.addLateReverb(delayTimesArray);
 	 
 
-	delayTimesArray[delayTimesArray.size() - 1] = 0; 
+	delayTimesArray[delayTimesArray.size() - 1] = 0;
 
 	//delayTimesArray[0] = 40;
 	//delayTimesArray[1] = 173;
-
 	//delayTimesArray[0] = 80;
 	//spatialMaker.ITDCoefficients[0] = 5; // or -5
-
 	//delayTimesArray[0] = 700;
 	//spatialMaker.ITDCoefficients[0] = 30;
 	//delayTimesArray[1] = 220;
 	//delayTimesArray[2] = 240;
-
 	//mWetDry /= numberDelayLines;
 
 	//amplitudeEarly = 0.98f / delayTimesNumber;
@@ -80,8 +77,8 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 		
 		copyBufferToDelayBuffer(channel, bufferData, delayBufferData, bufferLength, delayBufferLength);
 
-
-		buffer.applyGainRamp(channel, 0, bufferLength, 1.0 - (mWetDry /** numberDelayLines*/), 1.0 - (mWetDry /** numberDelayLines*/));
+		//buffer.applyGainRamp(channel, 0, bufferLength, 1.0 - (mWetDry /** numberDelayLines*/), 1.0 - (mWetDry /** numberDelayLines*/));
+		//buffer.applyGainRamp(channel, 0, bufferLength, 0.2, 0.2);
 	}
 	
 	
@@ -117,14 +114,24 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 	//	addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, amplitudeEarly);
 	//}
 	 
+	/*std::vector<int>reverbSizeVector;
+	reverbSizeVector.clear();
+	for (int line = 0; line < delayTimesNumber; ++line)
+	{
+		if (line <= reverbSize)
+			reverbSizeVector.push_back(delayTimesArray[line]);
+		else
+			reverbSizeVector.push_back(0);
+	}*/
 	
+
 	for (int line = 0; line < delayTimesNumber; ++line)
 	{
 		/*if (filter < delayTimesNumber - lateReverb.lateReverbNumLines)
 		{*/  
 		//float delayTimeDependantAmp = (1 - (delayTimesArray[line] /*/ delayTimes.highDelayTime) *//  delayTimes.delayTimesPrime[delayTimesNumber + 60]) * 0.7 );
 		//float delayTimeDependantAmp = (1 - ((line * 4) * 0.85 / 100)) * 1.009; 
-		float delayTimeDependantAmp = 0.7;
+		float amplitude = 0.7;
 		/*delayTimesArray[0] = 500;
 		delayTimesArray[1] = 50;*/
 		//float asd = std::pow(0.05 / (float)delayTimesArray[line], 1 / (float)delayTimesArray[line]);
@@ -136,30 +143,39 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 		//float delayTimeDependantAmp = 0.4f; 
 		if (line == delayTimesNumber - 1)	//direct sound
 		{  
-			//wetDry
-			copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line],/* mWetDry*/ /*1 - */(1 - mWetDry)/* / (float)numberDelayLines*/) /** numberDelayLines*/;
-			copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line],/* mWetDry*/ /*1 -*/ (1 - mWetDry) /*/ (float)numberDelayLines*/) /** numberDelayLines*/;
+			////wetDry
+			//copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line],/* mWetDry*/ /*1 - */(1 - mWetDry)/* / (float)numberDelayLines*/) /** numberDelayLines*/;
+			//copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line],/* mWetDry*/ /*1 -*/ (1 - mWetDry) /*/ (float)numberDelayLines*/) /** numberDelayLines*/;
+			copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line], 1);
+			copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line], 1);
 
 			//filterGenerator.lowPassFilter[0].process(dsp::ProcessContextReplacing<float>(block));
 			//tu będzie jeszcze delayTimeDepentantFilter
 			
-			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, delayTimeDependantAmp / (float)delayTimesNumber);
-			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, delayTimeDependantAmp / (float)delayTimesNumber);
+			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, amplitude / (float)numberDelayLines);
+			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, amplitude / (float)numberDelayLines);
 		} 
 		else
 		{
-
-			copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line],  /*0.15 **/ mWetDry / (float)numberDelayLines);
+			//copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line],  /*0.15 **/ mWetDry / (float)numberDelayLines);
 			//filterGenerator.lowPassFilterLeft[line].process(dsp::ProcessContextReplacing<float>(block));
-			copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line] + spatialMaker.ITDCoefficients[line], /*0.15 **/ mWetDry / (float)numberDelayLines);
-			
-			
-			//dsp::AudioBlock<float> block(buffer);
-			//filterGenerator.lowPassFilterRight[line].process(dsp::ProcessContextReplacing<float>(block));
-			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, delayTimeDependantAmp/** wet*/ / ((float)(delayTimesNumber)));
-			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, (delayTimeDependantAmp /*+ (float)spatialMaker.ILDCoefficients[line] * ILDwet*/) /** wet*/ / ((float)(delayTimesNumber)));
-			/*addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, delayTimeDependantAmp);
-			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, delayTimeDependantAmp);*/
+			//copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line] + spatialMaker.ITDCoefficients[line], /*0.15 **/ mWetDry / (float)numberDelayLines);
+			//
+			//reverbSize
+			if (line <= reverbSize)
+			{
+				copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line], 1);
+				filterGenerator.lowPassFilterLeft[line].process(dsp::ProcessContextReplacing<float>(block));
+				copyBackToCurrentBuffer(buffer, rightChannel, bufferDataR, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line] + spatialMaker.ITDCoefficients[line], 1);
+				
+				
+				dsp::AudioBlock<float> block(buffer);
+				filterGenerator.lowPassFilterRight[line].process(dsp::ProcessContextReplacing<float>(block));
+				addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, amplitude / (float)reverbSize);
+				addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, amplitude / (float)reverbSize);
+			}
+			//addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, amplitude/** wet*/ / ((float)(delayTimesNumber)));
+			//addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, (amplitude /*+ (float)spatialMaker.ILDCoefficients[line] * ILDwet*/) /** wet*/ / ((float)(delayTimesNumber)));
 		} 
 	}
 	//filterGenerator.allPassFilter.process(dsp::ProcessContextReplacing<float>(block));
@@ -239,14 +255,14 @@ void ReverbEngine::copyBackToCurrentBuffer(AudioBuffer<float>& buffer, int chann
 																		//w buforze opóŸniaj¹cym ¿eby wzi¹æ stamt¹d iloœæ próbek równ¹ d³ugoœci naszego bufora,
 																		//to dodajemy kawa³ek o d³ugoœci naszego bufora (z przesz³oœci) do naszego bufora
 	{
-		buffer.addFrom(channel, 0, delayBufferData + bufferReadPosition, bufferLength, mWetDry);
+		buffer.copyFrom(channel, 0, delayBufferData + bufferReadPosition, bufferLength, mWetDry);
 	}
 	else																//je¿eli nie mamy tyle próbek (bufor opóŸniaj¹cy siê 'koñczy') to bierzemy kawa³ek z koñca
 																		//i resztê z pocz¹tku 
 	{
 		const int bufferRemaining = delayBufferLength - bufferReadPosition;		//ile wartoœci zosta³o w delay bufferze
-		buffer.addFrom(channel, 0, delayBufferData + bufferReadPosition, bufferRemaining, mWetDry);
-		buffer.addFrom(channel, bufferRemaining, delayBufferData, bufferLength - bufferRemaining, mWetDry);
+		buffer.copyFrom(channel, 0, delayBufferData + bufferReadPosition, bufferRemaining, mWetDry);
+		buffer.copyFrom(channel, bufferRemaining, delayBufferData, bufferLength - bufferRemaining, mWetDry);
 	}
 	//buffer.addFrom()
 	//buffer.addFromWithRamp()
