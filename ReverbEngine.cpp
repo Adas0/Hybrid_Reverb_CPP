@@ -155,6 +155,7 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 			addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, dryBufferL, delayTimesNumber, amplitude / (float)numberDelayLines);
 			addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, dryBufferR, delayTimesNumber, amplitude / (float)numberDelayLines);
 		} 
+
 		else
 		{
 			//copyBackToCurrentBuffer(buffer, leftChannel, bufferDataL, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line],  /*0.15 **/ mWetDry / (float)numberDelayLines);
@@ -187,6 +188,13 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 															//pocz¹tek czyli na 0, potem 1
 															//mWritePosition to pole klasy - bêdziemy tego indeksu u¿ywaæ te¿ przy czytaniu z bufora
 
+
+
+	/*buffer.addFrom(channel, 0, delayBufferData - delayTime + bufferLength, bufferLength, );
+	buffer.addFrom()*/
+
+
+	//delayBufferData to pointer, który wskazuje na pierwszy element 
 	//buffer.applyGain(2);
 }
 
@@ -194,22 +202,16 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 void ReverbEngine::copyBufferToDelayBuffer(int channel, const float* bufferData, const float* delayBufferData,
 	const int bufferLength, const int delayBufferLength)
 {
-	//kopiujemy dane z naszego buffera do delay buffera
-	//sprawdzenie, czy dlugosc bufora opozniajacego jest wieksza niz d³ugoœæ bufora + pozycja. czyli 
-	if (delayBufferLength > bufferLength + bufferWritePosition)	//mo¿e byc taka sytuacja - np bufor ma dlugosc 512, bufor delay 2048, pozycja to 1537 (3* 512)
-															//czyli 1537 + 512 > 2038 (jest równe 2049)? cos takiego, nie rozumiem do koñca
-															//wiêc musimy w tej sytuacji przesuwamy na dlugosc bufora opozniajacego minus pozycja 
+
+	if (delayBufferLength > bufferLength + bufferWritePosition)	 
 	{
 		delayBuffer.copyFrom(channel, bufferWritePosition, bufferData, bufferLength);
 	}
 	else
 	{
-		const int bufferRemaning = delayBufferLength - bufferWritePosition; //index 
-		delayBuffer.copyFrom(channel, bufferWritePosition, bufferData, bufferRemaning);
+		delayBuffer.copyFrom(channel, bufferWritePosition, bufferData, delayBufferLength - bufferWritePosition);
 
-		delayBuffer.copyFrom(channel, 0, bufferData, bufferLength - bufferRemaning);	//to co zosta³o wklejamy na pocz¹tek. 
-																										//czyli to co zosta³o odciête (ca³y bufor to 
-																										//bufferRemaining + ta reszta któr¹ tu doklejamy
+		delayBuffer.copyFrom(channel, 0, bufferData, bufferLength - delayBufferLength + bufferWritePosition);	
 	}
 }
 
@@ -251,18 +253,19 @@ void ReverbEngine::copyBackToCurrentBuffer(AudioBuffer<float>& buffer, int chann
 
 
 	
-	if (delayBufferLength > bufferLength + bufferReadPosition)			//ten if to analogicznie jak przy czytaniu - dopóku jest wystarczaj¹ca iloœæ próbek 
-																		//w buforze opóŸniaj¹cym ¿eby wzi¹æ stamt¹d iloœæ próbek równ¹ d³ugoœci naszego bufora,
-																		//to dodajemy kawa³ek o d³ugoœci naszego bufora (z przesz³oœci) do naszego bufora
+	if (delayBufferLength > bufferLength + bufferReadPosition)			
 	{
 		buffer.copyFrom(channel, 0, delayBufferData + bufferReadPosition, bufferLength, mWetDry);
-	}
-	else																//je¿eli nie mamy tyle próbek (bufor opóŸniaj¹cy siê 'koñczy') to bierzemy kawa³ek z koñca
-																		//i resztê z pocz¹tku 
+		//delayBufferData + bufferReadPosition			- delayBufferData to wskaźnik na pierwszy element delayBuffer. Dodając do tego 
+														//bufferReadPosition przesuwamy po prostu ten wskaźnik o wartość bufferReadPosition próbek.
+														//właściwie bufferReadPosition jest const więc się nie przesuwa, a u nas bufferReadPosition
+														//przesuwa się coraz dalej, bo jest zależny od bufferWritePosition
+	}			
+	else																
 	{
-		const int bufferRemaining = delayBufferLength - bufferReadPosition;		//ile wartoœci zosta³o w delay bufferze
-		buffer.copyFrom(channel, 0, delayBufferData + bufferReadPosition, bufferRemaining, mWetDry);
-		buffer.copyFrom(channel, bufferRemaining, delayBufferData, bufferLength - bufferRemaining, mWetDry);
+		buffer.copyFrom(channel, 0, delayBufferData + bufferReadPosition, delayBufferLength - bufferReadPosition, mWetDry); //w to samo miejsce, tylko mniejszy kawałek
+		buffer.copyFrom(channel, delayBufferLength - bufferReadPosition, delayBufferData, bufferLength - delayBufferLength + bufferReadPosition, mWetDry);
+		//delayBufferLength - bufferReadPosition		- tyle próbek zostało, więc od tego indeksu będziemy wklejać dalszą, pozostałą część bufora
 	}
 	//buffer.addFrom()
 	//buffer.addFromWithRamp()
