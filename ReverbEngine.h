@@ -34,7 +34,7 @@ public:
 	void copyBufferToDelayBuffer(int channel, const float * bufferData, const float * delayBufferData, const int bufferLength, const int delayBufferLength);
 	void copyBackToCurrentBuffer(AudioBuffer<float>& buffer, int channel, const float * bufferData, const float * delayBufferData,
 																	const int bufferLength, const int delayBufferLength, int delayTime, float amplitude);
-	void addDelayWithCurrentBuffer(int channel, const int bufferLength, const int delayBufferLength, float* dry, int delayTimesNumber, float amplitudeMultiplier);
+	void addDelayWithCurrentBuffer(int channel, const int bufferLength, const int delayBufferLength, const float* dry, int delayTimesNumber, float amplitudeMultiplier);
 	int numInputChannels;
 	int numOutputChannels;
 	float amplitudeEarly, amplitudeLate;
@@ -43,7 +43,7 @@ public:
 	//int asd = 0;
 	float ILDwet = 0;
 
-	float mWetDry{ 0.999 };
+	float mWetDry{ 0.9 };
 	float reverbSize;
 	/*void asd(AudioBuffer<float>& buffer, int channel, const float* bufferData, const float* delayBufferData,
 		const int bufferLength, const int delayBufferLength, int delayTime);*/

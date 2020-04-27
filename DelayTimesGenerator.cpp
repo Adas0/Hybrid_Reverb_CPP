@@ -24,7 +24,7 @@ std::vector<int> DelayTimesGenerator::getDelayTimes(int & delayTimesNumber, int&
 	for (int i = 0; i < delayTimesNumber; ++i)
 	{ 
 		//delayTimes.push_back(this->delayTimesPrime_[i] /*+ 300*//*generateRandomNumber(lowTime, highTime)*/);
-		delayTimes.push_back(this->delayTimesPrime_[i]);
+		delayTimes.push_back(this->delayTimesPrime_[i + 25]);
 		
 	}
 

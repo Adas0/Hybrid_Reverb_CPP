@@ -1,0 +1,20 @@
+wet dry:
+
+- próba nadania buforowi opóźniającemu gaina - komputer nie wyrabia obliczeniowo
+
+
+
+
+Mój tok rozumowania:
+1. Przekopiowanie aktualnego bufora do bufora opóźniającego z amplitudą 0.9 - czyli bufor opóźniający będzie miał 
+amplitudę 0.9 (bufor opóźniający na długość 4s)
+2. Nadanie 'czystemu' aktualnemu buforowi amplitudę 0.1
+3. Podmiana przekopiowanego bufora (z bufora opóźniającego) z buforem aktualnym (czyli np. bufor z 300ms wcześniej 
+z aktualnym)
+4. Dodanie 'czystego' aktualnego bufora do bufora opóźniającego
+
+Oczekiwany efekt: dźwięk bezpośredni ma amplitudę 0.1, a reszta 0.9
+Rezultat: cały sygnał jest cichszy - ma amplitudę 0.1
+
+
+w przypadku wielu linii opóźniających amplituda jest dzielona przez ich liczbę 
