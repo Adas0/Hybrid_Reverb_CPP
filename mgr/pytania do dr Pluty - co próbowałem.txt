@@ -2,9 +2,11 @@ wet dry:
 
 - próba nadania buforowi opóźniającemu gaina - komputer nie wyrabia obliczeniowo
 
+Bez sprzężenia:
 
 
 
+Ze sprzężeniem:
 Mój tok rozumowania:
 1. Przekopiowanie aktualnego bufora do bufora opóźniającego z amplitudą 0.9 - czyli bufor opóźniający będzie miał 
 amplitudę 0.9 (bufor opóźniający na długość 4s)
