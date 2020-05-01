@@ -1,22 +1,31 @@
-wet dry:
-
-- próba nadania buforowi opóźniającemu gaina - komputer nie wyrabia obliczeniowo
-
-Bez sprzężenia:
+Jeśli chodzi o te kliki to już ich nie ma, bo okazało się, że w pewnym miejscu ten sam fragment bufora był
+doklejany dwa razy.
 
 
+Dwie wersje pogłosu:
 
-Ze sprzężeniem:
-Mój tok rozumowania:
+- Bez sprzężenia:
 1. Przekopiowanie aktualnego bufora do bufora opóźniającego z amplitudą 0.9 - czyli bufor opóźniający będzie miał 
-amplitudę 0.9 (bufor opóźniający na długość 4s)
+amplitudę 0.9 (bufor opóźniający ma długość 4s)
+2. Dodanie fragmentu bufora opóźniającego (z przeszłości) do aktualnego bufora - dodanie go z amplitudą 0.1
+3. Filtracja każdego bufora
+
+Rezultat: Niepożądane artefakty przy filtracji; wet/dry działające poprawnie
+
+
+
+- Ze sprzężeniem:
+1. Przekopiowanie aktualnego bufora do bufora opóźniającego z amplitudą 0.9 - czyli bufor opóźniający będzie miał 
+amplitudę 0.9 (bufor opóźniający ma długość 4s)
 2. Nadanie 'czystemu' aktualnemu buforowi amplitudę 0.1
-3. Podmiana przekopiowanego bufora (z bufora opóźniającego) z buforem aktualnym (czyli np. bufor z 300ms wcześniej 
-z aktualnym)
+3. Podmiana aktualnego bufora na bufor z przeszłości (z bufora opóźniającego), np. z 300ms wcześniej
 4. Dodanie 'czystego' aktualnego bufora do bufora opóźniającego
 
 Oczekiwany efekt: dźwięk bezpośredni ma amplitudę 0.1, a reszta 0.9
-Rezultat: cały sygnał jest cichszy - ma amplitudę 0.1
+Rezultat: cały sygnał jest cichszy - ma amplitudę 0.1; filtracja działająca poprawnie w przeciwieństwie do pierwszego przypadku
 
+
+Druga wersja jest bardziej pożądana - brzmi lepiej, poza tym w niej mam możliwość filtracji obu kanałów w inny sposób, 
+nie jestem pewien czy to zadziała w pierwszej wersji (bez sprzężenia). 
 
 w przypadku wielu linii opóźniających amplituda jest dzielona przez ich liczbę 
