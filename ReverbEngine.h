@@ -43,7 +43,7 @@ public:
 	//int asd = 0;
 	float ILDwet = 0;
 
-	float mWetDry{ 0.9 };
+	float mWetDry/*{ 0.1 }*/;
 	float reverbSize;
 	/*void asd(AudioBuffer<float>& buffer, int channel, const float* bufferData, const float* delayBufferData,
 		const int bufferLength, const int delayBufferLength, int delayTime);*/
