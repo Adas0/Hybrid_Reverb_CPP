@@ -17,19 +17,19 @@ int DelayTimesGenerator::generateRandomNumber(int & lowTime, int& highTime)
 }
 
 
-std::vector<int> DelayTimesGenerator::getDelayTimes(int & delayTimesNumber, int& lowTime, int& highTime)
+std::vector<int> DelayTimesGenerator::getDelayTimes(int & delayTimesNumber, int& lowTime, int& highTime, int& firstRefTime)
 {
 	std::vector<int>delayTimes;
 	delayTimes.clear();
 	for (int i = 0; i < delayTimesNumber; ++i)
 	{ 
 		//delayTimes.push_back(this->delayTimesPrime_[i] /*+ 300*//*generateRandomNumber(lowTime, highTime)*/);
-		delayTimes.push_back(this->delayTimesPrime_[i * 2 + 25]);
+		delayTimes.push_back(this->delayTimesPrime_[i * 2] + firstRefTime);
 		
 	}
 
-	//auto max = *max_element(std::begin(delayTimes), std::end(delayTimes));
-	/*for (int i = 0; i < delayTimesNumber / 2; ++i)
+	/*auto max = *max_element(std::begin(delayTimes), std::end(delayTimes));
+	for (int i = 0; i < delayTimesNumber / 2; ++i)
 	{
 		delayTimes.push_back(delayTimes[i] + max);
 

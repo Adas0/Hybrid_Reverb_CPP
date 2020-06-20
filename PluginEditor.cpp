@@ -17,16 +17,16 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circ
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (300, 200);
+    setSize (500, 100);
 
-	wetDrySlider.setSliderStyle(Slider::Rotary);
-	wetDrySlider.setRange(0.0, 1, 0.01);
-	wetDrySlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
-	wetDrySlider.setPopupDisplayEnabled(true, false, this);
-	wetDrySlider.setTextValueSuffix(" ");
-	wetDrySlider.setValue(0.0);
-	addAndMakeVisible(&wetDrySlider);
-	wetDrySlider.addListener(this);
+	//wetDrySlider.setSliderStyle(Slider::Rotary);
+	//wetDrySlider.setRange(0.0, 1, 0.01);
+	//wetDrySlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
+	//wetDrySlider.setPopupDisplayEnabled(true, false, this);
+	//wetDrySlider.setTextValueSuffix(" ");
+	//wetDrySlider.setValue(0.0);
+	//addAndMakeVisible(&wetDrySlider);
+	//wetDrySlider.addListener(this);
 
 	ILDwetSlider.setSliderStyle(Slider::Rotary);
 	ILDwetSlider.setRange(0.0, 1.0, 0.01);
@@ -38,16 +38,16 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circ
 	ILDwetSlider.addListener(this);
 
 	trueWetDry.setSliderStyle(Slider::Rotary);
-	trueWetDry.setRange(0.0, 1, 0.01);
+	trueWetDry.setRange(0.0, 0.99, 0.01);
 	trueWetDry.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
 	trueWetDry.setPopupDisplayEnabled(true, false, this);
 	trueWetDry.setTextValueSuffix(" ");
-	trueWetDry.setValue(0.5);
+	trueWetDry.setValue(0.99);
 	addAndMakeVisible(&trueWetDry);
 	trueWetDry.addListener(this);
 
 	reverbSizeSlider.setSliderStyle(Slider::Rotary);
-	reverbSizeSlider.setRange(5, 170, 1);
+	reverbSizeSlider.setRange(1, numberDelayLines, 1);
 	reverbSizeSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
 	reverbSizeSlider.setPopupDisplayEnabled(true, false, this);
 	reverbSizeSlider.setTextValueSuffix(" ");
@@ -83,10 +83,10 @@ void Circular_attemptAudioProcessorEditor::resized()
 	//processor.reverbLength = reverbLengthSlider.getValue();
     // This is generally where you'll want to lay out the positions of any
     // subcomponents in your editor..
-	wetDrySlider.setBounds(0, 0, 100, 100);
+	//wetDrySlider.setBounds(0, 0, 100, 100);
 	ILDwetSlider.setBounds(100, 0, 100, 100);
 	trueWetDry.setBounds(200, 0, 100, 100);
-	reverbSizeSlider.setBounds(200, 100, 100, 100);
+	reverbSizeSlider.setBounds(300, 0, 100, 100);
 }
 
 void Circular_attemptAudioProcessorEditor::sliderValueChanged(Slider* slider)
@@ -94,8 +94,8 @@ void Circular_attemptAudioProcessorEditor::sliderValueChanged(Slider* slider)
 	//processor.reverbLength = reverbLengthSlider.getValue();
 	////processor.reverbSize = reverbSizeSlider.getValue();
 	//processor.firstRefTime = reverbSizeSlider.getValue();
-	processor.reverbEngine.wetDry = wetDrySlider.getValue();
-	processor.reverbEngine.reflectionAmplitude = 1 - wetDrySlider.getValue();
+	//processor.reverbEngine.wetDry = wetDrySlider.getValue();
+	//processor.reverbEngine.reflectionAmplitude = 1 - wetDrySlider.getValue();
 
 	processor.reverbEngine.ILDwet = ILDwetSlider.getValue();
 

@@ -1,0 +1,24 @@
+- napiszę, że ze względu na funkcję przyjmującą wskaźnik, zastosowanie skomplikowanych funkcji nie pozwala na implementację manipulacji zawartością sygnału czystego w sumie sygnałów 
+- albo napiszę po prostu fakt bez tłumaczenia się: że jest pokrętło, które powoduje, że albo jest 100% czystego, albo czysty + z pogłosem (maksymalna wartość suwaka). I tyle.
+- spróbuję zrobić np. niektóre filtry górnoprzepustowe, a niektóre dolnoprzepustowe. I będę obserwował, jaki to ma wpływ na słyszalność dyskretnych odbić. 
+- spróbuję zrobić pokrętło z first reflection time. Będę dodawał czas opóźnienia już w process blocku, czyli:
+firstReflectionTime + delayTimesArray[line]
+- opcja badania filtrów: tablica filtrów liniowa vs tablica filtrów wykładnicza
+- kolejna opcja badania filtrów: wykazanie że jest większa przestrzenność z różnymi filtrami w obu kanałach. W sumie oczywiste, bo jak będę porównywał oba kanały, to będą identyczne jeżeli identyczne filtry. Ale i tak mogę to zrobić. Ale mogę też wykazać, działa to też przy zastosowaniu ITD. Czyli: z ITD + różnymi filtrami dla obu kanałów ma większą przestrzenność, ITD + takie same filtry dla obu kanałów. 
+- Mogę narysować Gaussy: np. gdy mam filtry w lewym od 100-400, a w prawym od 150-350, to pole pod Gaussami jest takie samo (jeden jest szerszy i niższy, a drugi węższy i wyższy). Albo po prostu napisać o tym, że mniej więcej taki ma to efekt. 
+- Jak nie wyjdzie z tym szumem białym, to napiszę po prostu że nie dało zadowalających efektów (poprę badaniami) 
+i że zastosuję po prostu przedłużenie przez dodanie podwójnych linii, jeszcze mocniej filtrowanych. 
+- Sprawdzę, czy faktycznie każde kolejne (dalsze) odbicie jest filtrowane liczbą taką, jaką mam w tablicy, czy bufor jest filtrowany jeszcze raz i jeszcze raz. 
+- Filtracja dalszych linii mocniej mam dlatego, że fala dłużej idzie przez powietrze więc powietrze je bardziej stłumi? Czy jeszcze z jakiegoś innego powodu?
+- Przed rozpoczęciem dalszego pisania (już jeśli będe chciał dopisać z 20 stron na raz) przeczytać jeszcze raz pracę inżynierską, którą dostałem od dr Pluty.
+- Przecież do badań mogę po prostu wyciąć kawałek PO zakończeniu dźwięku bezpośredniego!!!!! - więc na luzie mogę robić te badania i będą super!!!!! Nie muszę siedzieć nad tym wet dry (chciałem, żeby w porównywanych sygnałach była duża zawartość pogłosu. Ale przecież mogę dać tam SAM pogłos czyli wycięcie dźwięku bezpośredniego hahahahaha. Hmm... ale to chyba tylko w przypadku szumu, bo np. w mowie muszę mieć cały sygnał. No ale nic, porównanie i tak będzie! (porównywane sygnały mają dokładnie taką samą zawartość pogłosu).
+- mogę też porównać np: 160 linii kolejne liczby pierwsze vs 80 linii co druga liczba pierwsza.
+- gdzieś mam napisane przy jakim ustawieniu amplituda nie spada mocno w jednym momencie. 
+- Przy badaniu szumu - żeby amplituda nie spadała mocno w jednym momencie po prostu zrobię bardzo długie czasy może 
+(do badań). 
+- Hm. Albo po prostu mogę do badań wziąć SAM pogłos... - czyli bez dźwięku bezpośredniego. Jak usunę if'a z tym ostatnim elementem tablicy (wartość opóźnienia 0), to jest brak dźwięku bezpośredniego.
+- Muszę zmienić jedną rzecz: teraz w przypadku ustawienia suwakiem krótkiego pogłosu (np. 50 linii) filtry, które są wylosowane mają zbyt wysokie wartości (mocne tłumienie filtrami zarezerwowane jest dla linii, które są NIEAKTYWNE. I brzmi to średnio. Muszę więc zrobić tak, żeby przy krótkim pogłosie ostatnie linie (mimo, że o krótkim czasie opóźnienia) miały były mocno filtrowane. 
+- Ciągle zapominam, że moim celem NIE jest naturalny pogłos. Jest efektem - brzmi tak jak brzmi. <3
+- Mogę porównać jeszcze różne rzędy filtrów. I zastosować różne rzędy dla różnych czasów opóźnienia.
+- Zrobię te badania i będzie z głowy. Potem będę mógł dopracowywać ten pogłos i ew. zrobię jeszcze wykresy z czegoś co wymyślę (ew.)
+- Rozdział o filtrach może być najbardziej rozbudowany - w reszcie mogę porównać na przykład po dwie sytuacje, a w rozdziale o filtrach bardzo dużo (jak mam tu wypisane wyżej). 

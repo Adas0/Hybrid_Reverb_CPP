@@ -34,12 +34,14 @@ public:
 	void copyBufferToDelayBuffer(int channel, const float * bufferData, const float * delayBufferData, const int bufferLength, const int delayBufferLength);
 	void copyBackToCurrentBuffer(AudioBuffer<float>& buffer, int channel, const float * bufferData, const float * delayBufferData,
 																	const int bufferLength, const int delayBufferLength, int delayTime, float amplitude);
-	void addDelayWithCurrentBuffer(int channel, const int bufferLength, const int delayBufferLength, const float* dry, int delayTimesNumber, float amplitudeMultiplier);
+	void addDelayWithCurrentBuffer(int channel, const int bufferLength, const int delayBufferLength, const float* dry, int delayTimesNumber, float amplitudeMultiplier, AudioBuffer<float> buffer_);
+	void addDelayWithCurrentBuffer2(int channel, const int bufferLength,
+		const int delayBufferLength, const float* bufferData, int delayTimesNumber, float amplitudeMultiplier, AudioBuffer<float>buffer_);
 	int numInputChannels;
 	int numOutputChannels;
-	float amplitudeEarly, amplitudeLate;
-	float wetDry = 0;
-	float reflectionAmplitude = 0.9;
+	//float amplitudeEarly, amplitudeLate;
+	//float wetDry = 0;
+	//float reflectionAmplitude = 0.9;
 	//int asd = 0;
 	float ILDwet = 0;
 

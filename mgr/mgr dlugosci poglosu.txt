@@ -1,0 +1,2 @@
+najkrótszy pogłos   - ~200ms  -   23 * 2
+najdłuższy 	    - ~1800ms -   140 * 2

@@ -13,7 +13,7 @@ amplitudę 0.9 (bufor opóźniający ma długość 4s)
 Rezultat: Niepożądane artefakty przy filtracji; wet/dry działające poprawnie
 
 
-
+////////////////////////////////////////////////////////////////////////////
 - Ze sprzężeniem:
 1. Przekopiowanie aktualnego bufora do bufora opóźniającego z amplitudą 0.9 - czyli bufor opóźniający będzie miał 
 amplitudę 0.9 (bufor opóźniający ma długość 4s)
@@ -22,7 +22,10 @@ amplitudę 0.9 (bufor opóźniający ma długość 4s)
 4. Dodanie 'czystego' aktualnego bufora do bufora opóźniającego
 
 Oczekiwany efekt: dźwięk bezpośredni ma amplitudę 0.1, a reszta 0.9
-Rezultat: sygnał 'dry' ciągle ma wysoką amplitudę; filtracja działająca poprawnie w przeciwieństwie do pierwszego przypadku
+Rezultat: sygnał 'dry' ciągle ma wysoką amplitudę;
+////////////////////////////////////////////////////////////////////////////
+
+filtracja działająca poprawnie w przeciwieństwie do pierwszego przypadku
 
 
 Druga wersja jest bardziej pożądana - brzmi lepiej, poza tym w niej mam możliwość filtracji obu kanałów w inny sposób, 

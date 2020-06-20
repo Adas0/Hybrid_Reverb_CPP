@@ -29,8 +29,8 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	*(allPassFilter).state = *dsp::IIR::Coefficients<float>::makeAllPass(sampleRate, 15000.0f);
 
 	filtersNumber = numberDelayLines;
-	lowBorderFilterFrequency = 100;
-	highBorderFilterFrequency = 4000;
+	lowBorderFilterFrequency = 50;
+	highBorderFilterFrequency = 4200;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		//if (filtersNumber <= numberDelayLines) 
@@ -39,11 +39,12 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 
 	std::sort(lowPassCutoffFrequenciesLeft.begin(), lowPassCutoffFrequenciesLeft.end());
 	//std::reverse(lowPassCutoffFrequenciesLeft.begin(), lowPassCutoffFrequenciesLeft.end());
+
 	//filterCutoffFrequencies[filterCutoffFrequencies.size()-1] = 20000;
 	/*filterCutoffFrequencies[1] = 20000;
 	filterCutoffFrequencies[2] = 20000;*/
 
-	lowPassCutoffFrequenciesLeft[0] = 10;
+	//lowPassCutoffFrequenciesLeft[0] = 10;
 	/*lowPassCutoffFrequenciesLeft[1] = 20000;
 	lowPassCutoffFrequenciesLeft[2] = 10000;
 	lowPassCutoffFrequenciesLeft[3] = 10000;*/
@@ -58,8 +59,8 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 
 	
 
-	int asd = 150;
-	int sdf = 3500;
+	int asd = 40;
+	int sdf = 4000;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		//if (filtersNumber <= numberDelayLines)
@@ -73,7 +74,7 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	/*filterCutoffFrequencies[1] = 20000;
 	filterCutoffFrequencies[2] = 20000;*/
 
-	lowPassCutoffFrequenciesRight[0] = 10;
+	//lowPassCutoffFrequenciesRight[0] = 10;
 	/*lowPassCutoffFrequenciesRight[1] = 20000;
 	lowPassCutoffFrequenciesRight[2] = 10000;
 	lowPassCutoffFrequenciesRight[3] = 10000;*/

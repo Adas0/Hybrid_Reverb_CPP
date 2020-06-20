@@ -12,11 +12,12 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
+#include "ReverbElement.h"
 
 //==============================================================================
 /**
 */
-class Circular_attemptAudioProcessorEditor  : public AudioProcessorEditor, private Slider::Listener
+class Circular_attemptAudioProcessorEditor  : public AudioProcessorEditor, private Slider::Listener, public ReverbElement
 {
 public:
     Circular_attemptAudioProcessorEditor (Circular_attemptAudioProcessor&);
@@ -31,7 +32,7 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     Circular_attemptAudioProcessor& processor;
-	Slider wetDrySlider, ILDwetSlider, trueWetDry;
+	Slider /*wetDrySlider,*/ ILDwetSlider, trueWetDry;
 	//Slider firstRelectionTimeSlider;
 
 	Slider filterCutOffDial;
