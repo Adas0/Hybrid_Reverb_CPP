@@ -47,7 +47,7 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circ
 	trueWetDry.addListener(this);
 
 	reverbSizeSlider.setSliderStyle(Slider::Rotary);
-	reverbSizeSlider.setRange(1, numberDelayLines, 1);
+	reverbSizeSlider.setRange(0, numberDelayLines, 1);
 	reverbSizeSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
 	reverbSizeSlider.setPopupDisplayEnabled(true, false, this);
 	reverbSizeSlider.setTextValueSuffix(" ");
@@ -55,6 +55,25 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circ
 	addAndMakeVisible(&reverbSizeSlider);
 	reverbSizeSlider.addListener(this);
 	
+	//directSoundCutoffSlider.setSliderStyle(Slider::Rotary);
+	//directSoundCutoffSlider.setRange(20, 20000, 1);
+	////directSoundCutoffSlider.setSkewFactorFromMidPoint(500);
+	//directSoundCutoffSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
+	//directSoundCutoffSlider.setPopupDisplayEnabled(true, false, this);
+	//directSoundCutoffSlider.setTextValueSuffix(" ");
+	//directSoundCutoffSlider.setValue(20000);
+	//addAndMakeVisible(&directSoundCutoffSlider);
+	//directSoundCutoffSlider.addListener(this);
+
+
+	/*ITDslider.setSliderStyle(Slider::Rotary);
+	ITDslider.setRange(1, 20, 1);
+	ITDslider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
+	ITDslider.setPopupDisplayEnabled(true, false, this);
+	ITDslider.setTextValueSuffix(" ");
+	ITDslider.setValue(20);
+	addAndMakeVisible(&ITDslider);
+	ITDslider.addListener(this);*/
 	//wetDrySlider
 
 	//reverbSize
@@ -87,6 +106,8 @@ void Circular_attemptAudioProcessorEditor::resized()
 	ILDwetSlider.setBounds(100, 0, 100, 100);
 	trueWetDry.setBounds(200, 0, 100, 100);
 	reverbSizeSlider.setBounds(300, 0, 100, 100);
+	//directSoundCutoffSlider.setBounds(400, 0, 100, 100);
+	//ITDslider.setBounds(400, 0, 100, 100);
 }
 
 void Circular_attemptAudioProcessorEditor::sliderValueChanged(Slider* slider)
@@ -102,4 +123,8 @@ void Circular_attemptAudioProcessorEditor::sliderValueChanged(Slider* slider)
 	processor.reverbEngine.mWetDry = trueWetDry.getValue();
 
 	processor.reverbEngine.reverbSize = reverbSizeSlider.getValue();
+
+	//processor.reverbEngine.directSoundCutoff = directSoundCutoffSlider.getValue();
+
+	//processor.reverbEngine.spatialMaker.ITDasd = ITDslider.getValue();
 }

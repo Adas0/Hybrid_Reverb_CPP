@@ -20,20 +20,24 @@ int SpatialMaker::getITD(int minus, int plus)
 float SpatialMaker::getILD()
 {
 	float level = Random::getSystemRandom().nextFloat();
-	return (level - 0.5) / 3;
+	level = (level - 0.5) / 5 - 0.2;
+	return level;
 }
 
 //prawdopodobnie ta funkcja powinna zwracać wektor, i w ogóle być wywoływana w klasie ReverbEngine. Bo wtedy mam możliwość
 //stworzenia kilku obiektów klasy SpatialMaker 
 void SpatialMaker::createITDarray()
 {
+	ITDCoefficients.clear();
 	for (int line = 0; line < numberDelayLines; ++line)
 	{
-		if (line > 12)
-			ITDCoefficients.push_back(getITD(-20, 20));
-		else
-			ITDCoefficients.push_back(getITD(-2, 2));
+		//if (line > 1)
+			ITDCoefficients.push_back(getITD(-25, 25));
+		//else
+		//	ITDCoefficients.push_back(/*getITD(-2, 2)*/0);
+			
 	}
+	ITDCoefficients[numberDelayLines - 1] = 0;
 }
 
 void SpatialMaker::createILDarray()
@@ -47,10 +51,10 @@ void SpatialMaker::createILDarray()
 void SpatialMaker::createILD_test()
 {
 	createITDarray();
-	for (int line = 0; line < numberDelayLines; ++line)
+	/*for (int line = 0; line < numberDelayLines; ++line)
 	{
 		ILDCoefficients.push_back(ITDCoefficients[line] / 15);
-	}
+	}*/
 }
 
 std::vector<std::pair<float, int>> SpatialMaker::getSpatialInfo()
@@ -64,7 +68,7 @@ std::vector<std::pair<float, int>> SpatialMaker::getSpatialInfo()
 void SpatialMaker::prepare()
 {
 	//createITDarray();
-	//createILDarray();
+	createILDarray();
 	createILD_test();
 
 }

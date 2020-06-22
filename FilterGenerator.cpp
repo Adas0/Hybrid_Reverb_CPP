@@ -10,11 +10,30 @@
 
 #include "FilterGenerator.h"
 #include "../JuceLibraryCode/JuceHeader.h"
-
+#include <math.h>
 
 int FilterGenerator::getFilterCutoffFrequency(int& lowBorder, int& highBorder)
 {
 	return Random::getSystemRandom().nextInt(Range<int>(lowBorder, highBorder));
+}
+
+void FilterGenerator::prepareBandPass(double sampleRate, int samplesPerBlock, int numChannels, dsp::ProcessSpec spec)
+{
+	for (int filter = 0; filter < filtersNumber; ++filter)
+		bandpassCutoffFrequenciesRight.push_back(20000);
+
+	int lowBandFreq = 2000, highBandFreq = 3000;
+
+	for (int filter = ceil(numberDelayLines / 3); filter < ceil(2 * filtersNumber / 3); ++filter)
+		bandpassCutoffFrequenciesRight[filter] = getFilterCutoffFrequency(lowBandFreq, highBandFreq);
+
+
+	for (int filter = 0; filter < filtersNumber; ++filter)
+	{
+		bandPassFilterRight[filter].prepare(spec);
+		bandPassFilterRight[filter].reset();
+		*(bandPassFilterRight[filter]).state = *dsp::IIR::Coefficients<float>::makeBandPass(sampleRate, bandpassCutoffFrequenciesRight[filter], 1.0f);
+	}
 }
 
 void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numChannels)
@@ -23,24 +42,28 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	spec.sampleRate = sampleRate;
 	spec.maximumBlockSize = samplesPerBlock;
 	spec.numChannels = numChannels;
+
+	prepareBandPass(sampleRate, samplesPerBlock, numChannels, spec);
 	
 	allPassFilter.prepare(spec);
 	allPassFilter.reset();
-	*(allPassFilter).state = *dsp::IIR::Coefficients<float>::makeAllPass(sampleRate, 15000.0f);
+	*(allPassFilter).state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, 15000.0f);
 
 	filtersNumber = numberDelayLines;
-	lowBorderFilterFrequency = 50;
-	highBorderFilterFrequency = 4200;
+	lowBorderFilterFrequency = 40;
+	highBorderFilterFrequency = 2000;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		//if (filtersNumber <= numberDelayLines) 
 			lowPassCutoffFrequenciesLeft.push_back(getFilterCutoffFrequency(lowBorderFilterFrequency, highBorderFilterFrequency));
 	}
 
+	lowPassCutoffFrequenciesLeft[numberDelayLines - 1] = 20000;
+
 	std::sort(lowPassCutoffFrequenciesLeft.begin(), lowPassCutoffFrequenciesLeft.end());
 	//std::reverse(lowPassCutoffFrequenciesLeft.begin(), lowPassCutoffFrequenciesLeft.end());
 
-	//filterCutoffFrequencies[filterCutoffFrequencies.size()-1] = 20000;
+	lowPassCutoffFrequenciesLeft[lowPassCutoffFrequenciesLeft.size()-1] = 20000;
 	/*filterCutoffFrequencies[1] = 20000;
 	filterCutoffFrequencies[2] = 20000;*/
 
@@ -49,7 +72,11 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	lowPassCutoffFrequenciesLeft[2] = 10000;
 	lowPassCutoffFrequenciesLeft[3] = 10000;*/
 
-	for (int filter = 0; filter < filtersNumber; ++filter) 
+	//lowPassCutoffFrequenciesLeft[0] = 50;
+	
+
+
+	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		lowPassFilterLeft[filter].prepare(spec);
 		lowPassFilterLeft[filter].reset();
@@ -57,17 +84,19 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	}
 
 
-	
-
-	int asd = 40;
-	int sdf = 4000;
+	int asd = 50;
+	int sdf = 1900;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		//if (filtersNumber <= numberDelayLines)
 		lowPassCutoffFrequenciesRight.push_back(getFilterCutoffFrequency(asd, sdf));
 	}
 
-	std::sort(lowPassCutoffFrequenciesRight.begin(), lowPassCutoffFrequenciesRight.end());
+	//lowPassCutoffFrequenciesRight[0] = 20000;
+	lowPassCutoffFrequenciesRight[numberDelayLines - 1] = 20000;
+	lowPassCutoffFrequenciesRight = lowPassCutoffFrequenciesLeft;
+
+	//std::sort(lowPassCutoffFrequenciesRight.begin(), lowPassCutoffFrequenciesRight.end());
 	//std::reverse(lowPassCutoffFrequenciesRight.begin(), lowPassCutoffFrequenciesRight.end());
 
 	//filterCutoffFrequencies[filterCutoffFrequencies.size()-1] = 20000;
@@ -78,6 +107,9 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	/*lowPassCutoffFrequenciesRight[1] = 20000;
 	lowPassCutoffFrequenciesRight[2] = 10000;
 	lowPassCutoffFrequenciesRight[3] = 10000;*/
+
+
+	
 
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{

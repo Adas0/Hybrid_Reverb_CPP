@@ -38,6 +38,8 @@ private:
 	Slider filterCutOffDial;
 	Slider filteResDial;
 	Slider reverbSizeSlider;
+	//Slider directSoundCutoffSlider;
+	//Slider ITDslider;
 	//Slider wetDrySlider;
 	/*ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> filterCutoffValue;
 	ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> filterResValue;*/

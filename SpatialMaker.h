@@ -19,12 +19,12 @@ public:
 	float getILD();
 	void prepare();
 	std::vector<int>ITDCoefficients;
-	std::vector<int>ILDCoefficients;
+	std::vector<float>ILDCoefficients;
 	void createITDarray();
 	void createILDarray();
 
 	void createILD_test();
-
+	int ITDasd;
 	std::vector < std::pair<float, int>> getSpatialInfo();
 
 };

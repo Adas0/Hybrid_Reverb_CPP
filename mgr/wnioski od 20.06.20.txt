@@ -4,7 +4,7 @@
 - spróbuję zrobić pokrętło z first reflection time. Będę dodawał czas opóźnienia już w process blocku, czyli:
 firstReflectionTime + delayTimesArray[line]
 - opcja badania filtrów: tablica filtrów liniowa vs tablica filtrów wykładnicza
-- kolejna opcja badania filtrów: wykazanie że jest większa przestrzenność z różnymi filtrami w obu kanałach. W sumie oczywiste, bo jak będę porównywał oba kanały, to będą identyczne jeżeli identyczne filtry. Ale i tak mogę to zrobić. Ale mogę też wykazać, działa to też przy zastosowaniu ITD. Czyli: z ITD + różnymi filtrami dla obu kanałów ma większą przestrzenność, ITD + takie same filtry dla obu kanałów. 
+- kolejna opcja badania filtrów: wykazanie że jest większa przestrzenność z różnymi filtrami w obu kanałach. W sumie oczywiste, bo jak będę porównywał oba kanały, to będą identyczne jeżeli identyczne filtry. Ale i tak mogę to zrobić. Ale mogę też wykazać, działa to też przy zastosowaniu ITD. Czyli: z ITD + różnymi filtrami dla obu kanałów ma większą przestrzenność, niż ITD + takie same filtry dla obu kanałów. I niż bez ITD i różne filtry dla obu kanałów. I mogę też porównać te dwa ostatnie przypadki.
 - Mogę narysować Gaussy: np. gdy mam filtry w lewym od 100-400, a w prawym od 150-350, to pole pod Gaussami jest takie samo (jeden jest szerszy i niższy, a drugi węższy i wyższy). Albo po prostu napisać o tym, że mniej więcej taki ma to efekt. 
 - Jak nie wyjdzie z tym szumem białym, to napiszę po prostu że nie dało zadowalających efektów (poprę badaniami) 
 i że zastosuję po prostu przedłużenie przez dodanie podwójnych linii, jeszcze mocniej filtrowanych. 
@@ -16,9 +16,24 @@ i że zastosuję po prostu przedłużenie przez dodanie podwójnych linii, jeszc
 - gdzieś mam napisane przy jakim ustawieniu amplituda nie spada mocno w jednym momencie. 
 - Przy badaniu szumu - żeby amplituda nie spadała mocno w jednym momencie po prostu zrobię bardzo długie czasy może 
 (do badań). 
-- Hm. Albo po prostu mogę do badań wziąć SAM pogłos... - czyli bez dźwięku bezpośredniego. Jak usunę if'a z tym ostatnim elementem tablicy (wartość opóźnienia 0), to jest brak dźwięku bezpośredniego.
+- Hm. Albo po prostu mogę do badań wziąć SAM pogłos... - czyli bez dźwięku bezpośredniego. Jak usunę if'a z tym ostatnim elementem tablicy (wartość opóźnienia 0), to jest brak dźwięku bezpośredniego. To jest spoko, bo właściwie to JEST SAM pogłos, czyli to czego potrzebuję. 
 - Muszę zmienić jedną rzecz: teraz w przypadku ustawienia suwakiem krótkiego pogłosu (np. 50 linii) filtry, które są wylosowane mają zbyt wysokie wartości (mocne tłumienie filtrami zarezerwowane jest dla linii, które są NIEAKTYWNE. I brzmi to średnio. Muszę więc zrobić tak, żeby przy krótkim pogłosie ostatnie linie (mimo, że o krótkim czasie opóźnienia) miały były mocno filtrowane. 
 - Ciągle zapominam, że moim celem NIE jest naturalny pogłos. Jest efektem - brzmi tak jak brzmi. <3
 - Mogę porównać jeszcze różne rzędy filtrów. I zastosować różne rzędy dla różnych czasów opóźnienia.
 - Zrobię te badania i będzie z głowy. Potem będę mógł dopracowywać ten pogłos i ew. zrobię jeszcze wykresy z czegoś co wymyślę (ew.)
 - Rozdział o filtrach może być najbardziej rozbudowany - w reszcie mogę porównać na przykład po dwie sytuacje, a w rozdziale o filtrach bardzo dużo (jak mam tu wypisane wyżej). 
+- Przy cross-fade z szumem musi chyba ten szum być filtrowany tak samo, jak bufor, z którym szum się w aktualnym momencie spotyka
+- Napiszę też w pracy, że pierwszy pogłos składał się z prawie samych klików. Mogę po prostu napisać, że zrobiono coś tam, i jaki miało efekt (czyli ten pierwszy - pogłos z prawie samych klików).
+- Napiszę, że PluginProcessor pełni funkcję hosta. 
+- Skoro mam dostęp do sygnału bez dźwięku bezpośredniego (bez tego if'a, jak opisane wyżej), to mogę dodać pokrętło, które będzie mniej lub bardziej filtrowało to 'pierwsze' odbicie, właściwie nie jest to pierwsze odbicie, tylko ta kopia sygnału z opóźnieniem 0 - super, czyli to działa już!! Czyli teraz tylko w process blocku będę zmieniał wartość częstotliwości odcięcia tego dźwięku bezpośredniego!
+
+TO WSZYSTKO JUŻ BĘDĘ ROBIŁ PO TYCH BADANIACH, MUSZĘ JE ZROBIĆ I MIEĆ Z GŁOWY I POTEM BĘDĘ ROBIŁ TE SUPER RZECZY.
+
+- Ten rekin: może to być np. filtrowanie kilku(nastu/dziesięciu) buforów w środku pętli (np. kilkunastu z tych 160, gdzieś po środku czyli np. przy od 100 do 120 iteracji dawać filtry pasmowe.
+- SPRAWDZIĆ JAK GOŚĆ ZROBIŁ ŻE TE POKRĘTŁA W FILTRACH MU NORMALNIE DZIAŁAŁY BEZ KLIKÓW 
+- tablica filtrów może może być generowana w process blocku - użytkownik będzie miał możliwość ustawienia przedziału częstotliwości, z jakiego są losowane wartości.
+- napiszę w pracy, że dodatkowo w jakiejś tam sytuacji były kliki przy kręceniu pokrętłem (chyba zmianie zakresu czasów opóźnienia). 
+- napiszę też, że w tym podejściu liczby wymagają posortowania, a w filtrach posortowania i odwrócenia. Operacje te natomiast nie wpływają znacząco na szybkość obliczeń, ponieważ są wykonywanie tylko raz. Rónież przy zmianie wielkości pogłosu nie losujemy za każdym razem nowych liczb, tylko są są losowane raz, to jest super wymyślony sposób. 'Dzięki temu nie ma klików'.
+- napiszę też, że ze względu na bardzo dużą ilość czynników i wpływanie ich wzajemne na siebie utrudniają ocenę - żeby przebadać wszystkie sytuacje trzebaby zrobić z 50 wykresów jak nie więcej. (różne filtry, zakresy filtrów, obecność lub nie ITD, obecność lub nie różnicy w filtrach dla obu kanałów etc, zakresy f odcięcia filtrów, rzędy filtrów - wszystkie kombinacje!!)
+- we wnioskach napisać, że np. ITD wpływa nie na przestrzenność tylko na badany parametr! I może to skutkować subiektywnym wrażeniem większej przestrzenności. 
+- Na koniec mogę po prostu wybrać dziwne rzeczy np. 'ze względu na to, że bla bla coś tam, nie ma dużych różnic między sposobami czy coś, wybieram troll sposób czyli np. lewy kanał mniej filtrowany niż prawy, ale bardziej opóźniony' lub coś podobnego
