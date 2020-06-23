@@ -24,9 +24,24 @@ std::vector<int> DelayTimesGenerator::getDelayTimes(int & delayTimesNumber, int&
 	for (int i = 0; i < delayTimesNumber; ++i)
 	{ 
 		//delayTimes.push_back(firstRefTime + generateRandomNumber(lowTime, highTime));
-		delayTimes.push_back(this->delayTimesPrime_[i * 2] + firstRefTime);
+		delayTimes.push_back(this->delayTimesPrime_[i * 4] /*+ firstRefTime*/);
 		
 	}
+
+	//for (int i = 0; i < delayTimesNumber / 2; ++i)
+	//{ 
+	//	//delayTimes.push_back(firstRefTime + generateRandomNumber(lowTime, highTime));
+	//	delayTimes.push_back(this->delayTimesPrime_[i * 2] + firstRefTime);
+	//	
+	//}
+
+	//for (int i = 3 * delayTimesNumber / 4; i < delayTimesNumber; ++i)
+	//{
+	//	//delayTimes.push_back(firstRefTime + generateRandomNumber(lowTime, highTime));
+	//	delayTimes.push_back(this->delayTimesPrime_[i * 2] + firstRefTime);
+	//	delayTimes.push_back(this->delayTimesPrime_[i * 2 + 1] + firstRefTime);
+
+	//}
 
 	//auto max = *max_element(std::begin(delayTimes), std::end(delayTimes));
 	//int a = 0;

@@ -49,6 +49,10 @@ public:
 	float reverbSize;
 	int ITDcoefficient;
 	int directSoundCutoff;
+	std::vector<AudioBuffer<float>>noiseArray;
+	//AudioBuffer<float>asdfg;
+	AudioBuffer<float>asdfg;
+	std::vector<float>noiseVector;
 	/*void asd(AudioBuffer<float>& buffer, int channel, const float* bufferData, const float* delayBufferData,
 		const int bufferLength, const int delayBufferLength, int delayTime);*/
 
