@@ -40,7 +40,7 @@ obu widm była równa 0.
 Czyli im różnica bliższa 0 tym lepiej. ALE tylko jeżeli sygnały są do siebie niepodobne. 
 Więc może stosunek różnicy widm do jakiegoś podobieńśtwa sygnałów. Czy coś. 
 Jeśli nie uda mi się obliczyć IACC, to wrzucę wzór, napiszę że to jeden ze sposobów, ale wybieram inny z jakiegoś
-powodu xD. Że IACC nie jest do końca dobre w tym przypadku bo coś tam. 
+powodu xD. Że IACC nie jest do końca dobre w tym przypadku bo coś tam.
 
 4. późny ogon pogłosowy
 - spectral flatness: https://librosa.github.io/librosa/generated/librosa.feature.spectral_flatness.html

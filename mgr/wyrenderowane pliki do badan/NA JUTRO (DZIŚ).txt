@@ -1,0 +1,3 @@
+- lateral diffrent vs diff filters vs ITD
+- randomTimes vs prime numbers times vs randomTimes_1_15 vs zageszczenie krotkich czasow (jesli sie uda)
+- filters 500-2k vs same filters no ITD vs constant filters vs band pass filters jesli sie uda

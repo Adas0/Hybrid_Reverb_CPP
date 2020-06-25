@@ -1,0 +1,5 @@
+for i in range(0, len(flatness_)):
+    if flatness[i] > flatness_[i]:
+        d += 1
+
+tylko 70/490 probek było większych w przypadku zagęszczonego pogłosu, więc w jakichś 85% (420/490) większą płaskość ma wersja z szumem. (liczę która próbka jest większa, bo im bliższa 1, tym większa płaskość. 
