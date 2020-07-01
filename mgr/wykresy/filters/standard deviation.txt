@@ -1,0 +1,4 @@
+standard deviation
+0.04066352 - random sorted
+0.041345466 - 500 to 2k
+0.045044165 - constant filters

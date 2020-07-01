@@ -42,3 +42,10 @@ TO WSZYSTKO JUŻ BĘDĘ ROBIŁ PO TYCH BADANIACH, MUSZĘ JE ZROBIĆ I MIEĆ Z G�
 - trzeba wskazać na trudność w ocenie porównania np. przestrzenności ze względu na różne zakresy parametrów, jakie można dobrać. Np. sygnał z ITD może być mniej przestrzenny niż z różniącymi się filtrami, ale przy innym zakresie tego ITD może być bardziej. 
 - może napiszę, że po prostu te parametry to głównie wskazanie sposobów, jakie można zastosować w celu porównań, i dalsze badania są konieczne w celu lepszego porównania tych parametrów (ja przyjmuję te zakresy w sposób trochę losowy). 
 - zamiast pisać, że 'zdecydowano się na coś tam' np. na to przedstawienie tego flatness w db - pisać, że przy przedstawieniu w skali dB jest większa czytelność
+- do pracy wzory na filtry IIR, itd. Czyli jeszcze inna teoria dot. używanych funkcji z JUCE. 
+- WAŻNE: parametr, na podstawie którego wybieram (ogon, może nie tylko) - w ilu punktach flatness jest wieksza dla jednego niż drugiego (czyli w tych procentach) pomnożone przez może to samo z density
+- flatness w filtrach - policzę też w ilu punktach jest większae niż inne, i może policzę średnie odchylenie standardowe. I napiszę wtedy, że średnie odchylenie akurat w przypadku filtrów jest porządane żeby było duże - bo chcemy mieć wrażenie, że widmo się zmienia w czasie. I że dlatego wybieram większe filtrowanie dla linii bardziej opóźnionych. 
+- przy wyborze mogę napisać, że badania nie wykazały większych różnic pomiędzy metodami więc wybieram coś tam, lub biorę z każdego po trochu. 
+- w opisie teorii: podpunkty - a) IACC, b) spectral density, etc.
+- przy opisie teorii mam na razie mało - na pewno wrzucać po co najmniej 2 rysunki z literatury albo jakieś wzory
+- w podsumowaniu napiszę też, że przydatne mogą być testy odsłuchowe i porónanie ich z obliczonymi parametrami statystycznymi porównującymi poszczególne implementowane warianty. 

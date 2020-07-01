@@ -154,7 +154,7 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 					filterGenerator.lowPassFilterLeft[line].process(dsp::ProcessContextReplacing<float>(block));
 					/*if (line > 30)
 					{*/
-					copyBackToCurrentBuffer(buffer, rightChannel, bufferDataRa, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line] /*+ spatialMaker.ITDCoefficients[line]*/, 1);
+					copyBackToCurrentBuffer(buffer, rightChannel, bufferDataRa, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line] + spatialMaker.ITDCoefficients[line], 1);
 
 
 					dsp::AudioBlock<float> block(buffer);
@@ -162,31 +162,31 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 						
 
 					
-					//asdfg.setSize(2, bufferLength);
-					//asdfg.clear();
-					//for (int sample = 0; sample < bufferLength; ++sample)
-					//{
-					//	//asdf.clear();
-					//	asdfg.addSample(0, sample, Random::getSystemRandom().nextFloat());
-					//	asdfg.addSample(1, sample, Random::getSystemRandom().nextFloat());
-					//}
-					////dsp::AudioBlock<float>noiseBlock(noiseArray[line]);
-					////AudioBuffer<float> qqq = asdfg;
-					//dsp::AudioBlock<float>noiseBlock(asdfg);
-					//filterGenerator.noiseFilters[line].process(dsp::ProcessContextReplacing<float>(noiseBlock));
-					//
-					///*float* noiseBufferDataL = noiseArray[line].getWritePointer(0);
-					//float* noiseBufferDataR = noiseArray[line].getWritePointer(1);*/
+					asdfg.setSize(2, bufferLength);
+					asdfg.clear();
+					for (int sample = 0; sample < bufferLength; ++sample)
+					{
+						//asdf.clear();
+						asdfg.addSample(0, sample,  1.2 * Random::getSystemRandom().nextFloat());
+						asdfg.addSample(1, sample, 1.2 * Random::getSystemRandom().nextFloat());
+					}
+					//dsp::AudioBlock<float>noiseBlock(noiseArray[line]);
+					//AudioBuffer<float> qqq = asdfg;
+					dsp::AudioBlock<float>noiseBlock(asdfg);
+					filterGenerator.noiseFilters[line].process(dsp::ProcessContextReplacing<float>(noiseBlock));
+					
+					/*float* noiseBufferDataL = noiseArray[line].getWritePointer(0);
+					float* noiseBufferDataR = noiseArray[line].getWritePointer(1);*/
 
-					//float* noiseBufferDataL = asdfg.getWritePointer(0);
-					//float* noiseBufferDataR = asdfg.getWritePointer(1);
-					//
-					//for (int sample = 0; sample < bufferLength; ++sample)
-					//{
-					//	//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
-					//	bufferWriteL[sample] *= noiseBufferDataL[sample];
-					//	bufferWriteR[sample] *= noiseBufferDataR[sample];
-					//}
+					float* noiseBufferDataL = asdfg.getWritePointer(0);
+					float* noiseBufferDataR = asdfg.getWritePointer(1);
+					
+					for (int sample = 0; sample < bufferLength; ++sample)
+					{
+						//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
+						bufferWriteL[sample] *= noiseBufferDataL[sample];
+						bufferWriteR[sample] *= noiseBufferDataR[sample];
+					}
 
 
 					//lateReverb.addLateNoise(noiseBuffer, buffer, noiseBufferDataL, noiseBufferDataR, bufferWriteL, bufferWriteR);
@@ -196,9 +196,18 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 						filterGenerator.bandPassFilterRight[line].process(dsp::ProcessContextReplacing<float>(block));
 */
 
-					
-					addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, bufferDataLa, NULL, mWetDry / (float)numberDelayLines, dry);
-					addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, bufferDataRa, NULL, (mWetDry - 0.1) / (float)numberDelayLines, dry);
+					/*if (line == numberDelayLines - 2)
+					{
+						addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, bufferDataLa, NULL, mWetDry / (float)numberDelayLines, dry);
+						addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, bufferDataRa, NULL, (mWetDry - 0.15) / (float)numberDelayLines, dry);
+
+					}
+					else
+					{*/
+						addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, bufferDataLa, NULL, /*(*/mWetDry /*+ (Random::getSystemRandom().nextFloat()/ 5.0f))*/ / (float)numberDelayLines, dry);
+						addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, bufferDataRa, NULL, /*(*/mWetDry /*+ (Random::getSystemRandom().nextFloat() / 5.0f))*/ / (float)numberDelayLines, dry);
+
+					//}
 					
 				//}
 				
