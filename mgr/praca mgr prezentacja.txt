@@ -1,0 +1,27 @@
+pokazac wykresy - spectrogram? - chcę pokazać że filtry nie spadają w dół (wyższe czasy - większe tłumienie), ale też że są 'zafalowania' w widmie. Czyli po prostu pokażę przebig częstotliwości od czasu? 
+
+mam gdzieś notatki, które robiłem przed pierwszą prezentacją na seminarium.
+I mam gdzies notatki na kartce z seminarium, w kurtce czy gdzieś? 
+
+'zdjęcie/rysunek/obraz/ilustracja wyraża więcej niż 100 słów' - dać schematy:
+- density, flatness i koherencja - od nich strzałki do kwadratu (czarnej skrzynki),
+lub czegoś co będzie wskazywać na to, że mieszam jakoś te elementy. Albo po prostu
+pytajnik
+- schemat co się dzieje z buforem po kolei
+- schemat hierarchii klas
+
+
+
+
+- używać dużo pierwszej osoby: zrobiłem, zaimplementowałem, zaproponowałem, stworzyłem, wybrałem
+- na początku z czego wynika potrzeba zrobienia tego co robię - czyli pewnie że pogłos pełni bardzo 
+ważną rolę jako, zarówno w miksie jako odzwierciedlenie rzeczywistego pomieszczenia, jak i jako efekt. I też to, że jest potrzeba obiektywizacji, w przeszłości badania zwykle na grupie słuchaczy - teraźniejsze możliwości znacznie to ułatwiają - m. in. wydajność i szybkość obliczeniowa. Na końcu może powiem, że metody obiektywne i subiektywne mają swoje zalety. Obiektywne - nie można się z tym kłócić, ale mogą być mniej dokładne. Lub być pewnym tego co robię i nie wspominać o tym? I wskazać na to, że istnieje potrzeba obiektywizacji i tyle?
+- co jeszcze zrobię, czyli wyliczę te parametry dla różnych typów sygnałów i porównam w obrębie sygnału
+- uważać, żeby końcówek zdania nie podnosić do góry (ton). 
+- może w moim wzorze oznaczę kolorami literki i obok te literki będą wyjaśnione (za pomocą wzorów).
+Lub wezmę w kolorowy prostokąt i obok te literki też w prostokącie. Lub całe wzory w prostokątach. Różne kolory dla różnych literek. 
+- 'pojawia się pytanie: jak obiektywnie porównać te sygnały. - proponuję wykorzystać istniejące parametry i na podstawie założeń wziętych z literatury tworzę parametr'. 
+- w prezentacji mogę napisać na pierwszym slajdzie: 'autor: inż. Adam Korytowski'
+- może 1 slajd - flatness, 1 slajd - density i na następnym to co 3 myślniki wyżej, dając po prawej ponownie te wzory z dwóch poprzednich slajdów. Na tych dwócj już mogą być w tym kolorowych prostokątach. Lub oba te wzory na jednym slajdzie, w różnych kolorowych prostokątach. 
+- to, że dodajemy sumę do bufora opóźniającego pozwana na inne filtrowanie każdej linii opóźniającej - bo podmieniamy bufor -> filtrujemy go -> dodajemy w jedno miejsce, czyli do tego bufora opóźniającego. 
+- mogę dodać rysunek poglądowy pokazujący że późny ogon robi cross fade z szumem. 
