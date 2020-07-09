@@ -53,6 +53,8 @@ public:
 	//AudioBuffer<float>asdfg;
 	AudioBuffer<float>asdfg;
 	std::vector<float>noiseVector;
+	float noiseIntensity;
+	int firstRefTime;
 	/*void asd(AudioBuffer<float>& buffer, int channel, const float* bufferData, const float* delayBufferData,
 		const int bufferLength, const int delayBufferLength, int delayTime);*/
 

@@ -38,6 +38,8 @@ private:
 	Slider filterCutOffDial;
 	Slider filteResDial;
 	Slider reverbSizeSlider;
+	Slider noiseIntensitySlider;
+	Slider firstRefSlider;
 	//Slider directSoundCutoffSlider;
 	//Slider ITDslider;
 	//Slider wetDrySlider;

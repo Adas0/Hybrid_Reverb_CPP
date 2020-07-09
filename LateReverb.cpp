@@ -34,8 +34,8 @@ std::vector<AudioBuffer<float>> LateReverb::createNoiseBufferArray(int& bufferSi
 		for (int sample = 0; sample < bufferSize; ++sample)
 		{
 			//noiseBuffer.clear();
-			noiseBuffer.addSample(0, sample, Random::getSystemRandom().nextFloat() / 1.0f);
-			noiseBuffer.addSample(1, sample, Random::getSystemRandom().nextFloat() / 1.0f);
+			noiseBuffer.addSample(0, sample,  1.2 * Random::getSystemRandom().nextFloat() / 1.0f);
+			noiseBuffer.addSample(1, sample, 1.2 * Random::getSystemRandom().nextFloat() / 1.0f);
 		}
 
 		noiseBuffers.push_back(noiseBuffer);

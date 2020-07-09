@@ -148,13 +148,13 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 				//}
 				/*else
 				{*/
-					copyBackToCurrentBuffer(buffer, leftChannel, bufferDataLa, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line], 1);
+					copyBackToCurrentBuffer(buffer, leftChannel, bufferDataLa, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line] + firstRefTime, 1);
 
 
 					filterGenerator.lowPassFilterLeft[line].process(dsp::ProcessContextReplacing<float>(block));
 					/*if (line > 30)
 					{*/
-					copyBackToCurrentBuffer(buffer, rightChannel, bufferDataRa, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line] + spatialMaker.ITDCoefficients[line], 1);
+					copyBackToCurrentBuffer(buffer, rightChannel, bufferDataRa, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line] + spatialMaker.ITDCoefficients[line] + firstRefTime, 1);
 
 
 					dsp::AudioBlock<float> block(buffer);
@@ -167,8 +167,10 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 					for (int sample = 0; sample < bufferLength; ++sample)
 					{
 						//asdf.clear();
-						asdfg.addSample(0, sample,  1.2 * Random::getSystemRandom().nextFloat());
-						asdfg.addSample(1, sample, 1.2 * Random::getSystemRandom().nextFloat());
+						//asdfg.addSample(0, sample,  1.2 * Random::getSystemRandom().nextFloat());
+						//asdfg.addSample(1, sample, 1.2 * Random::getSystemRandom().nextFloat());
+						asdfg.addSample(leftChannel, sample, noiseIntensity * Random::getSystemRandom().nextFloat());
+						asdfg.addSample(rightChannel, sample, noiseIntensity * Random::getSystemRandom().nextFloat());
 					}
 					//dsp::AudioBlock<float>noiseBlock(noiseArray[line]);
 					//AudioBuffer<float> qqq = asdfg;
@@ -184,8 +186,12 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 					for (int sample = 0; sample < bufferLength; ++sample)
 					{
 						//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
-						bufferWriteL[sample] *= noiseBufferDataL[sample];
-						bufferWriteR[sample] *= noiseBufferDataR[sample];
+						/*if ((bufferWriteL[sample] != 0) && (bufferWriteR[sample] != 0))
+						{*/
+							bufferWriteL[sample] *= noiseBufferDataL[sample];
+							bufferWriteR[sample] *= noiseBufferDataR[sample];
+						//}
+						
 					}
 
 
