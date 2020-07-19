@@ -22,8 +22,9 @@ void ReverbEngine::prepare(double sampleRate, int samplesPerBlock, int numChanne
 	delayBuffer.clear();
 
 
-	delayTimes.lowDelayTime = 0;
-	delayTimes.highDelayTime = 150;
+	delayTimes.lowDelayTime = 200;
+	delayTimes.highDelayTime = 2000;
+	//delayTimes.highDelayTime = DelayTimesGenerator::delayTimesPrime_[3 * 160] * 2 + 50;
 	delayTimes.firstReflectionTime = 80;
 	delayTimesNumber = numberDelayLines;
 	delayTimesArray.clear();
@@ -151,10 +152,10 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 					copyBackToCurrentBuffer(buffer, leftChannel, bufferDataLa, delayBufferDataL, bufferLength, delayBufferLength, delayTimesArray[line] + firstRefTime, 1);
 
 
-					filterGenerator.lowPassFilterLeft[line].process(dsp::ProcessContextReplacing<float>(block));
+					//filterGenerator.lowPassFilterLeft[line].process(dsp::ProcessContextReplacing<float>(block));
 					/*if (line > 30)
 					{*/
-					copyBackToCurrentBuffer(buffer, rightChannel, bufferDataRa, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line] + spatialMaker.ITDCoefficients[line] + firstRefTime, 1);
+					copyBackToCurrentBuffer(buffer, rightChannel, bufferDataRa, delayBufferDataR, bufferLength, delayBufferLength, delayTimesArray[line] /*+ spatialMaker.ITDCoefficients[line]*/ + firstRefTime, 1);
 
 
 					dsp::AudioBlock<float> block(buffer);
@@ -162,37 +163,37 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 						
 
 					
-					asdfg.setSize(2, bufferLength);
-					asdfg.clear();
-					for (int sample = 0; sample < bufferLength; ++sample)
-					{
-						//asdf.clear();
-						//asdfg.addSample(0, sample,  1.2 * Random::getSystemRandom().nextFloat());
-						//asdfg.addSample(1, sample, 1.2 * Random::getSystemRandom().nextFloat());
-						asdfg.addSample(leftChannel, sample, noiseIntensity * Random::getSystemRandom().nextFloat());
-						asdfg.addSample(rightChannel, sample, noiseIntensity * Random::getSystemRandom().nextFloat());
-					}
-					//dsp::AudioBlock<float>noiseBlock(noiseArray[line]);
-					//AudioBuffer<float> qqq = asdfg;
-					dsp::AudioBlock<float>noiseBlock(asdfg);
-					filterGenerator.noiseFilters[line].process(dsp::ProcessContextReplacing<float>(noiseBlock));
-					
-					/*float* noiseBufferDataL = noiseArray[line].getWritePointer(0);
-					float* noiseBufferDataR = noiseArray[line].getWritePointer(1);*/
+					//asdfg.setSize(2, bufferLength);
+					//asdfg.clear();
+					//for (int sample = 0; sample < bufferLength; ++sample)
+					//{
+					//	//asdf.clear();
+					//	//asdfg.addSample(0, sample,  1.2 * Random::getSystemRandom().nextFloat());
+					//	//asdfg.addSample(1, sample, 1.2 * Random::getSystemRandom().nextFloat());
+					//	asdfg.addSample(leftChannel, sample, noiseIntensity * Random::getSystemRandom().nextFloat());
+					//	asdfg.addSample(rightChannel, sample, noiseIntensity * Random::getSystemRandom().nextFloat());
+					//}
+					////dsp::AudioBlock<float>noiseBlock(noiseArray[line]);
+					////AudioBuffer<float> qqq = asdfg;
+					//dsp::AudioBlock<float>noiseBlock(asdfg);
+					//filterGenerator.noiseFilters[line].process(dsp::ProcessContextReplacing<float>(noiseBlock));
+					//
+					///*float* noiseBufferDataL = noiseArray[line].getWritePointer(0);
+					//float* noiseBufferDataR = noiseArray[line].getWritePointer(1);*/
 
-					float* noiseBufferDataL = asdfg.getWritePointer(0);
-					float* noiseBufferDataR = asdfg.getWritePointer(1);
-					
-					for (int sample = 0; sample < bufferLength; ++sample)
-					{
-						//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
-						/*if ((bufferWriteL[sample] != 0) && (bufferWriteR[sample] != 0))
-						{*/
-							bufferWriteL[sample] *= noiseBufferDataL[sample];
-							bufferWriteR[sample] *= noiseBufferDataR[sample];
-						//}
-						
-					}
+					//float* noiseBufferDataL = asdfg.getWritePointer(0);
+					//float* noiseBufferDataR = asdfg.getWritePointer(1);
+					//
+					//for (int sample = 0; sample < bufferLength; ++sample)
+					//{
+					//	//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
+					//	/*if ((bufferWriteL[sample] != 0) && (bufferWriteR[sample] != 0))
+					//	{*/
+					//		bufferWriteL[sample] *= noiseBufferDataL[sample];
+					//		bufferWriteR[sample] *= noiseBufferDataR[sample];
+					//	//}
+					//	
+					//}
 
 
 					//lateReverb.addLateNoise(noiseBuffer, buffer, noiseBufferDataL, noiseBufferDataR, bufferWriteL, bufferWriteR);
@@ -211,7 +212,7 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 					else
 					{*/
 						addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, bufferDataLa, NULL, /*(*/mWetDry /*+ (Random::getSystemRandom().nextFloat()/ 5.0f))*/ / (float)numberDelayLines, dry);
-						addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, bufferDataRa, NULL, /*(*/mWetDry /*+ (Random::getSystemRandom().nextFloat() / 5.0f))*/ / (float)numberDelayLines, dry);
+						addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, bufferDataRa, NULL, /*(*/mWetDry /*+*/ /*(Random::getSystemRandom().nextFloat() / 5.0f))*/ / (float)numberDelayLines, dry);
 
 					//}
 					

@@ -106,8 +106,8 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	}
 
 
-	int asd = 50;
-	int sdf = 1900;
+	int asd = 40;
+	int sdf = 3000;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		//if (filtersNumber <= numberDelayLines)
@@ -116,8 +116,6 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	}
 
 	lowPassCutoffFrequenciesRight[numberDelayLines - 1] = 20000;
-	//lowPassCutoffFrequenciesRight = lowPassCutoffFrequenciesLeft;
-
 	std::sort(lowPassCutoffFrequenciesRight.begin(), lowPassCutoffFrequenciesRight.end());
 	//std::reverse(lowPassCutoffFrequenciesRight.begin(), lowPassCutoffFrequenciesRight.end());
 

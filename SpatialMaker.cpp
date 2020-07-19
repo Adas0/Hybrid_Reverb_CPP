@@ -32,7 +32,7 @@ void SpatialMaker::createITDarray()
 	for (int line = 0; line < numberDelayLines; ++line)
 	{
 		//if (line > 1)
-			ITDCoefficients.push_back(getITD(-25, 25));
+			ITDCoefficients.push_back(getITD(-40, 40));
 		//else
 		//	ITDCoefficients.push_back(/*getITD(-2, 2)*/0);
 			
