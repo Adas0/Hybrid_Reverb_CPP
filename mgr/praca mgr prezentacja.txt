@@ -24,4 +24,7 @@ Lub wezmę w kolorowy prostokąt i obok te literki też w prostokącie. Lub cał
 - w prezentacji mogę napisać na pierwszym slajdzie: 'autor: inż. Adam Korytowski'
 - może 1 slajd - flatness, 1 slajd - density i na następnym to co 3 myślniki wyżej, dając po prawej ponownie te wzory z dwóch poprzednich slajdów. Na tych dwócj już mogą być w tym kolorowych prostokątach. Lub oba te wzory na jednym slajdzie, w różnych kolorowych prostokątach. 
 - to, że dodajemy sumę do bufora opóźniającego pozwana na inne filtrowanie każdej linii opóźniającej - bo podmieniamy bufor -> filtrujemy go -> dodajemy w jedno miejsce, czyli do tego bufora opóźniającego. 
-- mogę dodać rysunek poglądowy pokazujący że późny ogon robi cross fade z szumem. 
+- mogę dodać rysunek poglądowy pokazujący że późny ogon robi cross fade z szumem.
+
+
+'tutaj pojawia się pytanie: jak porównywać te sygnały - 
