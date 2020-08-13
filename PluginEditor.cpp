@@ -38,11 +38,11 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circ
 	ILDwetSlider.addListener(this);*/
 
 	trueWetDry.setSliderStyle(Slider::Rotary);
-	trueWetDry.setRange(0.0, 0.99, 0.01);
+	trueWetDry.setRange(0.0f, 1.0f, 0.01f);
 	trueWetDry.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
 	trueWetDry.setPopupDisplayEnabled(true, false, this);
 	trueWetDry.setTextValueSuffix(" ");
-	trueWetDry.setValue(0.99);
+	trueWetDry.setValue(1.0f);
 	addAndMakeVisible(&trueWetDry);
 	trueWetDry.addListener(this);
 
@@ -51,7 +51,7 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circ
 	reverbSizeSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
 	reverbSizeSlider.setPopupDisplayEnabled(true, false, this);
 	reverbSizeSlider.setTextValueSuffix(" ");
-	reverbSizeSlider.setValue(30);
+	reverbSizeSlider.setValue(numberDelayLines);
 	addAndMakeVisible(&reverbSizeSlider);
 	reverbSizeSlider.addListener(this);
 
@@ -61,18 +61,28 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circ
 	noiseIntensitySlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
 	noiseIntensitySlider.setPopupDisplayEnabled(true, false, this);
 	noiseIntensitySlider.setTextValueSuffix(" ");
-	noiseIntensitySlider.setValue(1.3f);
+	noiseIntensitySlider.setValue(2.0f);
 	addAndMakeVisible(&noiseIntensitySlider);
 	noiseIntensitySlider.addListener(this);
 
 	firstRefSlider.setSliderStyle(Slider::Rotary);
-	firstRefSlider.setRange(0, 100, 1);
+	firstRefSlider.setRange(0, 400, 1);
 	firstRefSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
 	firstRefSlider.setPopupDisplayEnabled(true, false, this);
 	firstRefSlider.setTextValueSuffix(" ");
-	firstRefSlider.setValue(50);
+	firstRefSlider.setValue(100);
 	addAndMakeVisible(&firstRefSlider);
 	firstRefSlider.addListener(this);
+
+	lateralAmplitudeDifferenceSlider.setSliderStyle(Slider::Rotary);
+	lateralAmplitudeDifferenceSlider.setRange(0.0, 1.0, 0.01);
+	lateralAmplitudeDifferenceSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
+	lateralAmplitudeDifferenceSlider.setPopupDisplayEnabled(true, false, this);
+	lateralAmplitudeDifferenceSlider.setTextValueSuffix(" ");
+	lateralAmplitudeDifferenceSlider.setValue(0.0);
+	addAndMakeVisible(&lateralAmplitudeDifferenceSlider);
+	lateralAmplitudeDifferenceSlider.addListener(this);
+	
 	
 	//directSoundCutoffSlider.setSliderStyle(Slider::Rotary);
 	//directSoundCutoffSlider.setRange(20, 20000, 1);
@@ -127,6 +137,8 @@ void Circular_attemptAudioProcessorEditor::resized()
 	reverbSizeSlider.setBounds(200, 0, 100, 100);
 	noiseIntensitySlider.setBounds(50, 100, 100, 100);
 	firstRefSlider.setBounds(150, 100, 100, 100);
+
+	lateralAmplitudeDifferenceSlider.setBounds(250, 100, 100, 100);
 	//directSoundCutoffSlider.setBounds(400, 0, 100, 100);
 	//ITDslider.setBounds(400, 0, 100, 100);
 }
@@ -148,6 +160,10 @@ void Circular_attemptAudioProcessorEditor::sliderValueChanged(Slider* slider)
 	processor.reverbEngine.noiseIntensity = noiseIntensitySlider.getValue();
 
 	processor.reverbEngine.firstRefTime = firstRefSlider.getValue();
+
+	processor.reverbEngine.lateralAmplitudeDifference = lateralAmplitudeDifferenceSlider.getValue();
+
+	//processor.reverbEngine.firstRefTime = firstRefSlider.getValue();
 
 	//processor.reverbEngine.directSoundCutoff = directSoundCutoffSlider.getValue();
 

@@ -40,6 +40,7 @@ private:
 	Slider reverbSizeSlider;
 	Slider noiseIntensitySlider;
 	Slider firstRefSlider;
+	Slider lateralAmplitudeDifferenceSlider;
 	//Slider directSoundCutoffSlider;
 	//Slider ITDslider;
 	//Slider wetDrySlider;
