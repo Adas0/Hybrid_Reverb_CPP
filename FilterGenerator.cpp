@@ -37,20 +37,23 @@ void FilterGenerator::prepareBandPass(double sampleRate, int samplesPerBlock, in
 }
 
 
-void FilterGenerator::prepareNoiseFilters(double sampleRate, int samplesPerBlock, int numChannels, dsp::ProcessSpec spec)
+void FilterGenerator::prepareNoiseFilters(double sampleRate, 
+			int samplesPerBlock, int numChannels, dsp::ProcessSpec spec)
 {
 
 	int lowBandFreq = 40, highBandFreq = 900;
 
 	for (int filter = 0; filter < numberDelayLines; ++filter)
-		noiseFiltersFrequencies.push_back(getFilterCutoffFrequency(lowBandFreq, highBandFreq));
+		noiseFiltersFrequencies.push_back(getFilterCutoffFrequency
+												(lowBandFreq, highBandFreq));
 
 
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		noiseFilters[filter].prepare(spec);
 		noiseFilters[filter].reset();
-		*(noiseFilters[filter]).state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, noiseFiltersFrequencies[filter], 1.0f);
+		*(noiseFilters[filter]).state = *dsp::IIR::Coefficients<float>::
+					makeLowPass(sampleRate, noiseFiltersFrequencies[filter], 1.0f);
 	}
 
 	std::sort(noiseFiltersFrequencies.begin(), noiseFiltersFrequencies.end());

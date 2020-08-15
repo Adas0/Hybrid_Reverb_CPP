@@ -164,19 +164,18 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 					filterGenerator.lowPassFilterRight[line].process(dsp::ProcessContextReplacing<float>(block));
 						
 
-					
 					noiseBuffer.setSize(2, bufferLength);
 					noiseBuffer.clear();
 					for (int sample = 0; sample < bufferLength; ++sample)
 					{
-						//asdf.clear();
-						//asdfg.addSample(0, sample,  1.2 * Random::getSystemRandom().nextFloat());
-						//asdfg.addSample(1, sample, 1.2 * Random::getSystemRandom().nextFloat());
 						noiseBuffer.addSample(leftChannel, sample, noiseIntensity * Random::getSystemRandom().nextFloat());
 						noiseBuffer.addSample(rightChannel, sample, noiseIntensity * Random::getSystemRandom().nextFloat());
+
 					}
+
 					//dsp::AudioBlock<float>noiseBlock(noiseArray[line]);
 					//AudioBuffer<float> qqq = asdfg;
+
 					dsp::AudioBlock<float>noiseBlock(noiseBuffer);
 					filterGenerator.noiseFilters[line].process(dsp::ProcessContextReplacing<float>(noiseBlock));
 					
@@ -188,12 +187,8 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 					
 					for (int sample = 0; sample < bufferLength; ++sample)
 					{
-						//buffer.addSample(0, bufferDataL[sample], noiseBufferData[sample]);
-						/*if ((bufferWriteL[sample] != 0) && (bufferWriteR[sample] != 0))
-						{*/
 							bufferWriteL[sample] *= noiseBufferDataL[sample];
 							bufferWriteR[sample] *= noiseBufferDataR[sample];
-						//}
 						
 					}
 
