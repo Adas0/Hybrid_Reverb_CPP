@@ -33,10 +33,9 @@ public:
 	int sampleRate_ = 0;
 	void copyBufferToDelayBuffer(int channel, const float * bufferData, const float * delayBufferData, const int bufferLength, const int delayBufferLength);
 	void copyBackToCurrentBuffer(AudioBuffer<float>& buffer, int channel, const float * bufferData, const float * delayBufferData,
-																	const int bufferLength, const int delayBufferLength, int delayTime, float amplitude);
+																	const int bufferLength, const int delayBufferLength, int delayTime);
 	void addDelayWithCurrentBuffer(int channel, const int bufferLength, const int delayBufferLength, const float* dry, int delayTimesNumber, float amplitudeMultiplier, AudioBuffer<float> buffer_);
-	void addDelayWithCurrentBuffer2(int channel, const int bufferLength,
-		const int delayBufferLength, const float* bufferData, int delayTimesNumber, float amplitudeMultiplier, AudioBuffer<float>buffer_);
+
 	int numInputChannels;
 	int numOutputChannels;
 	//float amplitudeEarly, amplitudeLate;
