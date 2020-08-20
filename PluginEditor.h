@@ -17,7 +17,7 @@
 //==============================================================================
 /**
 */
-class Circular_attemptAudioProcessorEditor  : public AudioProcessorEditor, private Slider::Listener, public ReverbElement
+class Circular_attemptAudioProcessorEditor  : public AudioProcessorEditor, private Slider::Listener, /*private ComboBox::Listener,*/ public ReverbElement
 {
 public:
     Circular_attemptAudioProcessorEditor (Circular_attemptAudioProcessor&);
@@ -27,6 +27,9 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 	void sliderValueChanged(Slider* slider) override;
+	//void onChange(ComboBox* box) override;
+	
+	void filtersChange();
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -41,6 +44,8 @@ private:
 	Slider noiseIntensitySlider;
 	Slider firstRefSlider;
 	Slider lateralAmplitudeDifferenceSlider;
+
+	ComboBox filtersChoose;
 	//Slider directSoundCutoffSlider;
 	//Slider ITDslider;
 	//Slider wetDrySlider;

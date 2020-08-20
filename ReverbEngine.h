@@ -19,10 +19,14 @@ class ReverbEngine: public ReverbElement
 {
 public:
 	ReverbEngine() {}
+
 	FilterGenerator filterGenerator;
 	SpatialMaker spatialMaker;
 	DelayTimesGenerator delayTimes;
 	LateReverb lateReverb;
+
+	/*...*/
+
 	std::vector<int> delayTimesArray;
 	int delayTimesNumber;
 	void process(AudioBuffer<float>&buffer);
@@ -34,7 +38,7 @@ public:
 	void copyBufferToDelayBuffer(int channel, const float * bufferData, const float * delayBufferData, const int bufferLength, const int delayBufferLength);
 	void copyBackToCurrentBuffer(AudioBuffer<float>& buffer, int channel, const float * bufferData, const float * delayBufferData,
 																	const int bufferLength, const int delayBufferLength, int delayTime);
-	void addDelayWithCurrentBuffer(int channel, const int bufferLength, const int delayBufferLength, const float* dry, int delayTimesNumber, float amplitudeMultiplier, AudioBuffer<float> buffer_);
+	void addDelayWithCurrentBuffer(int channel, const int bufferLength, const int delayBufferLength, const float* dry, float amplitudeMultiplier);
 
 	int numInputChannels;
 	int numOutputChannels;
@@ -55,6 +59,10 @@ public:
 	float noiseIntensity;
 	int firstRefTime = 200;
 	float lateralAmplitudeDifference;
+
+	float ILDfactor;
+
+	bool filtersOption{ 0 };
 
 	/*void asd(AudioBuffer<float>& buffer, int channel, const float* bufferData, const float* delayBufferData,
 		const int bufferLength, const int delayBufferLength, int delayTime);*/

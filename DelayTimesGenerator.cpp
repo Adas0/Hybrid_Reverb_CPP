@@ -23,17 +23,17 @@ std::vector<int> DelayTimesGenerator::getDelayTimes(int & delayTimesNumber,
 	std::vector<int>delayTimes;
 	delayTimes.clear();
 
-	for (int i = 0; i < delayTimesNumber/4; ++i)
+	for (int i = 0; i < delayTimesNumber/*/4*/; ++i)
 	{ 
-		delayTimes.push_back(this->delayTimesPrime_[i * 4]);
+		delayTimes.push_back(this->delayTimesPrime_[i * 3]);
 		
 	}
 
-	for (int i = delayTimesNumber / 4; i < delayTimesNumber; ++i)
+	/*for (int i = delayTimesNumber / 4; i < delayTimesNumber; ++i)
 	{
 		delayTimes.push_back(this->delayTimesPrime_[i]);
 
-	}
+	}*/
 
 	/*...*/
 

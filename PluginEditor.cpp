@@ -12,8 +12,8 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circular_attemptAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circular_attemptAudioProcessor& p)
+	: AudioProcessorEditor(&p), processor(p)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -83,6 +83,14 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circ
 	addAndMakeVisible(&lateralAmplitudeDifferenceSlider);
 	lateralAmplitudeDifferenceSlider.addListener(this);
 	
+
+	addAndMakeVisible(&filtersChoose);
+	filtersChoose.addItem("Constant Filters", 1);
+	filtersChoose.addItem("Frequency depentant filters", 2);
+
+	filtersChoose.onChange = [this] { filtersChange(); };
+	filtersChoose.setSelectedId(1);
+	//filtersChoose.addListener(this);
 	
 	//directSoundCutoffSlider.setSliderStyle(Slider::Rotary);
 	//directSoundCutoffSlider.setRange(20, 20000, 1);
@@ -107,6 +115,16 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor (Circ
 
 	//reverbSize
 
+}
+
+void Circular_attemptAudioProcessorEditor::filtersChange()
+{
+	switch (filtersChoose.getSelectedId())
+	{
+		case 1: processor.reverbEngine.filtersOption = 0; break;
+		case 2: processor.reverbEngine.filtersOption = 1; break;
+		default: break;
+	}
 }
 
 Circular_attemptAudioProcessorEditor::~Circular_attemptAudioProcessorEditor()
@@ -141,6 +159,7 @@ void Circular_attemptAudioProcessorEditor::resized()
 	lateralAmplitudeDifferenceSlider.setBounds(250, 100, 100, 100);
 	//directSoundCutoffSlider.setBounds(400, 0, 100, 100);
 	//ITDslider.setBounds(400, 0, 100, 100);
+	filtersChoose.setBounds(10, 40, getWidth() - 20, 20);
 }
 
 void Circular_attemptAudioProcessorEditor::sliderValueChanged(Slider* slider)

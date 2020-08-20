@@ -27,6 +27,9 @@ public:
 
 	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> noiseFilters[numberDelayLines];
 
+	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> constantFiltersLeft[numberDelayLines];
+	dsp::ProcessorDuplicator<dsp::IIR::Filter<float>, dsp::IIR::Coefficients<float>> constantFiltersRight[numberDelayLines];
+
 //private:
 	std::vector<int>lowPassCutoffFrequenciesLeft;
 	std::vector<int>lowPassCutoffFrequenciesRight;
