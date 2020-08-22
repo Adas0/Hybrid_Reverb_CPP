@@ -20,7 +20,7 @@ int SpatialMaker::getITD(int minus, int plus)
 float SpatialMaker::getILD()
 {
 	float level = Random::getSystemRandom().nextFloat();
-	level = (level - 0.5) / 5 - 0.2;
+	level = (level - 1) / 5;
 	return level;
 }
 

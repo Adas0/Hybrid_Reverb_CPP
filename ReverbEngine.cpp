@@ -117,9 +117,12 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 					filterGenerator.lowPassFilterLeft[line].process(dsp::
 											ProcessContextReplacing<float>(blockLeftChannel));*/
 					
-
-					copyBackToCurrentBuffer(buffer, rightChannel, bufferDataRa, delayBufferDataR, bufferLength, delayBufferLength,
+					if (ITD_on)
+						copyBackToCurrentBuffer(buffer, rightChannel, bufferDataRa, delayBufferDataR, bufferLength, delayBufferLength,
 													delayTimesArray[line] + spatialMaker.ITDCoefficients[line] + firstRefTime);
+					else
+						copyBackToCurrentBuffer(buffer, rightChannel, bufferDataRa, delayBufferDataR, bufferLength, delayBufferLength,
+							delayTimesArray[line] + firstRefTime);
 
 
 					dsp::AudioBlock<float> block(buffer);
@@ -133,8 +136,8 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 					noiseBuffer.clear();
 					for (int sample = 0; sample < bufferLength; ++sample)
 					{
-						noiseBuffer.addSample(leftChannel, sample, noiseIntensity * Random::getSystemRandom().nextFloat());
-						noiseBuffer.addSample(rightChannel, sample, noiseIntensity * Random::getSystemRandom().nextFloat());
+						noiseBuffer.addSample(leftChannel, sample, /*noiseIntensity **/ Random::getSystemRandom().nextFloat());
+						noiseBuffer.addSample(rightChannel, sample, /*noiseIntensity **/ Random::getSystemRandom().nextFloat());
 
 					}
 
@@ -145,25 +148,34 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 					float* noiseBufferDataL = noiseBuffer.getWritePointer(0);
 					float* noiseBufferDataR = noiseBuffer.getWritePointer(1);
 					
-					for (int sample = 0; sample < bufferLength; ++sample)
+					if (noiseOn)
 					{
-							bufferWriteL[sample] *= noiseBufferDataL[sample];
-							bufferWriteR[sample] *= noiseBufferDataR[sample];
-						
+						for (int sample = 0; sample < bufferLength; ++sample)
+						{
+							bufferWriteL[sample] *= (noiseBufferDataL[sample]);
+							bufferWriteR[sample] *= (noiseBufferDataR[sample]);
+						}
 					}
-
+						
 					if (line == numberDelayLines - 2)
 					{
-						addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, bufferDataLa,
-															mWetDry / (float)numberDelayLines);
-						addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, bufferDataRa, 
-															(mWetDry - lateralAmplitudeDifference) / (float)numberDelayLines);
+						
+							addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, bufferDataLa,
+															mWetDry  / (float)numberDelayLines);
+						
+							addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, bufferDataRa, 
+															(mWetDry  - lateralAmplitudeDifference) / (float)numberDelayLines);
 
 					}
 					else
 					{
-						addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, 
-												bufferDataLa, mWetDry  / (float)numberDelayLines);
+						if (ILD_on)
+							addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength, 
+												bufferDataLa, (mWetDry + spatialMaker.ILDCoefficients[line]) / (float)numberDelayLines);
+						else
+							addDelayWithCurrentBuffer(leftChannel, bufferLength, delayBufferLength,
+												bufferDataLa, mWetDry / (float)numberDelayLines);
+
 						addDelayWithCurrentBuffer(rightChannel, bufferLength, delayBufferLength, 
 												bufferDataRa, mWetDry / (float)numberDelayLines);
 					}		

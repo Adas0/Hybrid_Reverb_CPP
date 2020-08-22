@@ -1,4 +1,4 @@
-/*
+﻿/*
   ==============================================================================
 
     This file was auto-generated!
@@ -17,7 +17,7 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circu
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 200);
+    setSize (600, 400);
 
 	//wetDrySlider.setSliderStyle(Slider::Rotary);
 	//wetDrySlider.setRange(0.0, 1, 0.01);
@@ -62,11 +62,11 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circu
 	noiseIntensitySlider.setPopupDisplayEnabled(true, false, this);
 	noiseIntensitySlider.setTextValueSuffix(" ");
 	noiseIntensitySlider.setValue(2.0f);
-	addAndMakeVisible(&noiseIntensitySlider);
+	//addAndMakeVisible(&noiseIntensitySlider);
 	noiseIntensitySlider.addListener(this);
 
 	firstRefSlider.setSliderStyle(Slider::Rotary);
-	firstRefSlider.setRange(0, 400, 1);
+	firstRefSlider.setRange(0, 120, 1);
 	firstRefSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
 	firstRefSlider.setPopupDisplayEnabled(true, false, this);
 	firstRefSlider.setTextValueSuffix(" ");
@@ -90,7 +90,27 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circu
 
 	filtersChoose.onChange = [this] { filtersChange(); };
 	filtersChoose.setSelectedId(1);
-	//filtersChoose.addListener(this);
+
+
+	addAndMakeVisible(&noiseToggle);
+	//noiseToggle.onClick = [this] { noiseToggleStateChange(); };
+	noiseToggle.setButtonText("Szum");
+	noiseToggle.setToggleState(true, true);
+	noiseToggle.onClick = [this] {Circular_attemptAudioProcessorEditor::onStateSwitchNoise(); };
+
+
+	addAndMakeVisible(&ITD_toggle);
+	//noiseToggle.onClick = [this] { noiseToggleStateChange(); };
+	ITD_toggle.setButtonText("Międzyuszna różnica czasu");
+	ITD_toggle.setToggleState(true, true);
+	ITD_toggle.onClick = [this] {Circular_attemptAudioProcessorEditor::onStateSwitchITD(); };
+
+	addAndMakeVisible(&ILD_toggle);
+	//noiseToggle.onClick = [this] { noiseToggleStateChange(); };
+	ILD_toggle.setButtonText("Międzyuszna różnica poziomu");
+	ILD_toggle.setToggleState(true, true);
+	ILD_toggle.onClick = [this] {Circular_attemptAudioProcessorEditor::onStateSwitchILD(); };
+
 	
 	//directSoundCutoffSlider.setSliderStyle(Slider::Rotary);
 	//directSoundCutoffSlider.setRange(20, 20000, 1);
@@ -115,6 +135,34 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circu
 
 	//reverbSize
 
+}
+
+void Circular_attemptAudioProcessorEditor::onStateSwitchILD()
+{
+	auto state = ILD_toggle.getToggleState();
+	processor.reverbEngine.ILD_on = (bool)state;
+}
+
+void Circular_attemptAudioProcessorEditor::onStateSwitchITD()
+{
+	auto state = ITD_toggle.getToggleState();
+	processor.reverbEngine.ITD_on = (bool)state;
+}
+
+void Circular_attemptAudioProcessorEditor::onStateSwitchNoise()
+{
+	auto state = noiseToggle.getToggleState();
+	processor.reverbEngine.noiseOn = (bool)state;
+}
+
+void Circular_attemptAudioProcessorEditor::noiseToggleStateChange()
+{
+	/*switch (noiseToggle.getState())
+	{
+		case 0: processor.reverbEngine.noiseOn = 0;
+		case 1: processor.reverbEngine.noiseOn = 1;
+		default: break;
+	}*/
 }
 
 void Circular_attemptAudioProcessorEditor::filtersChange()
@@ -160,6 +208,12 @@ void Circular_attemptAudioProcessorEditor::resized()
 	//directSoundCutoffSlider.setBounds(400, 0, 100, 100);
 	//ITDslider.setBounds(400, 0, 100, 100);
 	filtersChoose.setBounds(10, 40, getWidth() - 20, 20);
+
+	noiseToggle.setBounds(30, 70, getWidth() - 20, 20);
+
+	ITD_toggle.setBounds(30, 100, getWidth() - 20, 20);
+
+	ILD_toggle.setBounds(30, 130, getWidth() - 20, 20);
 }
 
 void Circular_attemptAudioProcessorEditor::sliderValueChanged(Slider* slider)

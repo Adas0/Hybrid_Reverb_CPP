@@ -63,6 +63,9 @@ public:
 	float ILDfactor;
 
 	bool filtersOption{ 0 };
+	bool noiseOn{ true };
+	bool ITD_on;
+	bool ILD_on;
 
 	/*void asd(AudioBuffer<float>& buffer, int channel, const float* bufferData, const float* delayBufferData,
 		const int bufferLength, const int delayBufferLength, int delayTime);*/

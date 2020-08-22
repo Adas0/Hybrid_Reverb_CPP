@@ -41,7 +41,7 @@ void FilterGenerator::prepareNoiseFilters(double sampleRate,
 			int samplesPerBlock, int numChannels, dsp::ProcessSpec spec)
 {
 
-	int lowBandFreq = 40, highBandFreq = 900;
+	int lowBandFreq = 40, highBandFreq = 1050;
 
 	for (int filter = 0; filter < numberDelayLines; ++filter)
 		noiseFiltersFrequencies.push_back(getFilterCutoffFrequency
@@ -68,22 +68,25 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	spec.maximumBlockSize = samplesPerBlock;
 	spec.numChannels = numChannels;
 
-	prepareBandPass(sampleRate, samplesPerBlock, numChannels, spec);
+	//prepareBandPass(sampleRate, samplesPerBlock, numChannels, spec);
 	prepareNoiseFilters(sampleRate, samplesPerBlock, numChannels, spec);
 	
-	allPassFilter.prepare(spec);
+	/*allPassFilter.prepare(spec);
 	allPassFilter.reset();
 	*(allPassFilter).state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, 15000.0f);
-
+*/
 
 	filtersNumber = numberDelayLines;
 	lowBorderFilterFrequency = 50;
-	highBorderFilterFrequency = 5000;
+	highBorderFilterFrequency = 2800;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		lowPassCutoffFrequenciesLeft.push_back(getFilterCutoffFrequency(
 							lowBorderFilterFrequency, highBorderFilterFrequency));
 	}
+
+	lowPassCutoffFrequenciesLeft[0] = 20000.0f;
+	sort(lowPassCutoffFrequenciesLeft.begin(), lowPassCutoffFrequenciesLeft.end()); 
 
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
@@ -95,13 +98,16 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 
 
 	int rightLowHighpassFreq = 40;
-	int rightHighHighpassFreq = 5200;
+	int rightHighHighpassFreq = 3000;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		lowPassCutoffFrequenciesRight.push_back(getFilterCutoffFrequency(
 								rightLowHighpassFreq, rightHighHighpassFreq));
 
 	}
+
+	lowPassCutoffFrequenciesRight[0] = 20000.0f;
+	sort(lowPassCutoffFrequenciesRight.begin(), lowPassCutoffFrequenciesRight.end());
 
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{

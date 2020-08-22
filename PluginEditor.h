@@ -30,6 +30,10 @@ public:
 	//void onChange(ComboBox* box) override;
 	
 	void filtersChange();
+	void noiseToggleStateChange();
+	void onStateSwitchNoise();
+	void onStateSwitchITD();
+	void onStateSwitchILD();
 
 private:
     // This reference is provided as a quick way for your editor to
@@ -46,6 +50,12 @@ private:
 	Slider lateralAmplitudeDifferenceSlider;
 
 	ComboBox filtersChoose;
+
+	ToggleButton noiseToggle;
+
+	ToggleButton ITD_toggle;
+
+	ToggleButton ILD_toggle;
 	//Slider directSoundCutoffSlider;
 	//Slider ITDslider;
 	//Slider wetDrySlider;
