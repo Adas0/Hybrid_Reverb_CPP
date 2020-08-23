@@ -57,7 +57,7 @@ public:
 	AudioBuffer<float>noiseBuffer;
 	std::vector<float>noiseVector;
 	float noiseIntensity;
-	int firstRefTime = 200;
+	int firstRefTime;
 	float lateralAmplitudeDifference;
 
 	float ILDfactor;

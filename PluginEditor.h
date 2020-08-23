@@ -17,7 +17,8 @@
 //==============================================================================
 /**
 */
-class Circular_attemptAudioProcessorEditor  : public AudioProcessorEditor, private Slider::Listener, /*private ComboBox::Listener,*/ public ReverbElement
+class Circular_attemptAudioProcessorEditor  : public AudioProcessorEditor, private Slider::Listener, 
+						/*private ComboBox::Listener,*/ private Label::Listener, public ReverbElement
 {
 public:
     Circular_attemptAudioProcessorEditor (Circular_attemptAudioProcessor&);
@@ -27,6 +28,8 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 	void sliderValueChanged(Slider* slider) override;
+
+	void Label::Listener::labelTextChanged(Label * labelThatHasChanged);
 	//void onChange(ComboBox* box) override;
 	
 	void filtersChange();
@@ -42,7 +45,7 @@ private:
 	Slider /*wetDrySlider,*/ ILDwetSlider, trueWetDry;
 	//Slider firstRelectionTimeSlider;
 
-	Slider filterCutOffDial;
+	//Slider filterCutOffDial;
 	Slider filteResDial;
 	Slider reverbSizeSlider;
 	Slider noiseIntensitySlider;
@@ -51,11 +54,12 @@ private:
 
 	ComboBox filtersChoose;
 
-	ToggleButton noiseToggle;
+	ToggleButton noiseToggle, ITD_toggle, ILD_toggle;
 
-	ToggleButton ITD_toggle;
+	Label wetDryLabel, reverbLengthLabel, lateralRefsLabel, firstRefTimeLabel;
+	Label wetDryLabelValues, reverbLengthLabelValues, lateralRefsLabelValues, firstRefTimeLabelValues;
 
-	ToggleButton ILD_toggle;
+	Label ITD_label, ILD_label, noiseLabel;
 	//Slider directSoundCutoffSlider;
 	//Slider ITDslider;
 	//Slider wetDrySlider;

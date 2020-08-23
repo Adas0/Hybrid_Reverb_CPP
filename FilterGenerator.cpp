@@ -77,8 +77,8 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 */
 
 	filtersNumber = numberDelayLines;
-	lowBorderFilterFrequency = 50;
-	highBorderFilterFrequency = 2800;
+	lowBorderFilterFrequency = 100;
+	highBorderFilterFrequency = 3000;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		lowPassCutoffFrequenciesLeft.push_back(getFilterCutoffFrequency(
@@ -97,8 +97,8 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	}
 
 
-	int rightLowHighpassFreq = 40;
-	int rightHighHighpassFreq = 3000;
+	int rightLowHighpassFreq = 80;
+	int rightHighHighpassFreq = 3800;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		lowPassCutoffFrequenciesRight.push_back(getFilterCutoffFrequency(
@@ -108,6 +108,7 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 
 	lowPassCutoffFrequenciesRight[0] = 20000.0f;
 	sort(lowPassCutoffFrequenciesRight.begin(), lowPassCutoffFrequenciesRight.end());
+	lowPassCutoffFrequenciesRight[lowPassCutoffFrequenciesRight.size() - 2] = 15000.0f;
 
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
