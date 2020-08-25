@@ -69,7 +69,7 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circu
 	firstRefSlider.setSliderStyle(Slider::Rotary);
 	firstRefSlider.setRange(0, 300, 1);
 	firstRefSlider.setTextBoxStyle(Slider::TextBoxBelow, true, getWidth(), 30);
-	firstRefSlider.setPopupDisplayEnabled(true, false, this);
+	firstRefSlider.setPopupDisplayEnabled(false, false, this);
 	firstRefSlider.setTextValueSuffix(" ms");
 	firstRefSlider.setValue(100);
 	addAndMakeVisible(&firstRefSlider);
@@ -116,15 +116,16 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circu
 
 	///////////////LABELS/////////////////////////
 
-	addAndMakeVisible(wetDryLabel);
+	
 	wetDryLabel.setText("Wet/Dry", dontSendNotification);
 	wetDryLabel.addListener(this);
-	wetDryLabel.attachToComponent(&trueWetDry, false);
+	//wetDryLabel.attachToComponent(&trueWetDry, false);
+	addAndMakeVisible(wetDryLabel);
 
 	addAndMakeVisible(reverbLengthLabel);
 	reverbLengthLabel.setText("Length", dontSendNotification);
 	reverbLengthLabel.addListener(this);
-	reverbLengthLabel.attachToComponent(&reverbSizeSlider, false);
+	//reverbLengthLabel.attachToComponent(&reverbSizeSlider, false);
 
 	addAndMakeVisible(firstRefTimeLabel);
 	firstRefTimeLabel.setText("First reflection time", dontSendNotification);
@@ -235,7 +236,9 @@ Circular_attemptAudioProcessorEditor::~Circular_attemptAudioProcessorEditor()
 void Circular_attemptAudioProcessorEditor::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+    //g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
+
+	g.fillAll(Colour::Colour(77, 0, 77));
 
     //g.setColour (Colours::white);
     //g.setFont (15.0f);
@@ -269,8 +272,8 @@ void Circular_attemptAudioProcessorEditor::resized()
 	//////////
 
 	//LABELS//
-	wetDryLabel.setBounds(140, 30, getWidth(), 30);
-	reverbLengthLabel.setBounds(340, 30, getWidth(), 30);
+	wetDryLabel.setBounds(77, 30, getWidth(), 30);
+	reverbLengthLabel.setBounds(281, 30, getWidth(), 30);
 	firstRefTimeLabel.setBounds(35, 230, getWidth(), 30);
 	lateralRefsLabel.setBounds(235, 230, getWidth(), 30);
 

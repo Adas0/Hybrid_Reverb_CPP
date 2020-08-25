@@ -41,7 +41,7 @@ void FilterGenerator::prepareNoiseFilters(double sampleRate,
 			int samplesPerBlock, int numChannels, dsp::ProcessSpec spec)
 {
 
-	int lowBandFreq = 40, highBandFreq = 1050;
+	int lowBandFreq = 40, highBandFreq = 750;
 
 	for (int filter = 0; filter < numberDelayLines; ++filter)
 		noiseFiltersFrequencies.push_back(getFilterCutoffFrequency
@@ -68,7 +68,6 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	spec.maximumBlockSize = samplesPerBlock;
 	spec.numChannels = numChannels;
 
-	//prepareBandPass(sampleRate, samplesPerBlock, numChannels, spec);
 	prepareNoiseFilters(sampleRate, samplesPerBlock, numChannels, spec);
 	
 	/*allPassFilter.prepare(spec);

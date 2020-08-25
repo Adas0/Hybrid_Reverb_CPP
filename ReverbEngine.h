@@ -62,10 +62,13 @@ public:
 
 	float ILDfactor;
 
-	bool filtersOption{ 0 };
-	bool noiseOn{ true };
-	bool ITD_on;
-	bool ILD_on;
+	bool filtersOption{ 1 };
+	bool noiseOn{ false };
+	bool ITD_on{ true };
+	bool ILD_on{ false };
+
+	//std::vector<AudioBuffer<float>> noiseBuffers;
+	AudioBuffer<float>noiseBuffers[numberDelayLines];
 
 	/*void asd(AudioBuffer<float>& buffer, int channel, const float* bufferData, const float* delayBufferData,
 		const int bufferLength, const int delayBufferLength, int delayTime);*/

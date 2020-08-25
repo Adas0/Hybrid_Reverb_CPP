@@ -20,7 +20,7 @@ int SpatialMaker::getITD(int minus, int plus)
 float SpatialMaker::getILD()
 {
 	float level = Random::getSystemRandom().nextFloat();
-	level = (level - 1) / 5;
+	level = (level - 0.5) / 5;
 	return level;
 }
 
@@ -31,13 +31,10 @@ void SpatialMaker::createITDarray()
 	ITDCoefficients.clear();
 	for (int line = 0; line < numberDelayLines; ++line)
 	{
-		//if (line > 1)
-			ITDCoefficients.push_back(getITD(-40, 40));
-		//else
-		//	ITDCoefficients.push_back(/*getITD(-2, 2)*/0);
+		ITDCoefficients.push_back(Random::getSystemRandom().
+								nextInt(Range<int>(-40, 40)));
 			
 	}
-	ITDCoefficients[numberDelayLines - 1] = 0;
 }
 
 void SpatialMaker::createILDarray()

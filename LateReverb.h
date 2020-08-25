@@ -23,8 +23,9 @@ public:
 																							float* bufferWriteL, float* bufferWriteR);
 	float generateRandomNoise();
 	int lateReverbNumLines;
-	std::vector<AudioBuffer<float>> createNoiseBufferArray(int& bufferSize);
+	AudioBuffer<float> createNoiseBufferArray(int& bufferSize);
 	AudioBuffer<float>noiseBuffer;
 	//std::vector<int> primeNumbers = { 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71 };
+	std::vector<AudioBuffer<float>> noiseBuffers;
 
 };

@@ -22,26 +22,48 @@ void LateReverb::addLateReverb(std::vector<int>& delayTimes)
 	}
 }
 
-std::vector<AudioBuffer<float>> LateReverb::createNoiseBufferArray(int& bufferSize)
+AudioBuffer<float> LateReverb::createNoiseBufferArray(int& bufferSize)
 {
-	std::vector<AudioBuffer<float>> noiseBuffers;
-	noiseBuffers.clear();
+	//std::vector<AudioBuffer<float>> noiseBuffers;
+	//noiseBuffers.clear();
 
-	noiseBuffer.setSize(2, bufferSize);
-	for (int line = 0; line < numberDelayLines; ++line)
-	{
-		noiseBuffer.clear();
-		for (int sample = 0; sample < bufferSize; ++sample)
-		{
-			//noiseBuffer.clear();
-			noiseBuffer.addSample(0, sample,  1.2 * Random::getSystemRandom().nextFloat() / 1.0f);
-			noiseBuffer.addSample(1, sample, 1.2 * Random::getSystemRandom().nextFloat() / 1.0f);
-		}
+	//noiseBuffer.setSize(2, bufferSize);
+	//for (int line = 0; line < numberDelayLines; ++line)
+	//{
+	//	noiseBuffer.clear();
+	//	for (int sample = 0; sample < bufferSize; ++sample)
+	//	{
+	//		//noiseBuffer.clear();
+	//		noiseBuffer.addSample(0, sample,  1.2 * Random::getSystemRandom().nextFloat() / 1.0f);
+	//		noiseBuffer.addSample(1, sample, 1.2 * Random::getSystemRandom().nextFloat() / 1.0f);
+	//	}
 
-		noiseBuffers.push_back(noiseBuffer);
-	}
+	//	noiseBuffers.push_back(noiseBuffer);
+	//}
 	
-	return noiseBuffers;
+	AudioBuffer<float>noiseB;
+	noiseB.setSize(2, bufferSize);
+	noiseB.clear();
+	for (int sample = 0; sample < bufferSize; ++sample)
+	{
+		noiseB.addSample(0, sample, Random::getSystemRandom().nextFloat() );
+		noiseB.addSample(1, sample, Random::getSystemRandom().nextFloat() );
+
+	}
+	/*noiseBuffer.setSize(2, bufferLength);
+					noiseBuffer.clear();
+					for (int sample = 0; sample < bufferLength; ++sample)
+					{
+						noiseBuffer.addSample(leftChannel, sample,  Random::getSystemRandom().nextFloat());
+						noiseBuffer.addSample(rightChannel, sample, Random::getSystemRandom().nextFloat());
+
+					}*/
+	
+	/*for (int buffer = 0; buffer < numberDelayLines; ++buffer)
+	{
+		noiseBuffers.push_back(noiseBuffer);
+	}*/
+	return noiseB;
 }
 
 
