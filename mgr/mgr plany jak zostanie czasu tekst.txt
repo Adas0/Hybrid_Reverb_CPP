@@ -1,0 +1,15 @@
+mogę dodać tabelki z przykładowymi wartościami losowanych liczb 
+
+jak starczy czasu to opiszę też sytuację z pogłosem bez sprzężenia i artefaktami podczas filtracji. I że jest to do zbadania dlaczego. np. podrozdział: wersja testowa pogłosu bez sprzężenia. 
+
+jak zdążę to rysunek z dokładnym opisem kopiowania bufora (może tylko tej pierwszej funkcji). 
+
+i też opis co który argument robi w funkcji copyFrom 
+
+dopiszę że np. nawet jeśli autor nie słyszy różnicy w przypadku zmiany niektórych parametrów, to została wdrożona opcja włączenia, być może w przypadku jakiegoś sygnału słuchacz będzie słyszał różnicę. 
+
+czynnik subiektywny jest nieodłączny - przy implementacji pomimo zalecanych wartości przez literaturę wartości te zawsze będą choć w minimalnym stopniu modyfikowne, chociażby dlatego, żeby po zmianie parametrów w kodzie zauważyć, czy faktycznie zaimplementowane w danej wersji implementacji rozwiązanie ma swój efekt (czy poprawnie działa, czy został zaimplementowany poprawnie).
+
+jak bede chcial miec te 100 stron (ze wszystkim) to zrobię najwyzej te wykresy punktowe parametrów B i Pr
+
+mogę dodać opcję z różną filtracją obu kanałów - wtedy zrekompensuję cichszy kanał amplitudą

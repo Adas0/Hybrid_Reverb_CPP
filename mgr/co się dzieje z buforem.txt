@@ -1,0 +1,1 @@
+W miejscu bufora wejściowego mam bufor opóźniony. Następnie filtruję go i mnożę z szumem. Robię to dla różnych momentów czasowych (np. 100x). Dodaję wszystko do bufora opóźnionego. Dodaję do tego bufor wejściowy i mam wyjście.

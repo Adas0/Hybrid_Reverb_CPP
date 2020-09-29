@@ -87,7 +87,7 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circu
 
 	addAndMakeVisible(&filtersChoose);
 	filtersChoose.addItem("Constant filters", 1);
-	filtersChoose.addItem("Delay depentant filters", 2);
+	filtersChoose.addItem("Delay dependent filters", 2);
 
 	filtersChoose.onChange = [this] { filtersChange(); };
 	filtersChoose.setSelectedId(2);

@@ -1,0 +1,4 @@
+Streszczenie:
+
+Celem pracy magisterskiej było stworzenie programu komputerowego w formie wtyczki VST będącego efektem akustycznego zjawiska pogłosu. Implementacja aplikacji odbyła się korzystając z frameworku JUCE w języku C++. Pogłos został stworzony w oparciu o literaturę opisującą stosowane rozwiązania oraz znajomość percepcyjnych zjawisk przestrzennych. Implementacja poprzedzona została obiektywną oceną zaimlementowanych wcześniej wersji pogłosu za pomocą stworzonych na potrzeby pracy parametrów. Na tej podstawie dokonany został wybór sposobów implementacyjnych, które zostały zastosowane przy implementacji, tym samym uzyskując hybrydowe rozwiązanie. Aplikacja posiada interfejs użytkownika zawierający elementy pozwalające na modyfikację parametrów pogłosu w trakcie działa programu. Wtyczka pozwala na nałożenie efektu pogłosu na sygnał cyfrowy w oprogramowaniu typu DAW. 
+

@@ -155,17 +155,18 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 					float* noiseBufferDataL = noiseBuffer.getWritePointer(0);
 					float* noiseBufferDataR = noiseBuffer.getWritePointer(1);
 					
+
+					noiseBuffer.setSize(2, bufferLength);
+					noiseBuffer.clear();
+					for (int sample = 0; sample < bufferLength; ++sample)
+					{
+						noiseBuffer.addSample(leftChannel, sample, Random::getSystemRandom().nextFloat() * 2);
+						noiseBuffer.addSample(rightChannel, sample, Random::getSystemRandom().nextFloat() * 2);
+
+					}
+
 					if (noiseOn)
 					{
-						noiseBuffer.setSize(2, bufferLength);
-						noiseBuffer.clear();
-						for (int sample = 0; sample < bufferLength; ++sample)
-						{
-							noiseBuffer.addSample(leftChannel, sample, Random::getSystemRandom().nextFloat() * 3);
-							noiseBuffer.addSample(rightChannel, sample, Random::getSystemRandom().nextFloat() * 3);
-
-						}
-
 						dsp::AudioBlock<float>noiseBlock(noiseBuffer);
 								filterGenerator.noiseFilters[line].process(dsp::
 											ProcessContextReplacing<float>(noiseBlock));

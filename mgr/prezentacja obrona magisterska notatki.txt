@@ -1,0 +1,34 @@
+Pogłos akustyczny jest jednym z najważniejszych zjawisk towarzyszących człowiekowi na codzień, pomaga w lokalizacji źródła dźwięku, ale także jego obecność często wiąże się z większą atrakcyjnością słuchanego sygnału.
+
+Badania nad rozwojem sztucznego pogłosu trwają od kilkudziesięciu lat. Na przestrzeni lat sposób prowadzenia badań znacząco się zmienił, dzisiejsze możliwości obliczeniowe pozwalają na znacznie większe możliwości eksperymentowania z parametrami pogłosu. W pracy tej wykorzystuję te możliwości w celu zbadania, które wersje pogłosu są najwyższej jakości, a następnie łączę sposoby implementacyjne każdego z elementów pogłosu w docelowy produkt.
+
+W ramach każdego z elementów dokonałem testowych implementacji 3-4 wersji pogłosów różnymi metodami lub sposobami implementacyjnymi. Pogłosy te następnie zostały poddane ocenie, na której podstawie dokonany został wybór elementów i połączenie w celu uzyskania hybrydowego rozwiązania. 
+
+Natomiast jak została dokonana ta ocena? 
+
+Przede wszystkim przy wyborze metody oceny mamy to wyboru dwa główne nurty, metody obiektywne oraz subiektywne, pojawia się pytanie które są lepsze, oczywiście oba nurty mają swoje wady i zalety. 
+
+Możemy powiedzeć na ucho, że pogłos brzmi dobrze, że jest przestrzenny, natomiast dla każdej osoby inny pogłos będzie brzmiał lepiej, bardziej realistycznie, lub przy nim słuchacz będzie odczuwał większe wrażenie przestrzenności.
+Tak więc zdecydowałem się na ocenę obiektywną - zaproponowałem obiektywne miary w postaci parametrów, których wartości liczbowe dla danej metody były punktem wyjścia do stwierdzenia, że dana wersja pogłosu jest lepsza, niż inna. Lub że pogłos jest bardziej przestrzenny. Oczywiście wybór mógł zostać dokonany na podstawie moich prywatnych subiektywnych wrażeń, natomiast mijałoby się to z celem, ponieważ jak wspomniałem, każdej osobie może podobać się inna wersja pogłosu. 
+
+Tak więc pierwszą obiektywną miarą jest parametr przedstawiony jako B, i w założeniu ma służyć do oceny jakości pogłosu. Jego stworzenie jest odpowiedzią na powtarzające w wielu pozycjach literaturowych wzmianki o wpływie gęstości oraz płaskości widma na jego jakość. W stworzonym przeze mnie wzorze pojawiają się znane parametry statystyczne, które w mojej ocenie dobrze opisują.
+
+//tutaj o pierwszym wykresie
+w celu poglądowym przedstawiam wykres płaskości widmowej od czasu dla różnego rodzaju generowania czasów opóźnienia linii opóźniających. 
+
+Drugą obiektywną miarą jest parametr Pr i w założeniu ma służyć do oceny przestrzenności pogłosu. Podobnie jak w przyparku pierwszego parametru, jego stworzenie jest odpowiedzią na powtarzające w wielu pozycjach literaturowych wzmianki o wpływie pewnych cech sygnału na przestrzenności pogłosu. Cecha powtarzająca się najczęściej to mała koherencja lewego i prawego kanału - w takim wypadku pogłos jest przestrzenny. Oczywiście tylko do pewnego momentu, możnaby do obu kanałów dać zupełnie różne sygnały i wtedy koherencja byłaby najmniejsza, dlatego we wzorze oprócz koherencji między kanałami pojawia się jeszcze widmowa gęstość mocy, która GENERALNIE przy pogłosie jest pożądana na wysokim poziomie. 
+
+//tutaj o drugim wykresie
+tutaj również w celach poglądowych przedstawiam wykres koherencji między lewym i prawym kanałem dla symulacji różnych zjawisk przestrzennych w przypadku sygnału mowy. 
+
+A więc parametry te, pierwszy służący do oceny jakości pogłosu, drugi do oceny przestrzenności zostały wykorzystane do zbadania trzech różnych sygnałów i wszystkich zaimplementowanych metod realizacji pogłosu.
+
+Na podstawie wartości liczbowych parametrów dokonałem wyboru, które metody są najlepsze. 
+
+Mając już wybrane sposoby implementacyjne mogłem przejść do docelowej implementacji. Schemat toru przetwarzania wiążący się z założeniami projektowymi przedstawia się następująco. 
+
+Cel związany z tytułem pracy został zrealizowany, implementacja została dokonana. Oprócz głównego celu, a więc implementacji udało się stworzyć obiektywne miary. 
+Tutaj też odpowiadając do końca na pytanie który nurt oceny jest lepszy, obiektywny czy subiektywny, powiem, że w tym momencie nasuwa się pomysł zweryfikowania, czy stworzone miary w postaci parametrów pokrywają się z wrażeniami subiektywnymi, jeżeli tak jest, to możnaby wyeliminować czynnik oceny subiektywnej, a więc mając wartości liczbowe parametrów możnaby mieć pewność, albo przypuszczać, iż wskazania liczbowe pokryją się ze wskazaniami subiektywymi, nieprzeprowadzając testów odsłuchowych. 
+
+/////
+pytania: na czym polega hybrydowość? - Na początku wspomniałem że implementowałem każdy element pogłosu różnymi metodami, w literaturze można znaleźć wiele podejść do implementacji i wiele stwierdzeń, niekoniecznie zgadzających się ze sobą co do tego, która metoda spowoduje stworzenie pogłosu o najwyższej jakości. Właśnie dlatego zaimplementowałem różne wersje, z różnych podejść opisanych w zupełnie różnych pracach, żeby wybrać spośród nich i połączyć. W pewnych pracach znajdują się opisy CAŁYCH implementacji pogłosu, zamiast korzystać w całości z jednego sposobu implementacyjnego/jednego podejścia postanowiłem zaimplementować wersje z różnych prac i sprawdzić, które są najlepsze. A już do oceny tego użyłem zaproponowanych parametrów, które są odpowiedzią na również pojawiające się w literaturze wzmianki i jakości i przestrzenności pogłosu. 

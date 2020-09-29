@@ -1,0 +1,4 @@
+B:= {{(G_{yz} + G_{xz})\over 2 }  E(S_{zz}(z(n)) \over σ(Flatness(z(n)) * σ(S_{zz}(z(n)))}
+przestrzenność = {E(S_{xx}(x(n))) \over C_{xy}(x(n)) * σ(S_{xx}(x(n)) * σ(C_{xy}(x(n))}
+
+B_{x}:= {{(H_{xy} + H_{xz})\over 2 }  E(S_{xx}(x(n)) \over σ(Flatness(x(n)) * σ(S_{xx}(x(n)))}
