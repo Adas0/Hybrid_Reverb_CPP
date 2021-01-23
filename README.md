@@ -1,7 +1,7 @@
 # Circular-Buffer-Reverb-JUCE
 
-This is a reverb using circular buffer in JUCE - C++. 
+This is a Hybrid Reverberation Effect using C++ (JUCE). 
 
-![Hybrid_Reverb_GUI](https://github.com/Adas0/Hybrid_Reverb_C-/blob/master/mgr/GUI%20screen%20reverb.PNG)
+![Hybrid_Reverb_GUI](https://github.com/Adas0/Hybrid_Reverb_CPP/gui_poprawne.PNG)
 
 
