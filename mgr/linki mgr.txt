@@ -1,7 +1,0 @@
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2906201/ - interaural coherence
-http://musicweb.ucsd.edu/~trsmyth/space175/space175.pdf - reverb article
-https://ccrma.stanford.edu/~jos/filters/ - about filters
-https://www.academia.edu/10298009/Matlab_Implementation_of_Reverberation_Algorithms - ciekawy wstep, moze reszta też
-https://books.google.pl/books?id=BCS8TdGBWB0C&pg=PA634&lpg=PA634&dq=objective+signal+measures&source=bl&ots=JEjnd8RUcS&sig=ACfU3U1x-f2v3UShw9969qnLinaFiWOc5A&hl=pl&sa=X&ved=2ahUKEwiEg5_a8LfoAhWx0KYKHZdnCaIQ6AEwF3oECAcQAQ#v=onepage&q=objective%20signal%20measures&f=false
-https://www.researchgate.net/publication/233961747_Calculation_of_IACC_of_any_music_signal_convolved_with_impulse_responses_by_using_the_interaural_cross-correlation_function_of_the_sound_field_and_the_autocorrelation_function_of_the_sound_source
-

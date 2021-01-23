@@ -1,3 +1,0 @@
-- o spektrogramach
-- o tym że jak się rusza pokrętłem to nie słychać, mimo że wychodzi liczbowo
-- o tym, że wet/dry działa tak jak działa. 

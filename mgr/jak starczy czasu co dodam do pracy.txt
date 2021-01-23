@@ -1,4 +1,0 @@
-- Opis IACC do podrozdziału 3.1. 
-
-obowiązkowo:
-- do wniosków - podejście obiektywne ma swoje zalety ale i wady. Zalety - nie można się z nimi kłócić, wady - zbyt duża liczba zmiennych i w zależności od doboru może wyjść co innego. Pogłos działa na zmysły ludzkie i ocena a pomocą liczb nie zawsze odzwierciedli subiektywne, empiryczne doznania odbiorcy. 

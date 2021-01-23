@@ -1,8 +1,0 @@
-zmiana wielkosci poglosu bez klickow: kręcenie pokrętłem będzie zwiększało amplitudę długich odbić z 0 na 1 
-(lub im większa wartość pokrętła tym dłuższe linie opóźniające się uaktywniają). 
-- tym samym manipuluję tylko amplitudą - nie będzie to skutkować klickami (zmiana CZASU w process blocku
-skutkuje clickami). 
-I potem amplituda linii to będzie amplituda/ilość AKTYWNYCH linii
-Tak samo mogę wymyślić z przestrzennością. 
-Lub po prostu przycisk przestrzenny lub nie. 
-Ale uda się z tą zmianą amplitudy. 
