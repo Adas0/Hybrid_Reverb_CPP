@@ -1,4 +1,4 @@
-# Hybrid Reverb C++
+# Hybrid Reverb in C++
 
 This is a Hybrid Reverberation Effect using C++ (JUCE). 
 
