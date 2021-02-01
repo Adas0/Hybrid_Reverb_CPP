@@ -1,4 +1,4 @@
-# Circular-Buffer-Reverb-JUCE
+# Hybrid Reverb C++
 
 This is a Hybrid Reverberation Effect using C++ (JUCE). 
 
