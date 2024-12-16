@@ -1,9 +1,8 @@
 /*
   ==============================================================================
 
-    This file was auto-generated!
-
-    It contains the basic framework code for a JUCE plugin processor.
+//Date: 2020
+//Author: Juce + Adam Korytowski
 
   ==============================================================================
 */
@@ -33,10 +32,6 @@ public:
 
     void processBlock (AudioBuffer<float>&, MidiBuffer&) override;
 
-	/*float reverbLength = 0.5;
-	int reverbSize = 0;
-	int firstRefTime = 0;*/
-
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
@@ -60,10 +55,9 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
-	//AudioProcessorValueTreeState tree;
+
 	ReverbEngine reverbEngine;
-	//int reflectionsNumber;
-	//std::vector<int>ITDCoefficients;
+
 private:
 	int asd = 0;
     //==============================================================================
