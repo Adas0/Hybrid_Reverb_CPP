@@ -3,7 +3,7 @@
 
     SpatialMaker.h
     Created: 27 Mar 2020 12:45:00pm
-    Author:  Adam
+    Author:  Adam Korytowski
 
   ==============================================================================
 */
