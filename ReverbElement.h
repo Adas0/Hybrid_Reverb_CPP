@@ -3,7 +3,7 @@
 
     ReverbElement.h
     Created: 28 Mar 2020 2:23:41pm
-    Author:  Adam
+    Author:  Adam Korytowski
 
   ==============================================================================
 */
