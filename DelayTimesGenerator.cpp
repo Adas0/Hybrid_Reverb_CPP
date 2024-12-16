@@ -16,7 +16,6 @@ int DelayTimesGenerator::generateRandomNumber(int & lowTime, int& highTime)
 	return randomNumber;
 }
 
-
 std::vector<int> DelayTimesGenerator::getDelayTimes(int & delayTimesNumber, 
 								int& lowTime, int& highTime, int& firstRefTime)
 {
@@ -26,10 +25,7 @@ std::vector<int> DelayTimesGenerator::getDelayTimes(int & delayTimesNumber,
 	for (int i = 0; i < delayTimesNumber/*/4*/; ++i)
 	{ 
 		delayTimes.push_back(this->delayTimesPrime_[i * 2]);
-		
 	}
-
-	
 
 	std::sort(delayTimes.begin(), delayTimes.end());
 	std::reverse(delayTimes.begin(), delayTimes.end());
