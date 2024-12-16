@@ -1,9 +1,8 @@
 ﻿/*
   ==============================================================================
 
-    This file was auto-generated!
-
-    It contains the basic framework code for a JUCE plugin editor.
+//Date: 2020
+//Author: Juce + Adam Korytowski
 
   ==============================================================================
 */
@@ -15,28 +14,8 @@
 Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circular_attemptAudioProcessor& p)
 	: AudioProcessorEditor(&p), processor(p)
 {
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSize (600, 400);
-
-	//wetDrySlider.setSliderStyle(Slider::Rotary);
-	//wetDrySlider.setRange(0.0, 1, 0.01);
-	//wetDrySlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
-	//wetDrySlider.setPopupDisplayEnabled(true, false, this);
-	//wetDrySlider.setTextValueSuffix(" ");
-	//wetDrySlider.setValue(0.0);
-	//addAndMakeVisible(&wetDrySlider);
-	//wetDrySlider.addListener(this);
-
-	/*ILDwetSlider.setSliderStyle(Slider::Rotary);
-	ILDwetSlider.setRange(0.0, 1.0, 0.01);
-	ILDwetSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
-	ILDwetSlider.setPopupDisplayEnabled(true, false, this);
-	ILDwetSlider.setTextValueSuffix(" ");
-	ILDwetSlider.setValue(1.0);
-	addAndMakeVisible(&ILDwetSlider);
-	ILDwetSlider.addListener(this);*/
-
+    	setSize (600, 400);
+	
 	trueWetDry.setSliderStyle(Slider::Rotary);
 	trueWetDry.setRange(0.0f, 1.0f, 0.01f);
 	trueWetDry.setTextBoxStyle(Slider::TextBoxBelow, true, getWidth(), 30);
@@ -56,16 +35,6 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circu
 	addAndMakeVisible(&reverbSizeSlider);
 	reverbSizeSlider.addListener(this);
 
-	
-	//noiseIntensitySlider.setSliderStyle(Slider::Rotary);
-	//noiseIntensitySlider.setRange(0.0f, 2.0f, 0.01f);
-	//noiseIntensitySlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
-	//noiseIntensitySlider.setPopupDisplayEnabled(true, false, this);
-	//noiseIntensitySlider.setTextValueSuffix(" ");
-	//noiseIntensitySlider.setValue(2.0f);
-	////addAndMakeVisible(&noiseIntensitySlider);
-	//noiseIntensitySlider.addListener(this);
-
 	firstRefSlider.setSliderStyle(Slider::Rotary);
 	firstRefSlider.setRange(0, 300, 1);
 	firstRefSlider.setTextBoxStyle(Slider::TextBoxBelow, true, getWidth(), 30);
@@ -79,7 +48,6 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circu
 	lateralAmplitudeDifferenceSlider.setRange(0.0, 1.0, 0.01);
 	lateralAmplitudeDifferenceSlider.setTextBoxStyle(Slider::TextBoxBelow, true, getWidth(), 30);
 	lateralAmplitudeDifferenceSlider.setPopupDisplayEnabled(true, false, this);
-	//lateralAmplitudeDifferenceSlider.setTextValueSuffix(" ");
 	lateralAmplitudeDifferenceSlider.setValue(0.0);
 	addAndMakeVisible(&lateralAmplitudeDifferenceSlider);
 	lateralAmplitudeDifferenceSlider.addListener(this);
@@ -92,17 +60,10 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circu
 	filtersChoose.onChange = [this] { filtersChange(); };
 	filtersChoose.setSelectedId(2);
 
-
-	///////////////TOGGLES//////////////////////
-
-	//noiseToggle.setButtonText("Noise");
-	
-	//ITD_toggle.setButtonText("ITD");
 	ITD_toggle.setToggleState(true, true);
 	ITD_toggle.onClick = [this] {Circular_attemptAudioProcessorEditor::onStateSwitchITD(); };
 	addAndMakeVisible(&ITD_toggle);
 	
-	//ILD_toggle.setButtonText("ILD");
 	ILD_toggle.setToggleState(false, false);
 	ILD_toggle.onClick = [this] {Circular_attemptAudioProcessorEditor::onStateSwitchILD(); };
 	addAndMakeVisible(&ILD_toggle);
@@ -111,21 +72,13 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circu
 	noiseToggle.onClick = [this] {Circular_attemptAudioProcessorEditor::onStateSwitchNoise(); };
 	addAndMakeVisible(&noiseToggle);
 
-	///////////////TOGGLES-END////////////////////
-
-
-	///////////////LABELS/////////////////////////
-
-	
 	wetDryLabel.setText("Wet/Dry", dontSendNotification);
 	wetDryLabel.addListener(this);
-	//wetDryLabel.attachToComponent(&trueWetDry, false);
 	addAndMakeVisible(wetDryLabel);
 
 	addAndMakeVisible(reverbLengthLabel);
 	reverbLengthLabel.setText("Length", dontSendNotification);
 	reverbLengthLabel.addListener(this);
-	//reverbLengthLabel.attachToComponent(&reverbSizeSlider, false);
 
 	addAndMakeVisible(firstRefTimeLabel);
 	firstRefTimeLabel.setText("First reflection time", dontSendNotification);
@@ -136,24 +89,6 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circu
 	lateralRefsLabel.setText("First ref. amp. diff.", dontSendNotification);
 	lateralRefsLabel.addListener(this);
 	lateralRefsLabel.attachToComponent(&lateralAmplitudeDifferenceSlider, false);
-	////END-LABELS////
-
-	/*addAndMakeVisible(wetDryLabelValues);
-	wetDryLabelValues.setText("Wet/Dry", dontSendNotification);
-	wetDryLabelValues.addListener(this);
-
-	addAndMakeVisible(reverbLengthLabelValues);
-	reverbLengthLabelValues.setText("Length", dontSendNotification);
-	reverbLengthLabelValues.addListener(this);
-
-	addAndMakeVisible(lateralRefsLabelValues);
-	lateralRefsLabelValues.setText("First reflection time", dontSendNotification);
-	lateralRefsLabelValues.addListener(this);
-
-	addAndMakeVisible(firstRefTimeLabelValues);
-	firstRefTimeLabelValues.setText("First ref. channel amp.", dontSendNotification);
-	firstRefTimeLabelValues.addListener(this);*/
-	
 
 	addAndMakeVisible(ITD_label);
 	ITD_label.setText("ITD", dontSendNotification);
@@ -166,26 +101,11 @@ Circular_attemptAudioProcessorEditor::Circular_attemptAudioProcessorEditor(Circu
 	addAndMakeVisible(noiseLabel);
 	noiseLabel.setText("Noise", dontSendNotification);
 	noiseLabel.addListener(this);
-
-	//Label ITD_label, ILD_label, noiseLabel;
-	///////////////LABELS-END/////////////////////
-	
-	//directSoundCutoffSlider.setSliderStyle(Slider::Rotary);
-	//directSoundCutoffSlider.setRange(20, 20000, 1);
-	////directSoundCutoffSlider.setSkewFactorFromMidPoint(500);
-	//directSoundCutoffSlider.setTextBoxStyle(Slider::NoTextBox, false, 0, 1);
-	//directSoundCutoffSlider.setPopupDisplayEnabled(true, false, this);
-	//directSoundCutoffSlider.setTextValueSuffix(" ");
-	//directSoundCutoffSlider.setValue(20000);
-	//addAndMakeVisible(&directSoundCutoffSlider);
-	//directSoundCutoffSlider.addListener(this);
-
 }
 
 void Circular_attemptAudioProcessorEditor::labelTextChanged(Label * labelThatHasChanged)
 {
-	auto asd = firstRefSlider.getValue();
-	//firstRefTimeLabel.setText((std::string)(firstRefSlider.getValue()));
+	auto SliderValue = firstRefSlider.getValue();
 
 }
 
@@ -210,12 +130,7 @@ void Circular_attemptAudioProcessorEditor::onStateSwitchNoise()
 
 void Circular_attemptAudioProcessorEditor::noiseToggleStateChange()
 {
-	/*switch (noiseToggle.getState())
-	{
-		case 0: processor.reverbEngine.noiseOn = 0;
-		case 1: processor.reverbEngine.noiseOn = 1;
-		default: break;
-	}*/
+
 }
 
 void Circular_attemptAudioProcessorEditor::filtersChange()
@@ -236,28 +151,12 @@ Circular_attemptAudioProcessorEditor::~Circular_attemptAudioProcessorEditor()
 void Circular_attemptAudioProcessorEditor::paint (Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    //g.fillAll (getLookAndFeel().findColour (ResizableWindow::backgroundColourId));
 
 	g.fillAll(Colour::Colour(77, 0, 77));
-
-    //g.setColour (Colours::white);
-    //g.setFont (15.0f);
-    //g.drawFittedText ("Hello World!", getLocalBounds(), Justification::centred, 1);
-
-	//reverbLengthSlider.setBounds(200, 0, 200, 200);
 }
 
 void Circular_attemptAudioProcessorEditor::resized()
 {
-	//processor.reverbLength = reverbLengthSlider.getValue();
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
-	////wetDrySlider.setBounds(0, 0, 100, 100);
-	//ILDwetSlider.setBounds(100, 0, 100, 100);
-	//noiseIntensitySlider.setBounds(100, 400, 100, 100);
-	//directSoundCutoffSlider.setBounds(400, 0, 100, 100);
-	//ITDslider.setBounds(400, 0, 100, 100);
-
 	trueWetDry.setBounds(50, 50, 120, 120);
 	reverbSizeSlider.setBounds(250, 50, 120, 120);
 	firstRefSlider.setBounds(50, 250, 120, 120);
@@ -277,20 +176,10 @@ void Circular_attemptAudioProcessorEditor::resized()
 	firstRefTimeLabel.setBounds(35, 230, getWidth(), 30);
 	lateralRefsLabel.setBounds(235, 230, getWidth(), 30);
 
-	/*wetDryLabelValues.setBounds(70, 140, 100, 30);
-	reverbLengthLabelValues.setBounds(270, 140, 100, 30);
-	lateralRefsLabelValues.setBounds(40, 340, 140, 30);
-	firstRefTimeLabelValues.setBounds(240, 340, 150, 30);*/
-
 	ITD_label.setBounds(405, 230, 50, 30);
 	ILD_label.setBounds(475, 230, 50, 30);
 	noiseLabel.setBounds(540, 230, 50, 30);
 	//////////
-
-
-	//Label ITD_label, ILD_label, noiseLabel;
-	//Label wetDryLabelValues, reverbLengthLabelValues, lateralRefsLabelValues, firstRefTimeLabelValues;
-	//Label wetDryLabel, reverbLengthLabel, firstRefTimeLabel, lateralRefsLabel;
 }
 
 void Circular_attemptAudioProcessorEditor::sliderValueChanged(Slider* slider)
