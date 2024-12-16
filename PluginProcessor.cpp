@@ -1,9 +1,8 @@
 /*
   ==============================================================================
 
-    This file was auto-generated!
-
-    It contains the basic framework code for a JUCE plugin processor.
+//Date: 2020
+//Author: Juce + Adam Korytowski
 
   ==============================================================================
 */
@@ -24,13 +23,6 @@ Circular_attemptAudioProcessor::Circular_attemptAudioProcessor()
                        )/*,tree(*this, nullptr)*/
 #endif
 {
-	//NormalisableRange<float> cutoffRange(20.0f, 20000.0f);
-	//NormalisableRange<float> resRange(1.0f, 5.0f);
-	////NormalisableRange<float> resRange(1.0f, 5.0f);
-
-	//tree.createAndAddParameter("cutoff", "Cutoff", "cutoff", cutoffRange, 600.0f, nullptr, nullptr);
-	//tree.createAndAddParameter("resonance", "Resonance", "resonance", resRange, 1.0f, nullptr, nullptr);
-
 
 }
 
@@ -148,9 +140,7 @@ void Circular_attemptAudioProcessor::processBlock (AudioBuffer<float>& buffer, M
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-
 	reverbEngine.process(buffer);
-
 }
 
 
