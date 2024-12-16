@@ -3,7 +3,7 @@
 
     SpatialMaker.cpp
     Created: 27 Mar 2020 12:45:10pm
-    Author:  Adam
+    Author:  Adam Korytowski
 
   ==============================================================================
 */
@@ -24,8 +24,6 @@ float SpatialMaker::getILD()
 	return level;
 }
 
-//prawdopodobnie ta funkcja powinna zwracać wektor, i w ogóle być wywoływana w klasie ReverbEngine. Bo wtedy mam możliwość
-//stworzenia kilku obiektów klasy SpatialMaker 
 void SpatialMaker::createITDarray()
 {
 	ITDCoefficients.clear();
@@ -48,10 +46,6 @@ void SpatialMaker::createILDarray()
 void SpatialMaker::createILD_test()
 {
 	createITDarray();
-	/*for (int line = 0; line < numberDelayLines; ++line)
-	{
-		ILDCoefficients.push_back(ITDCoefficients[line] / 15);
-	}*/
 }
 
 std::vector<std::pair<float, int>> SpatialMaker::getSpatialInfo()
@@ -64,10 +58,7 @@ std::vector<std::pair<float, int>> SpatialMaker::getSpatialInfo()
 
 void SpatialMaker::prepare()
 {
-	//createITDarray();
 	createILDarray();
 	createILD_test();
 
 }
-
-
