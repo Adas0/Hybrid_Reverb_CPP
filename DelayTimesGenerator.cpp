@@ -32,4 +32,3 @@ std::vector<int> DelayTimesGenerator::getDelayTimes(int & delayTimesNumber,
 
 	return delayTimes; 
 } 
- 
