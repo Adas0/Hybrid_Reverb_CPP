@@ -1,9 +1,8 @@
 /*
   ==============================================================================
-
-    This file was auto-generated!
-
-    It contains the basic framework code for a JUCE plugin editor.
+  
+//Date: 2020
+//Author: Juce + Adam Korytowski
 
   ==============================================================================
 */
@@ -30,7 +29,6 @@ public:
 	void sliderValueChanged(Slider* slider) override;
 
 	void Label::Listener::labelTextChanged(Label * labelThatHasChanged);
-	//void onChange(ComboBox* box) override;
 	
 	void filtersChange();
 	void noiseToggleStateChange();
@@ -43,9 +41,6 @@ private:
     // access the processor object that created it.
     Circular_attemptAudioProcessor& processor;
 	Slider /*wetDrySlider,*/ ILDwetSlider, trueWetDry;
-	//Slider firstRelectionTimeSlider;
-
-	//Slider filterCutOffDial;
 	Slider filteResDial;
 	Slider reverbSizeSlider;
 	Slider noiseIntensitySlider;
@@ -60,12 +55,6 @@ private:
 	Label wetDryLabelValues, reverbLengthLabelValues, lateralRefsLabelValues, firstRefTimeLabelValues;
 
 	Label ITD_label, ILD_label, noiseLabel;
-	//Slider directSoundCutoffSlider;
-	//Slider ITDslider;
-	//Slider wetDrySlider;
-	/*ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> filterCutoffValue;
-	ScopedPointer<AudioProcessorValueTreeState::SliderAttachment> filterResValue;*/
-	//Slider ;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Circular_attemptAudioProcessorEditor)
 };
