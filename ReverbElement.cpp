@@ -3,7 +3,7 @@
 
     ReverbElement.cpp
     Created: 28 Mar 2020 2:23:50pm
-    Author:  Adam
+    Author:  Adam Korytowski
 
   ==============================================================================
 */
