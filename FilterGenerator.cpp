@@ -3,7 +3,7 @@
 
     FiltersGenerator.cpp
     Created: 13 Mar 2020 6:18:59pm
-    Author:  Adam
+    Author:  Adam Korytowski
 
   ==============================================================================
 */
@@ -70,11 +70,6 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 
 	prepareNoiseFilters(sampleRate, samplesPerBlock, numChannels, spec);
 	
-	/*allPassFilter.prepare(spec);
-	allPassFilter.reset();
-	*(allPassFilter).state = *dsp::IIR::Coefficients<float>::makeLowPass(sampleRate, 15000.0f);
-*/
-
 	filtersNumber = numberDelayLines;
 	lowBorderFilterFrequency = 100;
 	highBorderFilterFrequency = 3000;
@@ -95,14 +90,12 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 					makeLowPass(sampleRate, lowPassCutoffFrequenciesLeft[filter], 1.0f);
 	}
 
-
 	int rightLowHighpassFreq = 80;
 	int rightHighHighpassFreq = 3800;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
 		lowPassCutoffFrequenciesRight.push_back(getFilterCutoffFrequency(
 								rightLowHighpassFreq, rightHighHighpassFreq));
-
 	}
 
 	lowPassCutoffFrequenciesRight[0] = 20000.0f;
@@ -118,13 +111,13 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 	}
 
 	///////////////////////////////////
-	int asd = 500;
-	int qwe = 500;
-	std::vector<int>qqq;
+	int LowFrequency = 500;
+	int HighFrequency = 500;
+	std::vector<int>CutoffFrequencies;
 	for (int filter = 0; filter < filtersNumber; ++filter)
 	{
-		qqq.push_back(getFilterCutoffFrequency(
-			asd, qwe));
+		CutoffFrequencies.push_back(getFilterCutoffFrequency(
+			LowFrequency, HighFrequency));
 
 	}
 
@@ -133,14 +126,12 @@ void FilterGenerator::prepare(double sampleRate, int samplesPerBlock, int numCha
 		constantFiltersLeft[filter].prepare(spec);
 		constantFiltersLeft[filter].reset();
 		*(constantFiltersLeft[filter]).state = *dsp::IIR::Coefficients<float>::
-			makeLowPass(sampleRate, qqq[filter], 1.0f);
+			makeLowPass(sampleRate, CutoffFrequencies[filter], 1.0f);
 
 		constantFiltersRight[filter].prepare(spec);
 		constantFiltersRight[filter].reset();
 		*(constantFiltersRight[filter]).state = *dsp::IIR::Coefficients<float>::
-			makeLowPass(sampleRate, qqq[filter], 1.0f);
+			makeLowPass(sampleRate, CutoffFrequencies[filter], 1.0f);
 	}
 
 }
-//hmm, przy takim układzie wszystkie obiekty klasy FilterGenerator będą miały taką samą tą tablicę lowPassFilter? Bo chyba
-//jak przypisuję w funkcji prepare wartości do tej tablicy, to ta tablica jest przypisana tak jakby do klasy?
