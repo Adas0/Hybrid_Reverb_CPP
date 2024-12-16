@@ -27,52 +27,24 @@ void ReverbEngine::prepare(double sampleRate, int samplesPerBlock, int numChanne
 
 	delayTimes.lowDelayTime = 400;
 	delayTimes.highDelayTime = 1200;
-	//delayTimes.highDelayTime = DelayTimesGenerator::delayTimesPrime_[3 * 160] * 2 + 50;
 	delayTimes.firstReflectionTime = 100;
 	delayTimesNumber = numberDelayLines;
 	delayTimesArray.clear();
 	delayTimesArray = delayTimes.getDelayTimes(delayTimesNumber, delayTimes.lowDelayTime, delayTimes.highDelayTime, delayTimes.firstReflectionTime);
-	//int lateTailArrayIndex = 2 * delayTimesNumber / 3;
-
-	//lateReverb.lateReverbNumLines =  delayTimesNumber / 2; //biorę ostatnią 1/3 elementów tablicy zawierającej czasy opóźnienia
-														  //i bede podmieniał je na odbicia większe niż zakres czasów opóźnienia zwykłych odbić
-	//lateReverb.addLateReverb(delayTimesArray);
 	
 	delayTimesArray[numberDelayLines - 1] = 0;
 	delayTimesArray[delayTimesArray.size() - 2] = 0;
 
-	//noiseArray = lateReverb.createNoiseBufferArray(samplesPerBlock);
-	
-	
-
-	/*noiseVector.clear();
-	for (int sample = 0; sample < samplesPerBlock; ++sample)
-	{
-		noiseVector.push_back(Random::getSystemRandom().nextFloat());
-
-	}*/
-	
-
-	//for (buffer = 0)
-	
-	//noiseBuffers.clear();
 	for (int i = 0; i < numberDelayLines; ++i)
 	{
 		noiseBuffers[i] = (lateReverb.createNoiseBufferArray(samplesPerBlock));
 
 	}
-	
-	/*AudioBuffer<float> asdf = lateReverb.createNoiseBufferArray(samplesPerBlock);*/
-	
-	
-	
 }
 
 
 void ReverbEngine::process(AudioBuffer<float>&buffer)
 {
-	//dsp::AudioBlock<float> block(buffer);
-	//buffer.applyGain(0.1);
 
 	const int bufferLength = buffer.getNumSamples();
 	const int delayBufferLength = delayBuffer.getNumSamples();
@@ -130,9 +102,6 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 					copyBackToCurrentBuffer(buffer, leftChannel, bufferDataLa, delayBufferDataL,
 								bufferLength, delayBufferLength, delayTimesArray[line] + firstRefTime);
 
-					/*dsp::AudioBlock<float> blockLeftChannel(buffer);
-					filterGenerator.lowPassFilterLeft[line].process(dsp::
-											ProcessContextReplacing<float>(blockLeftChannel));*/
 					
 					if (ITD_on)
 						copyBackToCurrentBuffer(buffer, rightChannel, bufferDataRa, delayBufferDataR, bufferLength, delayBufferLength,
@@ -148,9 +117,6 @@ void ReverbEngine::process(AudioBuffer<float>&buffer)
 					else
 						filterGenerator.constantFiltersRight[line].process(dsp::ProcessContextReplacing<float>(block));
 
-
-					
-					
 
 					float* noiseBufferDataL = noiseBuffer.getWritePointer(0);
 					float* noiseBufferDataR = noiseBuffer.getWritePointer(1);
